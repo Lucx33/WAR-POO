@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Carta{
     private final String territorio;
     private final String formaGeometrica;
@@ -31,6 +32,17 @@ public class Carta{
             baralho.add(new Carta(territorios[i], formas[i]));
         }
         return baralho;
+    }
+
+    public static Carta comprarCarta(List<Carta> baralho) {
+        if(!baralho.isEmpty()) {
+            return baralho.remove(0);
+        }
+        return null;
+    }
+
+    public static void addBaralho(List<Carta> baralho, Carta carta) {
+        baralho.add(carta);
     }
 
     public String getTerritorio() {
