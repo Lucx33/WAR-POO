@@ -13,6 +13,11 @@ public class Carta{
         this.formaGeometrica = formaGeometrica;
     }
 
+    public static List<Carta> shuf(List<Carta> baralho) {
+        Collections.shuffle(baralho);
+        return baralho;
+    }
+
     public static List<Carta> criarBaralho() {
         String[] territorios = {"africadosul", "angola", "argelia", "egito", "nigeria", "somalia", "alasca", "calgary",
                 "california", "groelandia", "mexico", "novayork", "quebec", "texas", "vancouver", "arabiasaudita", "bangladesh", "cazaquistao",
@@ -45,17 +50,38 @@ public class Carta{
         baralho.add(carta);
     }
 
+    public boolean verificaCartas(List<Carta> cartasJogador) {
+
+        int circuloCount = 0;
+        int trianguloCount = 0;
+        int quadradoCount = 0;
+
+        for (Carta carta : cartasJogador) {
+            switch (carta.getFormaGeometrica()) {
+                case "Círculo":
+                    circuloCount++;
+                    break;
+                case "Triângulo":
+                    trianguloCount++;
+                    break;
+                case "Quadrado":
+                    quadradoCount++;
+                    break;
+            }
+        }
+
+        if (circuloCount == 3 || trianguloCount == 3 || quadradoCount == 3) {
+            return true;
+        } else return circuloCount > 0 && trianguloCount > 0 && quadradoCount > 0;
+    }
+
+
     public String getTerritorio() {
         return territorio;
     }
 
     public String getFormaGeometrica() {
         return formaGeometrica;
-    }
-
-    public static List<Carta> shuf(List<Carta> baralho) {
-        Collections.shuffle(baralho);
-        return baralho;
     }
 }
 
