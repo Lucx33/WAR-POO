@@ -12,23 +12,23 @@ class Territorio {
 		this.qtdExercito = qtd;
 	}
 
-	public String getNome() {
+	String getNome() {
 		return nome;
 	}
 
-	public int getIdJogadorDono() {
+	int getIdJogadorDono() {
 		return idJogadorDono;
 	}
 
-	public void setIdJogadorDono(int id_jogador_dono) {
+	void setIdJogadorDono(int id_jogador_dono) {
 		this.idJogadorDono = id_jogador_dono;
 	}
 
-	public int getQtdExercito() {
+	int getQtdExercito() {
 		return qtdExercito;
 	}
 
-	public void setQtdExercito(int qtd_exercito) {
+	void setQtdExercito(int qtd_exercito) {
 		this.qtdExercito = qtd_exercito;
 	}
 	

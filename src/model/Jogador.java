@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 class Jogador {
-    private String nome;
-    private String cor;
-    private List<Carta> cartas;
-    private List<Territorio> territorios;
-    private Objetivo objetivo;
-    private int ordemjogo;
+    String nome;
+    String cor;
+    List<Carta> cartas;
+    List<Territorio> territorios;
+    Objetivo objetivo;
+    int ordemjogo;
 
-    public Jogador(String nome, String cor) {
+    Jogador(String nome, String cor) {
         this.nome = nome;
         this.cor = cor;
         this.cartas = new ArrayList<>();
@@ -20,39 +20,39 @@ class Jogador {
         this.ordemjogo = -1; 
     }
 
-    public String getNome() {
+    String getNome() {
         return nome;
     }
 
-    public String getCor() {
+    String getCor() {
         return cor;
     }
 
-    public int getordemjogo() {
+    int getordemjogo() {
         return ordemjogo;
     }
 
-    public void setObjetivo(Objetivo objetivo) {
+    void setObjetivo(Objetivo objetivo) {
         this.objetivo = objetivo;
     }
 
-    public void addCarta(Carta carta) {
+    void addCarta(Carta carta) {
         cartas.add(carta);
     }
 
-    public List<Carta> getCartas() {
+    List<Carta> getCartas() {
         return cartas;
     }
 
-    public void addTerritorio(Territorio territorio) {
+    void addTerritorio(Territorio territorio) {
         territorios.add(territorio);
     }
 
-    public List<Territorio> getTerritorios() {
+    List<Territorio> getTerritorios() {
         return territorios;
     }
 
-    public void sortearordemjogo(int n_jogadores) {
+    void sortearordemjogo(int n_jogadores) {
         Random random = new Random();
         this.ordemjogo = random.nextInt(n_jogadores) + 1;
     }
