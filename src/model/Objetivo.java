@@ -57,7 +57,7 @@ class Objetivo {
                     mudarObjetivo(objetivo);
                 break;
             case 7:
-                if(Jogador.continents )
+                if(Jogador.continents ##################)
         }
 
 
