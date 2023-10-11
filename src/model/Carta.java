@@ -40,17 +40,14 @@ class Carta{
     }
 
     static Carta comprarCarta(List<Carta> baralho) {
-        if(!baralho.isEmpty()) {
-            return baralho.remove(0);
-        }
-        return null;
+        return baralho.remove(0);
     }
 
     static void addBaralho(List<Carta> baralho, Carta carta) {
         baralho.add(carta);
     }
 
-    boolean verificaCartas(List<Carta> cartasJogador) {
+    static boolean verificaCartas(List<Carta> cartasJogador) {
 
         int circuloCount = 0;
         int trianguloCount = 0;
@@ -74,7 +71,6 @@ class Carta{
             return true;
         } else return circuloCount > 0 && trianguloCount > 0 && quadradoCount > 0;
     }
-
 
     String getTerritorio() {
         return territorio;
