@@ -1,7 +1,6 @@
 package model;
 
 class Territorio {
-	
 	String nome;
 	int idJogadorDono;
 	int qtdExercito;

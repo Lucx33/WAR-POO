@@ -53,11 +53,11 @@ class Objetivo {
     boolean verificaObjetivo(Objetivo objetivo, Jogador jogador){
         switch (getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
-                if(objetivo.getObjetivoId() == jogador.getCorId())
+                if(objetivo.getObjetivoId() == jogador.getCorId(jogador))
                     mudarObjetivo(objetivo);
                 break;
             case 7:
-                if(Jogador.continents ##################)
+                if(jogador.getTerritorios())
         }
 
 
