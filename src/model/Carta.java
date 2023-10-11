@@ -4,21 +4,21 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class Carta{
-    private final String territorio;
-    private final String formaGeometrica;
+class Carta{
+    final String territorio;
+    final String formaGeometrica;
 
-    public Carta(String territorio, String formaGeometrica) {
+    Carta(String territorio, String formaGeometrica) {
         this.territorio = territorio;
         this.formaGeometrica = formaGeometrica;
     }
 
-    public static List<Carta> shuf(List<Carta> baralho) {
+    static List<Carta> shuf(List<Carta> baralho) {
         Collections.shuffle(baralho);
         return baralho;
     }
 
-    public static List<Carta> criarBaralho() {
+    static List<Carta> criarBaralho() {
         String[] territorios = {"africadosul", "angola", "argelia", "egito", "nigeria", "somalia", "alasca", "calgary",
                 "california", "groelandia", "mexico", "novayork", "quebec", "texas", "vancouver", "arabiasaudita", "bangladesh", "cazaquistao",
                 "china", "coreiadonorte","coreiadosul", "estonia", "india", "ira", "iraque", "japao", "jordania", "letonia",
@@ -39,18 +39,18 @@ public class Carta{
         return baralho;
     }
 
-    public static Carta comprarCarta(List<Carta> baralho) {
+    static Carta comprarCarta(List<Carta> baralho) {
         if(!baralho.isEmpty()) {
             return baralho.remove(0);
         }
         return null;
     }
 
-    public static void addBaralho(List<Carta> baralho, Carta carta) {
+    static void addBaralho(List<Carta> baralho, Carta carta) {
         baralho.add(carta);
     }
 
-    public boolean verificaCartas(List<Carta> cartasJogador) {
+    boolean verificaCartas(List<Carta> cartasJogador) {
 
         int circuloCount = 0;
         int trianguloCount = 0;
@@ -76,11 +76,11 @@ public class Carta{
     }
 
 
-    public String getTerritorio() {
+    String getTerritorio() {
         return territorio;
     }
 
-    public String getFormaGeometrica() {
+    String getFormaGeometrica() {
         return formaGeometrica;
     }
 }
