@@ -57,6 +57,18 @@ class Jogador {
         this.ordemjogo = random.nextInt(n_jogadores) + 1;
     }
 
+    int getCorId(Jogador jogador){
+        return switch (cor) {
+            case "Azul" -> 1;
+            case "Amarelo" -> 2;
+            case "Branco" -> 3;
+            case "Verde" -> 4;
+            case "Preto" -> 5;
+            case "Vermelho" -> 6;
+            default -> 0;
+        };
+    }
+
     @Override
     public String toString() {
         return "Jogador: " + nome + " | Cor: " + cor + " | Ordem de Jogada: " + ordemjogo;
