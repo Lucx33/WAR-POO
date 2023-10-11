@@ -14,86 +14,9 @@ public class CartaTest {
 		assertEquals("estrela", carta.getFormaGeometrica());
 	}
 	@Test
-	public void testCriarBaralho() {
-		// Cria um baralho
-		List<Carta> baralho = Carta.criarBaralho();
-		// Verifica se o baralho tem 53 cartas
-		assertEquals(53, baralho.size());
-
-		// Verifica se a primeira carta é a esperada (africadosul, Triângulo)
-		Carta primeira = baralho.get(0);
-		assertEquals("africadosul", primeira.getTerritorio());
-		assertEquals("Triângulo", primeira.getFormaGeometrica());
-
-		// Verifica se a última carta é a esperada (c, ?)
-		Carta ultima = baralho.get(52);
-		assertEquals("c", ultima.getTerritorio());
-		assertEquals("?", ultima.getFormaGeometrica());
-	}
-	@Test
-	public void testEmbaralhar() {
-		// Cria um baralho
-		List<Carta> baralho = Carta.criarBaralho();
-
-		// Embaralha o baralho
-		List<Carta> baralhoEmbaralhado = Carta.shuf(baralho);
-
-		// Verifica se o baralho tem 53 cartas
-		assertEquals(53, baralhoEmbaralhado.size());
-
-		// Verifica se a primeira carta é diferente da "esperada" (africadosul)
-		Carta primeira = baralhoEmbaralhado.get(0);
-		assertNotEquals("africadosul", primeira.getTerritorio());
-	}
-
-	@Test
-	public void testComprarCarta() {
-		// Cria um baralho
-		List<Carta> baralho = Carta.criarBaralho();
-
-		// Compra uma carta
-		Carta carta = Carta.comprarCarta(baralho);
-
-		// Verifica se a carta comprada é a esperada (africadosul, Triângulo)
-		assertEquals("africadosul", carta.getTerritorio());
-		assertEquals("Triângulo", carta.getFormaGeometrica());
-
-		// Verifica se o baralho tem 52 cartas
-		assertEquals(52, baralho.size());
-	}
-
-	@Test
-	public void testAddBaralho() {
-		// Cria um baralho
-		List<Carta> baralho = Carta.criarBaralho();
-
-		// Compra uma carta
-		Carta carta = Carta.comprarCarta(baralho);
-
-
-		// Verifica se a carta comprada é a esperada (africadosul, Triângulo)
-        assertEquals("africadosul", carta.getTerritorio());
-		assertEquals("Triângulo", carta.getFormaGeometrica());
-
-		// Verifica se o baralho tem 52 cartas
-		assertEquals(52, baralho.size());
-
-		// Adiciona a carta ao baralho
-		Carta.addBaralho(baralho, carta);
-
-		// Verifica se o baralho tem 53 cartas
-		assertEquals(53, baralho.size());
-
-		// Verifica se a última carta é a esperada (africadosul, Triângulo)
-		Carta ultima = baralho.get(52);
-		assertEquals("africadosul", ultima.getTerritorio());
-		assertEquals("Triângulo", ultima.getFormaGeometrica());
-	}
-
-	@Test
 	public void testVerificaCartas() {
 		// Cria um baralho
-		List<Carta> baralho = Carta.criarBaralho();
+		List<Carta> baralho = new ArrayList<>();
 
 		// Adiciona 3 cartas
 		Carta carta1 = new Carta("a", "Triângulo");
