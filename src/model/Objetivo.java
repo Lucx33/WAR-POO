@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class Objetivo {
@@ -51,17 +52,72 @@ class Objetivo {
     }
 
     boolean verificaObjetivo(Objetivo objetivo, Jogador jogador){
+        List<String> obj = new ArrayList<>();
+        List<String> plyCnt = jogador.getTerritoriosString();
         switch (getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
                 if(objetivo.getObjetivoId() == jogador.getCorId(jogador))
                     mudarObjetivo(objetivo);
                 break;
             case 7:
-                if(jogador.getTerritorios())
+                obj = List.of("America do Norte", "Africa");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 8:
+                obj = List.of("Asia", "Africa");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 9:
+                obj = List.of("America do Norte", "Oceania");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 10:
+                obj = List.of("Europa", "America do Sul");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return jogador.getContinentes().size() >= 3;
+            case 11:
+                obj = List.of("Asia", "America do Sul");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return true;
+            case 12:
+                obj = List.of("Europa", "Oceania");
+                for (String item : obj) {
+                    if (!plyCnt.contains(item)) {
+                        return false;
+                    }
+                }
+                return jogador.getContinentes().size() >= 3;
+            case 13:
+                if(jogador.getTerritorios().size() < 18)
+                    return false;
+                for(Territorio territorio : jogador.getTerritorios()){
+                    if(territorio.getQtdExercito() < 2)
+                        return false;
+                }
+                return true;
+            case 14:
+                return jogador.getTerritorios().size() >= 24;
         }
-
-
-        return true;
+        return false;
     }
-
 }
