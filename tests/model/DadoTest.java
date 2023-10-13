@@ -1,5 +1,5 @@
 package model;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -10,15 +10,10 @@ import org.junit.Test;
 
 public class DadoTest {
     @Test
-    public void testDadoConst(){
-        Dado dado = new Dado();
-        assertEquals(new Random(), dado.random);
-    }
-    @Test
     public void testRolar(){
         Dado dado = new Dado();
-        dado.rolar();
-        assertTrue(dado.rolar() >= 1 && dado.rolar() <= 6);
+        int res = dado.rolar();
+        assertTrue(res >= 1 && res <= 6);
     }
     @Test
     public void testDadosAtaque(){
