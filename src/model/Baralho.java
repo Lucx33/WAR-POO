@@ -27,10 +27,18 @@ public class Baralho {
         }
     }
 
+    static List<Carta> distribuiCarta(int qtdPlayers){
+        List<Carta> cartasJogador = new ArrayList<>();
+        int qtdCartas = baralho.size()/qtdPlayers;
+        for(int i = 0; i < qtdCartas; i++){
+            cartasJogador.add(comprarCarta());
+        }
+        return cartasJogador;
+    }
+
     void shuf(){
         Collections.shuffle(baralho);
     }
-
 
     static Carta comprarCarta() {
         return baralho.remove(0);

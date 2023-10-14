@@ -27,6 +27,7 @@ class Jogador {
         this.idJogador = getCorId(this);
     }
 
+
     String getNome() {
         return nome;
     }
@@ -99,5 +100,9 @@ class Jogador {
 
     void addContinente(Continente continente) {
         continentes.add(continente);
+    }
+
+    void setCartas(List<Carta> cartas) {
+        this.cartas = cartas;
     }
 }
