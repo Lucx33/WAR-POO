@@ -30,6 +30,9 @@ class Carta{
                 case "Quadrado":
                     quadradoCount++;
                     break;
+                case "?":
+                    circuloCount++; trianguloCount++; quadradoCount++;
+                    break;
             }
         }
 

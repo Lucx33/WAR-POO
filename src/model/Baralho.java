@@ -14,13 +14,13 @@ public class Baralho {
                 "china", "coreiadonorte","coreiadosul", "estonia", "india", "ira", "iraque", "japao", "jordania", "letonia",
                 "mongolia", "paquistao", "russia", "siberia", "siria", "tailandia", "turquia", "argentina", "brasil", "peru",
                 "venezuela", "espanha", "franca", "italia", "polonia", "reinounido", "romenia", "suecia", "ucrania", "australia",
-                "indonesia", "novazelandia", "perth", "c", "c"};
+                "indonesia", "novazelandia", "perth"};
         String[] formas = {"Triângulo", "Quadrado", "Círculo", "Triângulo", "Círculo", "Quadrado", "Triângulo", "Círculo",
                 "Quadrado", "Círculo", "Quadrado", "Quadrado", "Círculo", "Triângulo", "Triângulo", "Círculo", "Círculo", "Círculo",
                 "Quadrado", "Quadrado", "Triângulo", "Círculo", "Triângulo", "Quadrado", "Triângulo", "Círculo", "Quadrado", "Quadrado",
                 "Triângulo", "Círculo", "Triângulo", "Quadrado", "Quadrado", "Triângulo", "Triângulo", "Quadrado", "Círculo", "Triângulo",
                 "Triângulo", "Círculo", "Triângulo", "Quadrado", "Triângulo", "Círculo", "Triângulo", "Quadrado", "Círculo", "Triângulo",
-                "Triângulo", "Quadrado", "Círculo", "?", "?"};
+                "Triângulo", "Quadrado", "Círculo"};
 
         for (int i = 0; i < territorios.length; i++) {
             baralho.add(new Carta(territorios[i], formas[i]));
@@ -46,6 +46,11 @@ public class Baralho {
 
     static void addBaralho(Carta carta) {
         baralho.add(carta);
+    }
+
+    static void addCoringa() {
+        baralho.add(new Carta("c", "?"));
+        baralho.add(new Carta("c", "?"));
     }
 
     int size() {
