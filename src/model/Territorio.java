@@ -5,10 +5,8 @@ class Territorio {
 	int idJogadorDono;
 	int qtdExercito;
 	
-	Territorio(String nome, int id_jogador_dono, int qtd){
+	Territorio(String nome){
 		this.nome = nome;
-		this.idJogadorDono = id_jogador_dono;
-		this.qtdExercito = qtd;
 	}
 
 	String getNome() {

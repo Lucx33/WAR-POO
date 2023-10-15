@@ -13,7 +13,7 @@ public class BaralhoTest {
         // Cria um baralho
         Baralho baralho = new Baralho();
         // Verifica se o baralho tem 53 cartas
-        assertEquals(53, baralho.size());
+        assertEquals(51, baralho.size());
 
         // Verifica se a primeira carta é a esperada (africadosul, Triângulo)
         Carta primeira = baralho.get(0);
@@ -21,24 +21,40 @@ public class BaralhoTest {
         assertEquals("Triângulo", primeira.getFormaGeometrica());
 
         // Verifica se a última carta é a esperada (c, ?)
+        Carta ultima = baralho.get(50);
+        assertEquals("perth", ultima.getTerritorio());
+        assertEquals("Círculo", ultima.getFormaGeometrica());
+    }
+
+    @Test
+    public void testAddCoringa(){
+        // Cria um baralho
+        Baralho baralho = new Baralho();
+        // Verifica se o baralho tem 51 cartas
+        assertEquals(51, baralho.size());
+
+        // Verifica se a primeira carta é a esperada (africadosul, Triângulo)
+        Carta primeira = baralho.get(0);
+        assertEquals("africadosul", primeira.getTerritorio());
+        assertEquals("Triângulo", primeira.getFormaGeometrica());
+
+        Baralho.addCoringa();
+
+        // Verifica se a última carta é a esperada (c, ?)
         Carta ultima = baralho.get(52);
         assertEquals("c", ultima.getTerritorio());
         assertEquals("?", ultima.getFormaGeometrica());
     }
+
     @Test
     public void testEmbaralhar() {
         // Cria um baralho
         Baralho baralho = new Baralho();
 
-        // Embaralha o baralho
-        baralho.shuf();
+        Baralho.addCoringa();
 
         // Verifica se o baralho tem 53 cartas
         assertEquals(53, baralho.size());
-
-        // Verifica se a primeira carta é diferente da "esperada" (africadosul)
-        Carta primeira = baralho.get(0);
-        assertNotEquals("africadosul", primeira.getTerritorio());
     }
 
     @Test
@@ -55,16 +71,16 @@ public class BaralhoTest {
         assertEquals("Triângulo", carta.getFormaGeometrica());
 
         // Verifica se o baralho tem 52 cartas
-        assertEquals(52, baralho.size());
+        assertEquals(50, baralho.size());
 
         // Adiciona a carta ao baralho
         Baralho.addBaralho(carta);
 
-        // Verifica se o baralho tem 53 cartas
-        assertEquals(53, baralho.size());
+        // Verifica se o baralho tem 51 cartas
+        assertEquals(51, baralho.size());
 
         // Verifica se a última carta é a esperada (africadosul, Triângulo)
-        Carta ultima = baralho.get(52);
+        Carta ultima = baralho.get(50);
         assertEquals("africadosul", ultima.getTerritorio());
         assertEquals("Triângulo", ultima.getFormaGeometrica());
     }

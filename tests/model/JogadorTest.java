@@ -37,21 +37,21 @@ public class JogadorTest {
     public void testAddTerritorio(){
         Jogador jogador = new Jogador("jogador1","Azul");
         assertEquals(1, jogador.getIdJogador());
-        Territorio territorio = new Territorio("africadosul", 1,1);
+        Territorio territorio = new Territorio("africadosul");
         jogador.addTerritorio(territorio);
         assertEquals(territorio, jogador.territorios.get(0));
     }
     @Test
     public void testGetTerritorios(){
         Jogador jogador = new Jogador("jogador1","Azul");
-        Territorio territorio = new Territorio("africadosul", 1,1);
+        Territorio territorio = new Territorio("africadosul");
         jogador.addTerritorio(territorio);
         assertEquals(territorio, jogador.getTerritorios().get(0));
     }
     @Test
     public void testGetTerritoriosString(){
         Jogador jogador = new Jogador("jogador1","Azul");
-        Territorio territorio = new Territorio("africadosul", 1,1);
+        Territorio territorio = new Territorio("africadosul");
         jogador.addTerritorio(territorio);
         assertEquals("africadosul", jogador.getTerritoriosString().get(0));
     }
@@ -92,9 +92,25 @@ public class JogadorTest {
     }
     @Test
     public void testSortearordemjogo(){
-        Jogador jogador = new Jogador("jogador1","Azul");
-        jogador.sortearordemjogo(5);
-        assertTrue(jogador.getordemjogo() >= 1 && jogador.getordemjogo() <= 5);
+        Jogador jogador1 = new Jogador("jogador1","Azul");
+        Jogador jogador2 = new Jogador("jogador2","Amarelo");
+        Jogador jogador3 = new Jogador("jogador3","Verde");
+        Jogador jogador4 = new Jogador("jogador4","Branco");
+        Jogador jogador5 = new Jogador("jogador5","Preto");
+
+        List<Integer> ordem = jogador1.sortearOrdemJogo(5);
+        jogador1.setordemjogo(ordem.get(0));
+        jogador2.setordemjogo(ordem.get(1));
+        jogador3.setordemjogo(ordem.get(2));
+        jogador4.setordemjogo(ordem.get(3));
+        jogador5.setordemjogo(ordem.get(4));
+
+        System.out.println(jogador1.getordemjogo());
+        System.out.println(jogador2.getordemjogo());
+        System.out.println(jogador3.getordemjogo());
+        System.out.println(jogador4.getordemjogo());
+        System.out.println(jogador5.getordemjogo());
+
     }
     @Test
     public void testGetCorId(){

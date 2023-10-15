@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -68,9 +69,13 @@ class Jogador {
         return territoriosString;
     }
 
-    void sortearordemjogo(int n_jogadores) {
-        Random random = new Random();
-        this.ordemjogo = random.nextInt(n_jogadores) + 1;
+    List<Integer> sortearOrdemJogo(int n_jogadores) {
+        List<Integer> order = new ArrayList<>();
+        for (int i = 1; i <= n_jogadores; i++) {
+            order.add(i);
+        }
+        Collections.shuffle(order);
+        return order;
     }
 
     int getCorId(Jogador jogador){
@@ -105,4 +110,17 @@ class Jogador {
     void setCartas(List<Carta> cartas) {
         this.cartas = cartas;
     }
+
+    void setExercitosIni() {
+        for(this.cartas.size(); !this.cartas.isEmpty(); this.cartas.remove(0)){
+            Tabuleiro.buscaTerritorio(this.cartas.get(0).getTerritorio()).setQtdExercito(1);
+            Baralho.addBaralho(this.cartas.get(0));
+        }
+    }
+
+
+    void setordemjogo(int ordemjogo) {
+        this.ordemjogo = ordemjogo;
+    }
+
 }

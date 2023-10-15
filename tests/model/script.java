@@ -6,6 +6,7 @@ import org.junit.runners.*;
 BaralhoTest.class,
 CartaTest.class,
 JogadorTest.class,
-DadoTest.class
+DadoTest.class,
+TabuleiroTest.class,
 })
 public class script {}

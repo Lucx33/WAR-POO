@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ApiModel {
-    public void setGame(int qntPlayers) {
+    public static void setGame(int qntPlayers) {
         // Cria o baralho e embaralha
         Baralho baralho = new Baralho();
         baralho.shuf();
@@ -25,7 +25,7 @@ public class ApiModel {
             jogadoresList.add(jogador);
             jogador.setObjetivo(objetivos.get(i));
             jogador.setCartas(Baralho.distribuiCarta(qntPlayers));
-            setExercitosIni(jogador);
+            jogador.setExercitosIni();
         }
     }
 
@@ -33,35 +33,11 @@ public class ApiModel {
 
     }
 
-    void setExercitosIni(Jogador jogador) {
-        for(jogador.cartas.size(); !jogador.cartas.isEmpty(); jogador.cartas.remove(0)){
-            buscaTerritorio(jogador.cartas.get(0).getTerritorio()).setQtdExercito(1);
-            Baralho.addBaralho(jogador.cartas.get(0));
-        }
-    }
 
     public void validaMovimento(){
 
     }
 
-    static Territorio buscaTerritorio(String target) {
-        for (Territorio territorio : tabuleiro.territorios) {
-            if (territorio.getNome().equals(target)) {
-                return territorio;
-            }
-        }
-        return null;
-    }
 
-    public void turnoJogador(){
-        // Recebe os exercitos
-        recebeExercito();
-
-        // Ataque
-        validaAtaque();
-
-        // Movimento
-        validaMovimento();
-    }
 
 }
