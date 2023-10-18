@@ -6,8 +6,10 @@ import java.util.List;
 
 public class Baralho {
     static List<Carta> baralho;
+    static int qtdTroca;
 
     public Baralho() {
+        qtdTroca = 4;
         baralho = new ArrayList<>();
         String[] territorios = {"africadosul", "angola", "argelia", "egito", "nigeria", "somalia", "alasca", "calgary",
                 "california", "groelandia", "mexico", "novayork", "quebec", "texas", "vancouver", "arabiasaudita", "bangladesh", "cazaquistao",
@@ -59,5 +61,9 @@ public class Baralho {
 
     Carta get(int i) {
         return baralho.get(i);
+    }
+
+    static void addQtdTroca(int i){
+        qtdTroca += i;
     }
 }
