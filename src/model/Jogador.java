@@ -159,13 +159,16 @@ class Jogador {
 		this.cartas = cartas;
 	}
 
-	void setExercitosIni() {
-		for (this.cartas.size(); !this.cartas.isEmpty(); this.cartas.remove(0)) {
-			this.addTerritorio(Tabuleiro.buscaTerritorio(this.cartas.get(0).getTerritorio()));
-			Tabuleiro.buscaTerritorio(this.cartas.get(0).getTerritorio()).setQtdExercito(1);
-			Baralho.addBaralho(this.cartas.get(0));
+	void setExercitosIni(Baralho baralho) {
+		while (!this.cartas.isEmpty()) {
+			Carta carta = this.cartas.get(0);
+			this.addTerritorio(Tabuleiro.buscaTerritorio(carta.getTerritorio()));
+			Tabuleiro.buscaTerritorio(carta.getTerritorio()).setQtdExercito(1);
+			baralho.addBaralho(carta);
+			this.cartas.remove(0);
 		}
 	}
+
 
 	void setordemjogo(int ordemjogo) {
 		this.ordemjogo = ordemjogo;
@@ -183,5 +186,9 @@ class Jogador {
             this.addExercitos(temp);
         };
     }
+
+
+
+
 
 }

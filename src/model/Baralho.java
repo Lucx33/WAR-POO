@@ -5,10 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class Baralho {
-    static List<Carta> baralho;
+    List<Carta> baralho;
     static int qtdTroca;
 
-    public Baralho() {
+    Baralho(){
+    }
+
+    Baralho criaBaralho() {
         qtdTroca = 4;
         baralho = new ArrayList<>();
         String[] territorios = {"africadosul", "angola", "argelia", "egito", "nigeria", "somalia", "alasca", "calgary",
@@ -27,32 +30,35 @@ public class Baralho {
         for (int i = 0; i < territorios.length; i++) {
             baralho.add(new Carta(territorios[i], formas[i]));
         }
+        return this;
     }
 
-    static List<Carta> distribuiCarta(int qtdPlayers){
+    List<Carta> distribuiCarta(int qtdPlayers){
         List<Carta> cartasJogador = new ArrayList<>();
-        int qtdCartas = baralho.size()/qtdPlayers;
+        int qtdCartas = 51/qtdPlayers;
         for(int i = 0; i < qtdCartas; i++){
             cartasJogador.add(comprarCarta());
         }
         return cartasJogador;
     }
 
+
+
     void shuf(){
         Collections.shuffle(baralho);
     }
 
-    static Carta comprarCarta() {
-        return baralho.remove(0);
+    Carta comprarCarta() {
+        return this.baralho.remove(0);
     }
 
-    static void addBaralho(Carta carta) {
-        baralho.add(carta);
+    void addBaralho(Carta carta) {
+        this.baralho.add(carta);
     }
 
-    static void addCoringa() {
-        baralho.add(new Carta("c", "?"));
-        baralho.add(new Carta("c", "?"));
+    void addCoringa() {
+        this.baralho.add(new Carta("c", "?"));
+        this.baralho.add(new Carta("c", "?"));
     }
 
     int size() {
@@ -65,5 +71,11 @@ public class Baralho {
 
     static void addQtdTroca(int i){
         qtdTroca += i;
+    }
+
+    void imprimeBaralho(){
+        for (Carta carta : baralho) {
+            System.out.println(carta.getTerritorio() + " " + carta.getFormaGeometrica());
+        }
     }
 }

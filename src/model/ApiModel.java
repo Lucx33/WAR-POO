@@ -4,33 +4,65 @@ import java.util.Collections;
 import java.util.List;
 
 public class ApiModel {
-    public static void setGame(int qntPlayers) {
-        // Cria o baralho e embaralha
-        Baralho baralho = new Baralho();
-        baralho.shuf();
 
-        // Cria os objetivos e embaralha
-        List<Objetivo> objetivos = Objetivo.criarObjetivos();
-        Collections.shuffle(objetivos);
+    private static ApiModel ini=null;
 
-        // Cria o tabuleiro
-        Tabuleiro tabuleiro = new Tabuleiro();
+    Baralho baralho;
+    Tabuleiro tabuleiro;
 
-        // Cria os jogadoresList
-        List<Jogador> jogadoresList = new ArrayList<>();
+    List<Objetivo> objetivos;
+    List<Jogador> jogadoresList;
 
-        // Cria os jogadoresList e distribui os objetivos e cartas (terrtórios iniciais)
-        for(int i = 0; i < qntPlayers; i++){
-            Jogador jogador = new Jogador("Jogador " + i, "Cor " + i);
-            jogadoresList.add(jogador);
+    Dado dado;
+
+
+    private ApiModel(){
+        this.baralho = new Baralho();
+        this.tabuleiro = new Tabuleiro();
+        this.objetivos = new ArrayList<>();
+        this.jogadoresList = new ArrayList<>();
+        this.dado = new Dado();
+    }
+
+    public static ApiModel getInstance(){
+        if(ini==null){
+            ini = new ApiModel();
+        }
+        return ini;
+    }
+
+
+    public void setGame(List<String>players, List<String>cores){
+        this.baralho.criaBaralho();
+        this.objetivos = Objetivo.criarObjetivos();
+        this.tabuleiro.criaTabuleiro();
+
+        int resto = baralho.size() % players.size();
+        for (int i = 0; i < players.size(); i++) {
+            Jogador jogador = new Jogador(players.get(i), cores.get(i));
             jogador.setObjetivo(objetivos.get(i));
-            jogador.setCartas(Baralho.distribuiCarta(qntPlayers));
-            jogador.setExercitosIni();
+            jogador.setCartas(baralho.distribuiCarta(players.size()));
+            if(resto > 0){
+                jogador.addCarta(baralho.comprarCarta());
+                resto--;
+            }
+            jogador.setExercitosIni(baralho);
+            this.jogadoresList.add(jogador);
         }
     }
 
-    public void validaAtaque(){
-
+    public void validaAtaque(String nome1, String nome2){
+        Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
+        Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
+        if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
+            System.out.println("Territorios do mesmo jogador");
+        }
+        else if(this.tabuleiro.fazFronteira(atacante.nome, defensor.nome)){
+            Territorio.ataque(atacante, defensor);
+        }
+        else{
+            System.out.println("Territorios não fazem fronteira");
+        }
     }
 
 

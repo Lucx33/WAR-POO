@@ -2,6 +2,8 @@ package model;
 
 import java.util.Random;
 
+import static java.util.Arrays.sort;
+
 class Dado {
     Random random;
 
@@ -21,6 +23,8 @@ class Dado {
             resultadosAtaque[i] = rolar();
         }
 
+        sort(resultadosAtaque);
+
         return resultadosAtaque;
     }
 
@@ -31,6 +35,8 @@ class Dado {
         for (int i = 0; i < numDados; i++) {
             resultadosDefesa[i] = rolar();
         }
+
+        sort(resultadosDefesa);
 
         return resultadosDefesa;
     }

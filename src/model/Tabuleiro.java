@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Tabuleiro {
+class Tabuleiro {
 
     Map<String, List<String>> fronteiras = new HashMap<>();
     static List <Continente> continentes = new ArrayList<>();
 
+    Tabuleiro(){
 
-    public Tabuleiro() {
+    }
+
+    Tabuleiro criaTabuleiro() {
         String[] nomesPaises = {"africadosul", "angola", "argelia", "egito", "nigeria", "somalia", "alasca", "calgary",
                 "california", "groelandia", "mexico", "novayork", "quebec", "texas", "vancouver", "arabiasaudita", "bangladesh", "cazaquistao",
                 "china", "coreiadonorte","coreiadosul", "estonia", "india", "ira", "iraque", "japao", "jordania", "letonia",
@@ -37,9 +40,10 @@ public class Tabuleiro {
         }
 
         initFronteiras();
+        return this;
     }
 
-    private void initFronteiras() {
+    void initFronteiras() {
         // AMERICA DO SUL
         fronteiras.put("brasil", List.of("argentina", "peru", "venezuela", "nigeria"));
         fronteiras.put("argentina", List.of("brasil", "peru"));
@@ -113,5 +117,9 @@ public class Tabuleiro {
         return null;
     }
 
+    boolean fazFronteira(String territorio1, String territorio2) {
+        List<String> vizinhos = fronteiras.get(territorio1);
+        return vizinhos != null && vizinhos.contains(territorio2);
+    }
 
 }

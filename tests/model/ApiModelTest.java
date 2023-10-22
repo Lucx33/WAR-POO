@@ -56,6 +56,7 @@ public class ApiModelTest{
         System.out.println("Teste 3");
 // Cria o baralho e embaralha
         Baralho baralho = new Baralho();
+        baralho.criaBaralho();
         baralho.shuf();
 
         // Cria os objetivos e embaralha
@@ -73,8 +74,8 @@ public class ApiModelTest{
             Jogador jogador = new Jogador("Jogador " + i, "Cor " + i);
             jogadoresList.add(jogador);
             jogador.setObjetivo(objetivos.get(i));
-            jogador.setCartas(Baralho.distribuiCarta(5));
-            jogador.setExercitosIni();
+            jogador.setCartas(baralho.distribuiCarta(5));
+            jogador.setExercitosIni(baralho);
         }
         assertEquals(5, jogadoresList.size());
 
@@ -153,16 +154,30 @@ public class ApiModelTest{
         System.out.println("Teste 6");
         Jogador jogador = new Jogador("jogador1","Azul");
         Baralho baralho = new Baralho();
-        Baralho.addCoringa();
+        baralho.criaBaralho();
+        baralho.addCoringa();
         baralho.shuf();
 
         System.out.println("Exercitos antes da troca: " + jogador.getExercitos());
 
         for(int i = 0; i < 5; i++){
-            jogador.addCarta(Baralho.comprarCarta());
+            jogador.addCarta(baralho.comprarCarta());
             System.out.println("Carta " + (1+i) + ": " + jogador.getCartas().get(i).getTerritorio() + " | " + jogador.getCartas().get(i).getFormaGeometrica());
         }
         jogador.trocarCartas();
         System.out.println("Exercitos depois da troca: " + jogador.getExercitos());
     }
+
+    @Test
+    public void testes() {
+        ApiModel apiModel = ApiModel.getInstance();
+        apiModel.setGame(List.of("Jogador1", "Jogador2", "Jogador3","Jogador4","Jogador5"), List.of("Azul", "Amarelo", "Verde", "Branco","Preto"));
+        for (Jogador jogador : apiModel.jogadoresList) {
+            for (Territorio territorio : jogador.getTerritorios()) {
+                System.out.println(jogador.getNome() + " | " + territorio.getNome() + " | " + territorio.getQtdExercito());
+            }
+        }
+
+    }
+
 }
