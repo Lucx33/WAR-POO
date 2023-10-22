@@ -50,6 +50,11 @@ class Territorio {
 
 	}
 
+	static void movimenta(Territorio origem, Territorio destino, int qtdExercito){
+		origem.setQtdExercito(origem.getQtdExercito() - qtdExercito);
+		destino.setQtdExercito(destino.getQtdExercito() + qtdExercito);
+	}
+
 	@Override
     public String toString() {
         return  "Territorio = " + nome +

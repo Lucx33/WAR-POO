@@ -32,24 +32,48 @@ public class ApiModel {
     }
 
 
-    public void setGame(List<String>players, List<String>cores){
+    public void setGame(List<String> players, List<String> cores) {
+        // Cria o baralho e embaralha
         this.baralho.criaBaralho();
+        this.baralho.shuf();
+
+        // Cria o tabuleiro
         this.objetivos = Objetivo.criarObjetivos();
+
+        // Cria o tabuleiro
         this.tabuleiro.criaTabuleiro();
 
+        // Distribui os territórios
         int resto = baralho.size() % players.size();
+
         for (int i = 0; i < players.size(); i++) {
             Jogador jogador = new Jogador(players.get(i), cores.get(i));
             jogador.setObjetivo(objetivos.get(i));
             jogador.setCartas(baralho.distribuiCarta(players.size()));
-            if(resto > 0){
+            if (resto > 0) {
                 jogador.addCarta(baralho.comprarCarta());
                 resto--;
             }
             jogador.setExercitosIni(baralho);
             this.jogadoresList.add(jogador);
         }
+
+        // Use a função sortearOrdemJogo para obter uma ordem aleatória
+        List<Integer> ordem = Jogador.sortearOrdemJogo(players.size());
+
+        // Crie uma nova lista de jogadores com base na ordem aleatória
+        List<Jogador> jogadoresOrdenados = new ArrayList<>();
+        for (int i : ordem) {
+            jogadoresOrdenados.add(this.jogadoresList.get(i - 1));
+        }
+
+        // Atualize a lista jogadoresList para refletir a ordem aleatória
+        this.jogadoresList = jogadoresOrdenados;
+
+        // Adiciona os coringas ao baralho
+        baralho.addCoringa();
     }
+
 
     public void validaAtaque(String nome1, String nome2){
         Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
@@ -66,10 +90,28 @@ public class ApiModel {
     }
 
 
-    public void validaMovimento(){
+    public void validaMovimento(String nome1, String nome2, int qtdExercito) {
+        Territorio origem = Tabuleiro.buscaTerritorio(nome1);
+        Territorio destino = Tabuleiro.buscaTerritorio(nome2);
 
+        if (origem.getIdJogadorDono() == destino.getIdJogadorDono()) {
+            if(this.tabuleiro.fazFronteira(origem.nome, destino.nome)){
+                Territorio.movimenta(origem, destino, qtdExercito);
+            }
+            else{
+                System.out.println("Territorios não fazem fronteira");
+            }
+        }
+        else{
+            System.out.println("Territorios não pertencem ao mesmo jogador");
+        }
     }
 
+    public void ganhaCarta(String jogador){
+        this.jogadoresList.get(Integer.parseInt(jogador)).addCarta(baralho.comprarCarta());
+    }
 
-
+    public void turno(String jogador){
+        this.jogadoresList.get(Integer.parseInt(jogador)).receberExercitos();
+    }
 }

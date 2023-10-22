@@ -80,7 +80,7 @@ class Jogador {
 		return territoriosString;
 	}
 
-	List<Integer> sortearOrdemJogo(int n_jogadores) {
+	static List<Integer> sortearOrdemJogo(int n_jogadores) {
 		List<Integer> order = new ArrayList<>();
 		for (int i = 1; i <= n_jogadores; i++) {
 			order.add(i);
@@ -164,6 +164,7 @@ class Jogador {
 			Carta carta = this.cartas.get(0);
 			this.addTerritorio(Tabuleiro.buscaTerritorio(carta.getTerritorio()));
 			Tabuleiro.buscaTerritorio(carta.getTerritorio()).setQtdExercito(1);
+			Tabuleiro.buscaTerritorio(carta.getTerritorio()).setIdJogadorDono(this.idJogador);
 			baralho.addBaralho(carta);
 			this.cartas.remove(0);
 		}

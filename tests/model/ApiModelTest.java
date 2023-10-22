@@ -180,4 +180,16 @@ public class ApiModelTest{
 
     }
 
+    @Test
+    public void validaAtaqueTest(){
+        ApiModel apiModel = ApiModel.getInstance();
+        apiModel.setGame(List.of("Jogador1", "Jogador2", "Jogador3","Jogador4","Jogador5"), List.of("Azul", "Amarelo", "Verde", "Branco","Preto"));
+        for (Jogador jogador : apiModel.jogadoresList) {
+            for (Territorio territorio : jogador.getTerritorios()) {
+                System.out.println(jogador.getNome() + " | " + territorio.getNome() + " | " + territorio.getQtdExercito());
+            }
+        }
+        apiModel.validaAtaque("texas", "mexico");
+    }
+
 }

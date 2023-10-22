@@ -78,13 +78,15 @@ class Tabuleiro {
         fronteiras.put("siberia", List.of("russia", "cazaquistao", "alasca"));
         fronteiras.put("russia", List.of("estonia", "letonia", "cazaquistao", "siberia"));
         fronteiras.put("cazaquistao", List.of("letonia", "turquia", "russia", "siberia", "japao", "china", "mongolia"));
+        fronteiras.put("paquistao", List.of("turquia", "india", "china", "siria", "ira"));
+        fronteiras.put("siria", List.of("turquia", "arabiasaudita", "ira", "egito","paquistao"));
         fronteiras.put("arabiasaudita", List.of("jordania", "iraque", "somalia"));
         fronteiras.put("bangladesh", List.of("coreiadosul", "india", "tailandia", "indonesia"));
         fronteiras.put("china", List.of("turquia", "cazaquistao", "mongolia", "coreiadonorte", "coreiadosul", "paquistao", "india"));
         fronteiras.put("coreiadonorte", List.of("japao", "china", "coreiadosul"));
         fronteiras.put("coreiadosul", List.of("china", "coreiadonorte", "india", "bangladesh", "tailandia"));
         fronteiras.put("india", List.of("paquistao", "china", "coreiadosul", "bangladesh"));
-        fronteiras.put("ira", List.of("iraque", "siria", "paquistao"));
+        fronteiras.put("ira", List.of("paquistao", "siria", "iraque"));
         fronteiras.put("iraque", List.of("arabiasaudita", "jordania", "siria", "ira"));
         fronteiras.put("japao", List.of("cazaquistao", "mongolia", "coreiadonorte"));
         fronteiras.put("jordania", List.of("arabiasaudita", "siria", "iraque", "egito"));
@@ -121,5 +123,29 @@ class Tabuleiro {
         List<String> vizinhos = fronteiras.get(territorio1);
         return vizinhos != null && vizinhos.contains(territorio2);
     }
+
+    void imprimeTabuleiro() {
+        for (Continente continente : continentes) {
+            // Imprimir o nome do continente
+            System.out.println("Continente: " + continente.getNome());
+
+            // Imprimir os territórios deste continente
+            for (Territorio territorio : continente.getTerritorios()) {
+                System.out.println("  Território: " + territorio.getNome() + " " + territorio.getIdJogadorDono());
+
+                // Imprimir as fronteiras deste território
+                List<String> vizinhos = fronteiras.get(territorio.getNome());
+                System.out.print("    Fronteiras: ");
+                for (String vizinho : vizinhos) {
+                    System.out.print(vizinho + ", ");
+                }
+                System.out.println();  // Para mudar de linha após imprimir todos os vizinhos
+            }
+            System.out.println();  // Uma linha em branco entre continentes para melhor visualização
+        }
+    }
+
+
+
 
 }
