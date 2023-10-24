@@ -11,11 +11,11 @@ import javax.swing.*;
 public class Jogo extends JPanel {
     BufferedImage tabuleiro;
     BufferedImage oceano;
+    private DesenhaTabuleiro desenhaTabuleiro;
 
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
-            tabuleiro = ImageIO.read(new File("war_tabuleiro_mapa copy.png"));
-            oceano = resizeImage("oceano3.jpg", 1200, 700);
+            desenhaTabuleiro = new DesenhaTabuleiro("oceano3.jpg", "war_tabuleiro_mapa copy.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,32 +25,33 @@ public class Jogo extends JPanel {
         frame.setSize(1200, 700);
         frame.add(this);
         frame.setVisible(true);
-    }
 
-    BufferedImage resizeImage(String imagePath, int width, int height) throws IOException {
-        BufferedImage originalImage = ImageIO.read(new File(imagePath));
-        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage bufferedResizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = bufferedResizedImage.createGraphics();
-        g2d.drawImage(resizedImage, 0, 0, null);
-        g2d.dispose();
-        return bufferedResizedImage;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        // Obtém o contexto gráfico do JFrame
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawImage(oceano, 0, 0, null);
+        // Chame o método para desenhar o tabuleiro
+        desenhaTabuleiro.desenharFundo(g2d);
+        //desenhaTabuleiro.desenharBrasil(g2d, 360, 350);
+        desenhaTabuleiro.adicionarPais("Brasil", 375, 335);
+        desenhaTabuleiro.adicionarPais("Argentina", 353, 455);
+        desenhaTabuleiro.desenharPaises(g2d);
 
-        g2d.drawImage(tabuleiro, 100, -90, null);
-
-        // Aqui você pode adicionar o código para desenhar o tabuleiro e outros elementos do jogo
     }
 
-    public static void main(String args []) {
-        new Jogo(null, null);
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new Jogo(null, null);
+            }
+        });
     }
+
+
 
 }
