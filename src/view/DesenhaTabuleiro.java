@@ -19,6 +19,7 @@ public class DesenhaTabuleiro {
     public DesenhaTabuleiro(String backgroundImagePath1, String backgroundImagePath2) throws IOException {
         background1 = ImageIO.read(new File(backgroundImagePath1));
         background2 = ImageIO.read(new File(backgroundImagePath2));
+
         paises = new ArrayList<>();
     }
 
