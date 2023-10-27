@@ -15,6 +15,8 @@ public class ApiModel {
 
     Dado dado;
 
+    private int jogadorAtual = 0;
+
 
     private ApiModel(){
         this.baralho = new Baralho();
@@ -111,8 +113,10 @@ public class ApiModel {
         this.jogadoresList.get(Integer.parseInt(jogador)).addCarta(baralho.comprarCarta());
     }
 
-    public void turno(String jogador){
-        this.jogadoresList.get(Integer.parseInt(jogador)).receberExercitos();
+    public void turno(Integer jogador){
+        Jogador temp = this.jogadoresList.get(jogador);
+        temp.receberExercitos();
+        System.out.println("Jogador: " + temp.getNome() + " | Cor: " + temp.getCor() + " | Ordem de Jogada: " + temp.getExercitos());
     }
 
     public void printGameState() {
@@ -147,6 +151,14 @@ public class ApiModel {
             }
         }
         return new ArrayList<>();
+    }
+
+    public int getJogadorAtual() {
+        return jogadorAtual;
+    }
+
+    public void proximoTurno() {
+        jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
     }
 
 

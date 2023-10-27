@@ -142,6 +142,7 @@ public class Jogo extends JPanel {
     }
 
 
-
-
+    public void atualizaJogadorAtual(int jogadorAtual) {
+        
+    }
 }

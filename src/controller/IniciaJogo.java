@@ -5,12 +5,11 @@ import view.IniciaInterface;
 import view.Jogo;
 import view.PlayersInfo;
 
-public class IniciaJogo implements ObserverSetPlayersInfo {
+public class IniciaJogo implements ObserverSetPlayersInfo, ObserverTurno {
     static ApiModel partida;
-    IniciaInterface interfaceJogo;
+    static IniciaInterface interfaceJogo;
     static PlayersInfo playersInfo;
-
-    Jogo jogo;
+    static Jogo telaJogo;
     IniciaJogo(){
         // Cria uma instancia do PlayersInfo
         playersInfo = new PlayersInfo();
@@ -30,17 +29,25 @@ public class IniciaJogo implements ObserverSetPlayersInfo {
     }
 
     @Override
-    public void update() {
+    public void updateInfo() {
         System.out.println("IniciaJogo: update");
         List<String> playerNames = playersInfo.getNames();
         List<String> playerColors = playersInfo.getColors();
         partida.setGame(playerNames, playerColors);
-        jogo = new Jogo(playerNames, playerColors);
+        telaJogo = new Jogo(playerNames, playerColors);
         for (String player : playerNames) {
-            jogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
+            telaJogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
         }
-        jogo.repaint();
+        telaJogo.repaint();
     }
+
+    @Override
+    public void updateTurno(){
+        partida.turno(partida.getJogadorAtual());
+        partida.proximoTurno();
+        telaJogo.atualizaJogadorAtual(partida.getJogadorAtual()); // Assumindo que você adicionará este método na tela do jogo
+    }
+
 
 
 }

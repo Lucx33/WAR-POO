@@ -38,7 +38,7 @@ public class PlayersInfo {
 
     protected void notifyObservers() {
         for (ObserverSetPlayersInfo observer : observers) {
-            observer.update();
+            observer.updateInfo();
         }
     }
 
