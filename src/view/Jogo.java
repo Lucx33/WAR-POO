@@ -15,6 +15,9 @@ public class Jogo extends JPanel {
     BufferedImage oceano;
     private DesenhaTabuleiro desenhaTabuleiro;
 
+    private Pais ultimoPaisClicado = null;
+    private String ultimaCor = null;
+
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
             desenhaTabuleiro = new DesenhaTabuleiro("oceano3.jpg", "war_tabuleiro_mapa copy.png");
@@ -34,9 +37,11 @@ public class Jogo extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                System.out.println("Coordenadas: x = " + x + ", y = " + y);
+                Pais paisClicado = desenhaTabuleiro.getPaisClicado(x, y);
             }
         });
+
+
 
     }
 
@@ -131,11 +136,9 @@ public class Jogo extends JPanel {
 
     public void setCorDono(List<String> territorios, String Cor) {
         // Iterar por todos os territórios fornecidos
-        System.out.println("setCorDono: " + Cor);
         for (String nomeTerritorio : territorios) {
             Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
             if (pais != null) {
-                System.out.println("setCorDono: " + nomeTerritorio);
                 pais.setCor(Cor);
             }
         }
@@ -143,6 +146,6 @@ public class Jogo extends JPanel {
 
 
     public void atualizaJogadorAtual(int jogadorAtual) {
-        
+
     }
 }

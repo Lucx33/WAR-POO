@@ -114,13 +114,13 @@ class Jogador {
 		this.exercitos -= i;
 	}
 
-	public void receberExercitos() {
+	void receberExercitos() {
 		int numTerritorios = territorios.size();
 		int numExercitosRecebidos = numTerritorios / 2;
 		addExercitos(numExercitosRecebidos);
 	}
 
-	public void posicionarExercitos(Territorio territorio, int numExercitos) {
+	void posicionarExercitos(Territorio territorio, int numExercitos) {
 		if (territorios.contains(territorio)) {
 			if (numExercitos <= getExercitos()) {
 				this.addExercitos(numExercitos);
@@ -143,12 +143,12 @@ class Jogador {
 		continentes.add(continente);
 	}
 	
-	public boolean possuiContinente(Continente continente) {
+	boolean possuiContinente(Continente continente) {
         List<Territorio> territoriosDoContinente = continente.getTerritorios();
         return territorios.containsAll(territoriosDoContinente);
     }
 
-    public void receberExercitosPorContinente(Continente continente) {
+    void receberExercitosPorContinente(Continente continente) {
         if (possuiContinente(continente)) {
             int exercitosPorContinente = continente.getBonusExercitos(continente.getNome());
             addExercitos(exercitosPorContinente);

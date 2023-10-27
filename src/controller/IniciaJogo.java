@@ -30,7 +30,6 @@ public class IniciaJogo implements ObserverSetPlayersInfo, ObserverTurno {
 
     @Override
     public void updateInfo() {
-        System.out.println("IniciaJogo: update");
         List<String> playerNames = playersInfo.getNames();
         List<String> playerColors = playersInfo.getColors();
         partida.setGame(playerNames, playerColors);

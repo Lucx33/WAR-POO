@@ -74,6 +74,7 @@ public class ApiModel {
 
         // Adiciona os coringas ao baralho
         baralho.addCoringa();
+        this.turno(0);
     }
 
 
@@ -116,7 +117,7 @@ public class ApiModel {
     public void turno(Integer jogador){
         Jogador temp = this.jogadoresList.get(jogador);
         temp.receberExercitos();
-        System.out.println("Jogador: " + temp.getNome() + " | Cor: " + temp.getCor() + " | Ordem de Jogada: " + temp.getExercitos());
+        System.out.println("Jogador: " + temp.getNome() + " | Cor: " + temp.getCor() + " | Exercitos: " + temp.getExercitos());
     }
 
     public void printGameState() {

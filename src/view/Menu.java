@@ -116,11 +116,6 @@ public class Menu extends JFrame {
                 playerColors.add((String) playerColorComboBoxes[i].getSelectedItem());
             }
 
-            // Agora você pode usar as listas playerNames e playerColors para configurar o jogo.
-            // Usar para instanciar novos jogadores
-            for (int i = 0; i < selectedPlayers; i++) {
-                System.out.println("Jogador " + (i + 1) + ": Nome = " + playerNames.get(i) + ", Cor = " + playerColors.get(i));
-            }
             // Feche a janela de diálogo do menu
             dispose();
 
