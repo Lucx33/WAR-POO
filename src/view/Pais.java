@@ -9,7 +9,7 @@ class Pais {
     static final int RAIO = 30;
     Shape circulo;
     int tropa = 0;
-    int corDono = 0;
+    Color corDono;
 
     Pais(String nome, int x, int y) {
         this.nome = nome;
@@ -17,6 +17,7 @@ class Pais {
         this.y = y;
         this.tropa = 1;
         this.circulo = new Ellipse2D.Double(x - (RAIO / 2), y -(RAIO / 2), RAIO, RAIO);
+        this.corDono = Color.WHITE;
     }
 
     void desenhar(Graphics2D g2d) {
@@ -29,15 +30,20 @@ class Pais {
             drawOutlinedText(g2d, nome, x - 4 * nome.length(), y -20);
         }
 
-        // For debugging purposes: draw the circle
-        g2d.setColor(Color.BLACK); // Black color
+        // Fill the circle with its color
+        g2d.setColor(corDono);
         g2d.fill(circulo);
-        g2d.draw(circulo);
+
+        // Set the color for the circle's outline
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(3)); // Set the outline thickness
+        g2d.draw(circulo); // Draw the circle's outline
 
         g2d.setColor(Color.WHITE); // Text color
         g2d.setFont(new Font("Arial", Font.BOLD, 12)); // Font and size
         drawOutlinedText(g2d, String.valueOf(tropa), x - 4 , y + 4); // Adjust as necessary
     }
+
 
     // Helper method for drawing outlined text
     private void drawOutlinedText(Graphics2D g2d, String text, int x, int y) {
@@ -54,5 +60,28 @@ class Pais {
 
     boolean contains(int x, int y) {
         return circulo.contains(x, y);
+    }
+
+    void setCor(String cor) {
+        switch(cor.toLowerCase()) {
+            case "vermelho":
+                this.corDono = Color.RED;
+                break;
+            case "azul":
+                this.corDono = Color.BLUE;
+                break;
+            case "verde":
+                this.corDono = Color.GREEN;
+                break;
+            case "amarelo":
+                this.corDono = Color.YELLOW;
+                break;
+            case "preto":
+                this.corDono = Color.BLACK;
+                break;
+            case "branco":
+                this.corDono = Color.WHITE;
+                break;
+        }
     }
 }

@@ -18,6 +18,7 @@ public class Jogo extends JPanel {
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
             desenhaTabuleiro = new DesenhaTabuleiro("oceano3.jpg", "war_tabuleiro_mapa copy.png");
+            adicionarPaises();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,8 +49,13 @@ public class Jogo extends JPanel {
 
         // Chame o método para desenhar o tabuleiro
         desenhaTabuleiro.desenharFundo(g2d);
-        //desenhaTabuleiro.desenharBrasil(g2d, 360, 350);
 
+        desenhaTabuleiro.desenharPaises(g2d);
+
+    }
+
+
+    public void adicionarPaises() {
         // America do Sul
         desenhaTabuleiro.adicionarPais("Brasil", 391, 367);
         desenhaTabuleiro.adicionarPais("Argentina", 378, 462);
@@ -113,8 +119,6 @@ public class Jogo extends JPanel {
         desenhaTabuleiro.adicionarPais("Estonia", 768, 40);
         desenhaTabuleiro.adicionarPais("Letonia", 762, 103);
 
-        desenhaTabuleiro.desenharPaises(g2d);
-
     }
 
     public static void main(String[] args) {
@@ -124,6 +128,19 @@ public class Jogo extends JPanel {
             }
         });
     }
+
+    public void setCorDono(List<String> territorios, String Cor) {
+        // Iterar por todos os territórios fornecidos
+        System.out.println("setCorDono: " + Cor);
+        for (String nomeTerritorio : territorios) {
+            Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
+            if (pais != null) {
+                System.out.println("setCorDono: " + nomeTerritorio);
+                pais.setCor(Cor);
+            }
+        }
+    }
+
 
 
 

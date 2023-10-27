@@ -114,4 +114,40 @@ public class ApiModel {
     public void turno(String jogador){
         this.jogadoresList.get(Integer.parseInt(jogador)).receberExercitos();
     }
+
+    public void printGameState() {
+        System.out.println("====== Estado do Jogo ======");
+
+        System.out.println("\n--- Jogadores ---");
+        for(Jogador jogador : jogadoresList) {
+            System.out.println("Nome: " + jogador.getNome());
+            System.out.println("Cor: " + jogador.getCor());
+            System.out.println("Objetivo: " + jogador.getObjetivo().toString());
+            System.out.println("Territórios: " + jogador.getTerritorios().toString()); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de territórios.
+            System.out.println("Cartas: " + jogador.getCartas().toString()); // Assumindo que Jogador tem um método getCartas() que retorna uma lista de cartas.
+            System.out.println("-----------------------------");
+        }
+
+        System.out.println("\n--- Tabuleiro ---");
+        System.out.println(tabuleiro.toString()); // Assumindo que Tabuleiro tem um método toString() que retorna uma representação textual do tabuleiro.
+
+        System.out.println("\n--- Baralho ---");
+        System.out.println(baralho.toString()); // Assumindo que Baralho tem um método toString() que retorna uma representação textual do baralho.
+
+        System.out.println("\n--- Dado ---");
+        System.out.println(dado.toString()); // Assumindo que Dado tem um método toString() que retorna uma representação textual do dado.
+
+        System.out.println("==============================");
+    }
+
+    public List<String> getTerritoriosPorDono(String jogadorNome) {
+        for (Jogador jogador : jogadoresList) {
+            if (jogador.getNome().equals(jogadorNome)) {
+                return jogador.getTerritoriosString(); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de nomes de territórios.
+            }
+        }
+        return new ArrayList<>();
+    }
+
+
 }

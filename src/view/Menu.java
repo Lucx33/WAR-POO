@@ -25,8 +25,9 @@ public class Menu extends JFrame {
     public final int ALT_DEFAULT = 700;
     private JComboBox<String> playerCountComboBox;
     private JPanel playerInfoPanel;
+    PlayersInfo info;
 
-    public Menu() {
+    public Menu(PlayersInfo playersInfo) {
         setSize(LARG_DEFAULT, ALT_DEFAULT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null); // Usando um layout null
@@ -54,7 +55,7 @@ public class Menu extends JFrame {
         newGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	openNewGameDialog();;
+                openNewGameDialog(playersInfo);;
             }
         });
 
@@ -66,8 +67,8 @@ public class Menu extends JFrame {
         });
 
     }
-    
-    void openNewGameDialog() {
+
+    void openNewGameDialog(PlayersInfo playersInfo) {
         String[] playerCountOptions = {"3 Jogadores", "4 Jogadores", "5 Jogadores", "6 Jogadores"};
         JComboBox<String> playerCountComboBox = new JComboBox<>(playerCountOptions);
         JTextField[] playerNameFields = new JTextField[6];
@@ -82,17 +83,17 @@ public class Menu extends JFrame {
             playerNameFields[i].setEnabled(false);
             playerColorComboBoxes[i].setEnabled(false);
 
-       
+
         }
-    	panel.add(new JLabel());
+        panel.add(new JLabel());
 
         for (int i = 0; i < 6; i++) {
-        	panel.add(new JLabel("Nome Jogador " + (i + 1)));
+            panel.add(new JLabel("Nome Jogador " + (i + 1)));
             panel.add(playerNameFields[i]);
             panel.add(playerColorComboBoxes[i]);
-       
+
         }
-        
+
         playerCountComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -120,13 +121,14 @@ public class Menu extends JFrame {
             for (int i = 0; i < selectedPlayers; i++) {
                 System.out.println("Jogador " + (i + 1) + ": Nome = " + playerNames.get(i) + ", Cor = " + playerColors.get(i));
             }
-         // Feche a janela de diálogo do menu
+            // Feche a janela de diálogo do menu
             dispose();
 
-            // Inicie a nova classe Jogo
-            new Jogo(playerNames, playerColors);
+            playersInfo.setPlayersInfo(playerNames, playerColors);
         }
-        
+
+
+
     }
-   
+
 }

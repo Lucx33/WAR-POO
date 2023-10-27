@@ -59,4 +59,13 @@ public class DesenhaTabuleiro {
         }
         return false;
     }
+
+    public Pais getPais(String nomeTerritorio) {
+        for (Pais pais : paises) {
+            if (pais.nome.toLowerCase().equals(nomeTerritorio)) {
+                return pais;
+            }
+        }
+        return null;
+    }
 }
