@@ -1,5 +1,4 @@
 package view;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,18 +12,35 @@ import javax.swing.*;
 public class Jogo extends JPanel {
     BufferedImage tabuleiro;
     BufferedImage oceano;
+    BufferedImage dadoAtaque1;
+    BufferedImage dadoAtaque2;
+    BufferedImage dadoAtaque3;
+    BufferedImage dadoDefesa1;
+    BufferedImage dadoDefesa2;
+    BufferedImage dadoDefesa3;
     private DesenhaTabuleiro desenhaTabuleiro;
 
     private Pais ultimoPaisClicado = null;
     private String ultimaCor = null;
 
+
+
+
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
             desenhaTabuleiro = new DesenhaTabuleiro("oceano3.jpg", "war_tabuleiro_mapa copy.png");
             adicionarPaises();
+            dadoAtaque1 = ImageIO.read(new File("dado_ataque_1.png"));
+            dadoAtaque2 = ImageIO.read(new File("dado_ataque_2.png"));
+            dadoAtaque3 = ImageIO.read(new File("dado_ataque_3.png"));
+            dadoDefesa1 = ImageIO.read(new File("dado_defesa_1.png"));
+            dadoDefesa2 = ImageIO.read(new File("dado_defesa_2.png"));
+            dadoDefesa3 = ImageIO.read(new File("dado_defesa_3.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setLayout(null);
 
         JFrame frame = new JFrame("War");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,10 +54,14 @@ public class Jogo extends JPanel {
                 int x = e.getX();
                 int y = e.getY();
                 Pais paisClicado = desenhaTabuleiro.getPaisClicado(x, y);
+                System.out.println("Clicou em: " + paisClicado.nome);
             }
         });
 
-
+        // Adicionar um botão "Finalizar Turno"
+        JButton botaoFinalizarTurno = new JButton("Finalizar Turno");
+        botaoFinalizarTurno.setBounds(120, 605, 120, 30); // Defina as coordenadas do botão
+        this.add(botaoFinalizarTurno);
 
     }
 
@@ -57,7 +77,18 @@ public class Jogo extends JPanel {
 
         desenhaTabuleiro.desenharPaises(g2d);
 
+        // Desenha os dados
+
+        desenhaTabuleiro.desenharDado(dadoAtaque1, g2d, 10, 40,Color.black);
+        desenhaTabuleiro.desenharDado(dadoAtaque2, g2d, 10, 80,Color.black);
+        desenhaTabuleiro.desenharDado(dadoAtaque3, g2d, 10, 120,Color.black);
+        desenhaTabuleiro.desenharDado(dadoDefesa1, g2d, 10, 160,Color.black);
+        desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,Color.black);
+        desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,Color.black);
+
+
     }
+
 
 
     public void adicionarPaises() {
@@ -126,13 +157,7 @@ public class Jogo extends JPanel {
 
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Jogo(null, null);
-            }
-        });
-    }
+
 
     public void setCorDono(List<String> territorios, String Cor) {
         // Iterar por todos os territórios fornecidos
@@ -147,5 +172,17 @@ public class Jogo extends JPanel {
 
     public void atualizaJogadorAtual(int jogadorAtual) {
 
+    }
+
+    public void desenharDado(BufferedImage dado, Graphics2D g2d, int x, int y,Color corBorda) {
+        // Desenhe a imagem do dado nas coordenadas (x, y)
+        g2d.drawImage(dado, x, y,null);
+
+        // Defina a cor da borda
+        g2d.setColor(corBorda);
+
+        // Desenhe a borda ao redor da imagem do dado
+        g2d.setStroke(new BasicStroke(4)); // Ajuste a largura da borda conforme necessário
+        g2d.drawRect(x, y, dado.getWidth(), dado.getHeight());
     }
 }

@@ -52,14 +52,6 @@ public class DesenhaTabuleiro {
         return null;
     }
 
-    // Método para verificar se um ponto está dentro do retângulo invisível
-    public boolean isPointInsideInvisibleRect(int x, int y) {
-        if (invisibleRect != null) {
-            return invisibleRect.contains(x, y);
-        }
-        return false;
-    }
-
     public Pais getPais(String nomeTerritorio) {
         for (Pais pais : paises) {
             if (pais.nome.toLowerCase().equals(nomeTerritorio)) {
@@ -68,4 +60,17 @@ public class DesenhaTabuleiro {
         }
         return null;
     }
+
+    public void desenharDado(BufferedImage dado, Graphics2D g2d, int x, int y,Color corBorda) {
+        // Desenhe a imagem do dado nas coordenadas (x, y)
+        g2d.drawImage(dado, x, y,null);
+
+        // Defina a cor da borda
+        g2d.setColor(corBorda);
+
+        // Desenhe a borda ao redor da imagem do dado
+        g2d.setStroke(new BasicStroke(4)); // Ajuste a largura da borda conforme necessário
+        g2d.drawRect(x, y, dado.getWidth(), dado.getHeight());
+    }
+
 }

@@ -1,9 +1,12 @@
 package model;
+
+import controller.Observer;
+import controller.Observable;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class ApiModel {
+public class ApiModel implements Observable{
 
     private static ApiModel ini=null;
 
@@ -17,8 +20,10 @@ public class ApiModel {
 
     private int jogadorAtual = 0;
 
+    private List<Observer> observers = new ArrayList<>();
 
-    private ApiModel(){
+
+    public ApiModel(){
         this.baralho = new Baralho();
         this.tabuleiro = new Tabuleiro();
         this.objetivos = new ArrayList<>();
@@ -162,5 +167,23 @@ public class ApiModel {
         jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
     }
 
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public Object get() {
+        return this;
+    }
+
+    protected void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.notify();
+        }
+    }
 
 }
