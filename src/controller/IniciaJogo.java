@@ -26,6 +26,7 @@ public class IniciaJogo implements Observer{
 
         // Adiciona o IniciaJogo como observador do PlayersInfo
         playersInfo.addObserver(this);
+
     }
 
     public static void main(String[] args) {
@@ -35,7 +36,7 @@ public class IniciaJogo implements Observer{
     public void notify(Observable arg) {
         if (arg instanceof PlayersInfo) {
             updateInfo();
-        } else if (arg instanceof Turno) {
+        } else if (arg instanceof Jogo) {
             updateTurno();
         }
     }
@@ -46,6 +47,8 @@ public class IniciaJogo implements Observer{
         List<String> playerColors = playersInfo.getColors();
         partida.setGame(playerNames, playerColors);
         telaJogo = new Jogo(playerNames, playerColors);
+        telaJogo.addObserver(this);
+
         int qtd_jogadores = 0;
         for (String player : playerNames) {
             qtd_jogadores++;
@@ -55,6 +58,7 @@ public class IniciaJogo implements Observer{
     }
 
     public void updateTurno(){
+        System.out.println("Turno do jogador: ");
         partida.turno(partida.getJogadorAtual());
         partida.proximoTurno();
         telaJogo.atualizaJogadorAtual(partida.getJogadorAtual()); // Assumindo que você adicionará este método na tela do jogo

@@ -2,14 +2,19 @@ package view;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import controller.Observable;
+import controller.Observer;
 
-public class Jogo extends JPanel {
+public class Jogo extends JPanel implements Observable{
     BufferedImage tabuleiro;
     BufferedImage oceano;
     BufferedImage dadoAtaque1;
@@ -23,8 +28,7 @@ public class Jogo extends JPanel {
     private Pais ultimoPaisClicado = null;
     private String ultimaCor = null;
 
-
-
+    private List<Observer> observers = new ArrayList<>();
 
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
@@ -62,6 +66,16 @@ public class Jogo extends JPanel {
         JButton botaoFinalizarTurno = new JButton("Finalizar Turno");
         botaoFinalizarTurno.setBounds(120, 605, 120, 30); // Defina as coordenadas do botão
         this.add(botaoFinalizarTurno);
+
+        // Adicionar um ActionListener para o botão "Finalizar Turno"
+        botaoFinalizarTurno.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                notifyObservers();
+            }
+        });
+
+
 
     }
 
@@ -184,5 +198,24 @@ public class Jogo extends JPanel {
         // Desenhe a borda ao redor da imagem do dado
         g2d.setStroke(new BasicStroke(4)); // Ajuste a largura da borda conforme necessário
         g2d.drawRect(x, y, dado.getWidth(), dado.getHeight());
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public Object get() {
+        return this;
+    }
+
+    protected void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.notify(this);
+        }
     }
 }
