@@ -26,20 +26,20 @@ public class Jogo extends JPanel implements Observable{
     private DesenhaTabuleiro desenhaTabuleiro;
 
     private Pais ultimoPaisClicado = null;
-    private String ultimaCor = null;
+    Color cor = new Color(0, 0, 0);
 
     private List<Observer> observers = new ArrayList<>();
 
     public Jogo(List<String> playerNames, List<String> playerColors) {
         try {
-            desenhaTabuleiro = new DesenhaTabuleiro("oceano3.jpg", "war_tabuleiro_mapa copy.png");
+            desenhaTabuleiro = new DesenhaTabuleiro("src/images/war_tabuleiro_fundo.png", "src/images/war_tabuleiro_mapa copy.png");
             adicionarPaises();
-            dadoAtaque1 = ImageIO.read(new File("dado_ataque_1.png"));
-            dadoAtaque2 = ImageIO.read(new File("dado_ataque_2.png"));
-            dadoAtaque3 = ImageIO.read(new File("dado_ataque_3.png"));
-            dadoDefesa1 = ImageIO.read(new File("dado_defesa_1.png"));
-            dadoDefesa2 = ImageIO.read(new File("dado_defesa_2.png"));
-            dadoDefesa3 = ImageIO.read(new File("dado_defesa_3.png"));
+            dadoAtaque1 = ImageIO.read(new File("src/images/dado_ataque_1.png"));
+            dadoAtaque2 = ImageIO.read(new File("src/images/dado_ataque_2.png"));
+            dadoAtaque3 = ImageIO.read(new File("src/images/dado_ataque_3.png"));
+            dadoDefesa1 = ImageIO.read(new File("src/images/dado_defesa_1.png"));
+            dadoDefesa2 = ImageIO.read(new File("src/images/dado_defesa_2.png"));
+            dadoDefesa3 = ImageIO.read(new File("src/images/dado_defesa_3.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,12 +93,12 @@ public class Jogo extends JPanel implements Observable{
 
         // Desenha os dados
 
-        desenhaTabuleiro.desenharDado(dadoAtaque1, g2d, 10, 40,Color.black);
-        desenhaTabuleiro.desenharDado(dadoAtaque2, g2d, 10, 80,Color.black);
-        desenhaTabuleiro.desenharDado(dadoAtaque3, g2d, 10, 120,Color.black);
-        desenhaTabuleiro.desenharDado(dadoDefesa1, g2d, 10, 160,Color.black);
-        desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,Color.black);
-        desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,Color.black);
+        desenhaTabuleiro.desenharDado(dadoAtaque1, g2d, 10, 40, cor);
+        desenhaTabuleiro.desenharDado(dadoAtaque2, g2d, 10, 80, cor);
+        desenhaTabuleiro.desenharDado(dadoAtaque3, g2d, 10, 120,cor);
+        desenhaTabuleiro.desenharDado(dadoDefesa1, g2d, 10, 160,cor);
+        desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,cor);
+        desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,cor);
 
 
     }
@@ -184,9 +184,13 @@ public class Jogo extends JPanel implements Observable{
     }
 
 
-    public void atualizaJogadorAtual(int jogadorAtual) {
-
+    public void atualizaJogadorAtual(String corStr) {
+        Color cor = corFromString(corStr);
+        if (cor != null) {
+            this.cor = cor;
+        }
     }
+
 
     public void desenharDado(BufferedImage dado, Graphics2D g2d, int x, int y,Color corBorda) {
         // Desenhe a imagem do dado nas coordenadas (x, y)
@@ -218,4 +222,26 @@ public class Jogo extends JPanel implements Observable{
             observer.notify(this);
         }
     }
+
+    public Color corFromString(String corStr) {
+        switch (corStr) {
+            case "Vermelho":
+                return Color.RED;
+            case "Azul":
+                return Color.BLUE;
+            case "Verde":
+                return Color.GREEN;
+            case "Preto":
+                return Color.BLACK;
+            case "Branco":
+                return Color.WHITE;
+            case "Amarelo":
+                return Color.YELLOW;
+            default:
+                return null; // ou alguma cor padrão
+        }
+    }
+
+
 }
+

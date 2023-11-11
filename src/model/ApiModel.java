@@ -163,6 +163,10 @@ public class ApiModel implements Observable{
         return jogadorAtual;
     }
 
+    public String getCorJogadorAtual() {
+        return jogadoresList.get(jogadorAtual).getCor();
+    }
+
     public void proximoTurno() {
         jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
     }
@@ -185,5 +189,26 @@ public class ApiModel implements Observable{
             observer.notify();
         }
     }
+
+    public List<String> getNomesJogadores() {
+        List<String> nomes = new ArrayList<>();
+
+        for (Jogador jogador : jogadoresList) {
+            nomes.add(jogador.getNome());
+        }
+
+        return nomes;
+    }
+
+    public List<String> getCoresJogadores() {
+        List<String> cores = new ArrayList<>();
+
+        for (Jogador jogador : jogadoresList) {
+            cores.add(jogador.getCor());
+        }
+
+        return cores;
+    }
+
 
 }

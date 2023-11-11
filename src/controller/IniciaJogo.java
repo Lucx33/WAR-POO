@@ -46,7 +46,7 @@ public class IniciaJogo implements Observer{
         List<String> playerNames = playersInfo.getNames();
         List<String> playerColors = playersInfo.getColors();
         partida.setGame(playerNames, playerColors);
-        telaJogo = new Jogo(playerNames, playerColors);
+        telaJogo = new Jogo(partida.getNomesJogadores(), partida.getCoresJogadores());
         telaJogo.addObserver(this);
 
         int qtd_jogadores = 0;
@@ -54,6 +54,7 @@ public class IniciaJogo implements Observer{
             qtd_jogadores++;
             telaJogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
         }
+        telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
         telaJogo.repaint(); 
     }
 
@@ -61,7 +62,8 @@ public class IniciaJogo implements Observer{
         System.out.println("Turno do jogador: ");
         partida.turno(partida.getJogadorAtual());
         partida.proximoTurno();
-        telaJogo.atualizaJogadorAtual(partida.getJogadorAtual()); // Assumindo que você adicionará este método na tela do jogo
+        telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual()); // Assumindo que você adicionará este método na tela do jogo
+        telaJogo.repaint();
     }
 
 }
