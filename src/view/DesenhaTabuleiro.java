@@ -28,7 +28,7 @@ public class DesenhaTabuleiro {
         g2d.drawImage(background1, 0, 0, 1200, 700, null);
 
         // Desenha o Tabuleiro
-        g2d.drawImage(background2, 100, -95, null);
+        g2d.drawImage(background2, 100, -75, null);
     }
 
 
@@ -45,7 +45,7 @@ public class DesenhaTabuleiro {
 
     public Pais getPaisClicado(int x, int y) {
         for (Pais pais : paises) {
-            if (pais.contains(x, y)) {
+            if (pais.containsPais(x, y)) {
                 return pais;
             }
         }
@@ -71,6 +71,12 @@ public class DesenhaTabuleiro {
         // Desenhe a borda ao redor da imagem do dado
         g2d.setStroke(new BasicStroke(4)); // Ajuste a largura da borda conforme necessário
         g2d.drawRect(x, y, dado.getWidth(), dado.getHeight());
+    }
+
+    public void resetarCores() {
+        for (Pais pais : paises) {
+            pais.setCorTemp(Color.BLACK); // Resetar para a cor padrão
+        }
     }
 
 }

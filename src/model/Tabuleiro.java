@@ -1,5 +1,7 @@
 package model;
 
+import controller.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -8,9 +10,8 @@ import java.util.Map;
 
 class Tabuleiro {
 
-    Map<String, List<String>> fronteiras = new HashMap<>();
+    static Map<String, List<String>> fronteiras = new HashMap<>();
     static List <Continente> continentes = new ArrayList<>();
-
     Tabuleiro(){
 
     }
@@ -63,7 +64,7 @@ class Tabuleiro {
 
         // EUROPA
         fronteiras.put("reinounido", List.of("groelandia", "franca"));
-        fronteiras.put("franca", List.of("espanha", "italia", "suecia", "argelia"));
+        fronteiras.put("franca", List.of("espanha", "italia", "suecia"));
         fronteiras.put("espanha", List.of("argelia", "franca"));
         fronteiras.put("italia", List.of("franca", "argelia", "polonia", "romenia", "suecia"));
         fronteiras.put("suecia", List.of("franca", "italia", "letonia", "estonia"));
@@ -109,6 +110,7 @@ class Tabuleiro {
     }
 
     static Territorio buscaTerritorio(String nome){
+        nome = nome.toLowerCase();
         for(Continente continente : continentes){
             for(Territorio territorio : continente.getTerritorios()){
                 if(territorio.getNome().equals(nome)){
@@ -131,7 +133,7 @@ class Tabuleiro {
 
             // Imprimir os territórios deste continente
             for (Territorio territorio : continente.getTerritorios()) {
-                System.out.println("  Território: " + territorio.getNome() + " " + territorio.getIdJogadorDono());
+                System.out.println("  Território: " + territorio.getNome() + " " + territorio.getIdJogadorDono() + " " + territorio.getQtdExercito());
 
                 // Imprimir as fronteiras deste território
                 List<String> vizinhos = fronteiras.get(territorio.getNome());
@@ -145,7 +147,47 @@ class Tabuleiro {
         }
     }
 
+    public void validaAtaque(String nome1, String nome2){
+        Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
+        Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
+        if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
+            System.out.println("Territorios do mesmo jogador");
+        }
+        else if(fazFronteira(atacante.nome, defensor.nome)){
+            Territorio.ataque(atacante, defensor);
+        }
+        else{
+            System.out.println("Territorios não fazem fronteira");
+        }
+    }
 
+    public void validaMovimento(String nome1, String nome2, int qtdExercito) {
+        Territorio origem = Tabuleiro.buscaTerritorio(nome1);
+        Territorio destino = Tabuleiro.buscaTerritorio(nome2);
 
+        if (origem.getIdJogadorDono() == destino.getIdJogadorDono()) {
+            if(fazFronteira(origem.nome, destino.nome)){
+                Territorio.movimenta(origem, destino, qtdExercito);
+            }
+            else{
+                System.out.println("Territorios não fazem fronteira");
+            }
+        }
+        else{
+            System.out.println("Territorios não pertencem ao mesmo jogador");
+        }
+    }
 
+    void adicionaExercito(String nomeTerritorio, int qtdExercito) {
+        Territorio territorio = buscaTerritorio(nomeTerritorio);
+        territorio.setQtdExercito(territorio.getQtdExercito() + qtdExercito);
+    }
+
+    public List<Continente> getContinentes() {
+        return continentes;
+    }
+
+    List<String> vizinhos(String nomeTerritorio) {
+        return fronteiras.get(nomeTerritorio);
+    }
 }

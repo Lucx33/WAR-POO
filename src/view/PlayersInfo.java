@@ -39,7 +39,12 @@ public class PlayersInfo implements Observable {
 
     @Override
     public Object get() {
-        return this;
+        Object dados[]=new Object[5];
+
+        dados[0]= "NovoJogo";
+        dados[1]= names;
+        dados[2]= colors;
+        return dados;
     }
 
     void notifyObservers() {

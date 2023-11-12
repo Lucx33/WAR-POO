@@ -32,7 +32,7 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null); // Usando um layout null
 
-        JLabel background = new JLabel(new ImageIcon("menu.png"));
+        JLabel background = new JLabel(new ImageIcon("src/images/menu.png"));
         background.setBounds(0, 0, LARG_DEFAULT, ALT_DEFAULT);
         add(background);
 

@@ -1,9 +1,17 @@
 package model;
 
-class Territorio {
+import controller.Observable;
+import controller.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Territorio implements Observable {
 	String nome;
 	int idJogadorDono;
 	int qtdExercito;
+
+	private List<Observer> observers = new ArrayList<>();
 	
 	Territorio(String nome){
 		this.nome = nome;
@@ -54,8 +62,41 @@ class Territorio {
         return  "Territorio = " + nome +
                 ", ID Jogador Dono = " + idJogadorDono +
                 ", Exercitos = " + qtdExercito;
-                
+
     }
-	
-	
+
+
+	void addExercito() {
+		this.qtdExercito += 1;
+		notifyObservers();
+	}
+	void removeExercito() {
+		this.qtdExercito -= 1;
+		notifyObservers();
+	}
+
+	public void addObserver(Observer observer) {
+		observers.add(observer);
+	}
+
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public Object get() {
+		Object dados[]=new Object[5];
+		dados[0]= "AtualizaTerritorio";
+		dados[1]= this.nome;
+		dados[2]= this.idJogadorDono;
+		dados[3]= this.qtdExercito;
+		return dados;
+	}
+
+	protected void notifyObservers() {
+		for (Observer observer : observers) {
+			observer.notify(this);
+		}
+	}
+
 }

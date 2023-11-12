@@ -188,6 +188,16 @@ class Jogador {
         };
     }
 
+	void adiconaExercitoATerritorio(String territorio) {
+		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
+		territorioAtual.addExercito();
+	}
+
+	void removeExercitoATerritorio(String territorio) {
+		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
+		territorioAtual.removeExercito();
+	}
+
 
 
 

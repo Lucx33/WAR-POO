@@ -5,10 +5,12 @@ import controller.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ApiModel implements Observable{
 
     private static ApiModel ini=null;
+
 
     Baralho baralho;
     Tabuleiro tabuleiro;
@@ -19,6 +21,8 @@ public class ApiModel implements Observable{
     Dado dado;
 
     private int jogadorAtual = 0;
+
+    private int fase = 0;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -79,40 +83,16 @@ public class ApiModel implements Observable{
 
         // Adiciona os coringas ao baralho
         baralho.addCoringa();
-        this.turno(0);
     }
 
 
     public void validaAtaque(String nome1, String nome2){
-        Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
-        Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
-        if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
-            System.out.println("Territorios do mesmo jogador");
-        }
-        else if(this.tabuleiro.fazFronteira(atacante.nome, defensor.nome)){
-            Territorio.ataque(atacante, defensor);
-        }
-        else{
-            System.out.println("Territorios não fazem fronteira");
-        }
+        tabuleiro.validaAtaque(nome1, nome2);
     }
 
 
     public void validaMovimento(String nome1, String nome2, int qtdExercito) {
-        Territorio origem = Tabuleiro.buscaTerritorio(nome1);
-        Territorio destino = Tabuleiro.buscaTerritorio(nome2);
-
-        if (origem.getIdJogadorDono() == destino.getIdJogadorDono()) {
-            if(this.tabuleiro.fazFronteira(origem.nome, destino.nome)){
-                Territorio.movimenta(origem, destino, qtdExercito);
-            }
-            else{
-                System.out.println("Territorios não fazem fronteira");
-            }
-        }
-        else{
-            System.out.println("Territorios não pertencem ao mesmo jogador");
-        }
+        tabuleiro.validaMovimento(nome1, nome2, qtdExercito);
     }
 
     public void ganhaCarta(String jogador){
@@ -122,7 +102,13 @@ public class ApiModel implements Observable{
     public void turno(Integer jogador){
         Jogador temp = this.jogadoresList.get(jogador);
         temp.receberExercitos();
-        System.out.println("Jogador: " + temp.getNome() + " | Cor: " + temp.getCor() + " | Exercitos: " + temp.getExercitos());
+        notifyObservers();
+    }
+
+    public void fasePosicionamento(Integer jogador){
+        Jogador temp = this.jogadoresList.get(jogador);
+        temp.receberExercitos();
+        notifyObservers();
     }
 
     public void printGameState() {
@@ -132,20 +118,12 @@ public class ApiModel implements Observable{
         for(Jogador jogador : jogadoresList) {
             System.out.println("Nome: " + jogador.getNome());
             System.out.println("Cor: " + jogador.getCor());
+            System.out.println("Exércitos: " + jogador.getExercitos());
             System.out.println("Objetivo: " + jogador.getObjetivo().toString());
             System.out.println("Territórios: " + jogador.getTerritorios().toString()); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de territórios.
             System.out.println("Cartas: " + jogador.getCartas().toString()); // Assumindo que Jogador tem um método getCartas() que retorna uma lista de cartas.
             System.out.println("-----------------------------");
         }
-
-        System.out.println("\n--- Tabuleiro ---");
-        System.out.println(tabuleiro.toString()); // Assumindo que Tabuleiro tem um método toString() que retorna uma representação textual do tabuleiro.
-
-        System.out.println("\n--- Baralho ---");
-        System.out.println(baralho.toString()); // Assumindo que Baralho tem um método toString() que retorna uma representação textual do baralho.
-
-        System.out.println("\n--- Dado ---");
-        System.out.println(dado.toString()); // Assumindo que Dado tem um método toString() que retorna uma representação textual do dado.
 
         System.out.println("==============================");
     }
@@ -174,6 +152,9 @@ public class ApiModel implements Observable{
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
+    public void addObserverTerritorios(Observer observer) {
+        //aqui
+    }
 
     public void removeObserver(Observer observer) {
         observers.remove(observer);
@@ -181,12 +162,15 @@ public class ApiModel implements Observable{
 
     @Override
     public Object get() {
-        return this;
+        Object dados[]=new Object[5];
+        dados[0]= "AtualizaExercitos";
+        dados[1]= getExercitosAtuais();
+        return dados;
     }
 
     protected void notifyObservers() {
         for (Observer observer : observers) {
-            observer.notify();
+            observer.notify(this);
         }
     }
 
@@ -208,6 +192,34 @@ public class ApiModel implements Observable{
         }
 
         return cores;
+    }
+
+    public int getExercitosAtuais(){
+        return jogadoresList.get(jogadorAtual).getExercitos();
+    }
+
+    public void manipulaExercitos(String nome, String sinal){
+        Jogador temp = jogadoresList.get(jogadorAtual);
+        if(sinal.equals("+")) {
+            temp.adiconaExercitoATerritorio(nome);
+            temp.removeExercitos(1);
+        }
+        else {
+            temp.removeExercitoATerritorio(nome);
+            temp.addExercitos(1);
+        }
+    }
+
+    public void addObserverToAllTerritories(Observer observer) {
+        for (Continente continente : tabuleiro.getContinentes()) {
+            for (Territorio territorio : continente.getTerritorios()) {
+                territorio.addObserver(observer);
+            }
+        }
+    }
+
+    public List<String> getVizinhos(String nomeTerritorio) {
+        return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
 
 
