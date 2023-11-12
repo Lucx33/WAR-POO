@@ -5,7 +5,6 @@ import controller.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ApiModel implements Observable{
 
@@ -91,8 +90,8 @@ public class ApiModel implements Observable{
     }
 
 
-    public void validaMovimento(String nome1, String nome2, int qtdExercito) {
-        tabuleiro.validaMovimento(nome1, nome2, qtdExercito);
+    public void movimenta(String nome1, String nome2) {
+        tabuleiro.validaMovimento(nome1, nome2);
     }
 
     public void ganhaCarta(String jogador){
@@ -118,6 +117,7 @@ public class ApiModel implements Observable{
         for(Jogador jogador : jogadoresList) {
             System.out.println("Nome: " + jogador.getNome());
             System.out.println("Cor: " + jogador.getCor());
+            System.out.println("Id: " + jogador.getIdJogador());
             System.out.println("Exércitos: " + jogador.getExercitos());
             System.out.println("Objetivo: " + jogador.getObjetivo().toString());
             System.out.println("Territórios: " + jogador.getTerritorios().toString()); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de territórios.
@@ -221,6 +221,4 @@ public class ApiModel implements Observable{
     public List<String> getVizinhos(String nomeTerritorio) {
         return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
-
-
 }

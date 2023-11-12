@@ -28,6 +28,7 @@ class Territorio implements Observable {
 
 	void setIdJogadorDono(int id_jogador_dono) {
 		this.idJogadorDono = id_jogador_dono;
+		System.out.println("Territorio: " + this.nome + " dono: " + this.idJogadorDono);
 		notifyObservers();
 	}
 
@@ -41,9 +42,12 @@ class Territorio implements Observable {
 	}
 
 
-	static void movimenta(Territorio origem, Territorio destino, int qtdExercito){
-		origem.setQtdExercito(origem.getQtdExercito() - qtdExercito);
-		destino.setQtdExercito(destino.getQtdExercito() + qtdExercito);
+	static void movimenta(Territorio origem, Territorio destino){
+		if(origem.getQtdExercito() == 1) {
+			return;
+		}
+		origem.setQtdExercito(origem.getQtdExercito() - 1);
+		destino.setQtdExercito(destino.getQtdExercito() + 1);
 	}
 
 	@Override

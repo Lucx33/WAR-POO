@@ -1,14 +1,18 @@
 package model;
 
+
+import controller.Observable;
 import controller.Observer;
 
 import java.util.*;
 
 
-class Tabuleiro {
+class Tabuleiro implements Observable{
 
     static Map<String, List<String>> fronteiras = new HashMap<>();
     static List <Continente> continentes = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
+    String mudanca;
     Tabuleiro(){
 
     }
@@ -158,13 +162,13 @@ class Tabuleiro {
         }
     }
 
-    public void validaMovimento(String nome1, String nome2, int qtdExercito) {
+    public void validaMovimento(String nome1, String nome2) {
         Territorio origem = Tabuleiro.buscaTerritorio(nome1);
         Territorio destino = Tabuleiro.buscaTerritorio(nome2);
 
         if (origem.getIdJogadorDono() == destino.getIdJogadorDono()) {
             if(fazFronteira(origem.nome, destino.nome)){
-                Territorio.movimenta(origem, destino, qtdExercito);
+                Territorio.movimenta(origem, destino);
             }
             else{
                 System.out.println("Territorios não fazem fronteira");
@@ -203,10 +207,12 @@ class Tabuleiro {
         Arrays.sort(dadosDefesa);
 
         for (int i = 0; i < n; i++) {
-            if (dadosDefesa[i] >= dadosAtaque[i]) {
+            int indiceAtaque = dadosAtaque.length - 1 - i;
+            int indiceDefesa = dadosDefesa.length - 1 - i;
+
+            if (dadosDefesa[indiceDefesa] >= dadosAtaque[indiceAtaque]) {
                 buscaTerritorio(atacante.getNome()).setQtdExercito(atacante.getQtdExercito() - 1);
-            }
-            else {
+            } else {
                 buscaTerritorio(defensor.getNome()).setQtdExercito(defensor.getQtdExercito() - 1);
             }
         }
@@ -215,7 +221,33 @@ class Tabuleiro {
             defensor.setIdJogadorDono(atacante.getIdJogadorDono());
             defensor.setQtdExercito(atacante.getQtdExercito() - 1);
             atacante.setQtdExercito(1);
+            mudanca = buscaTerritorio(defensor.getNome()).getNome();
+            notifyObservers();
         }
 
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public Object get() {
+        Object dados[]=new Object[5];
+        dados[0]= "MudancaDeDono";
+        dados[1]= mudanca;
+        return null;
+    }
+
+    protected void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.notify(this);
+        }
     }
 }

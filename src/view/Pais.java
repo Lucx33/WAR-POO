@@ -2,7 +2,6 @@ package view;
 
 import java.awt.*;
 import java.awt.geom.*;
-import view.AuxTexto;
 
 class Pais {
     String nome;

@@ -14,13 +14,14 @@ public class DesenhaTabuleiro {
     private BufferedImage background1;
     private BufferedImage background2;
     List<Pais> paises;
-    private Rectangle2D.Double invisibleRect;
+    List<Botao> botoes;
 
     public DesenhaTabuleiro(String backgroundImagePath1, String backgroundImagePath2) throws IOException {
         background1 = ImageIO.read(new File(backgroundImagePath1));
         background2 = ImageIO.read(new File(backgroundImagePath2));
 
         paises = new ArrayList<>();
+        botoes = new ArrayList<>();
     }
 
     public void desenharFundo(Graphics2D g2d) {
@@ -79,4 +80,23 @@ public class DesenhaTabuleiro {
         }
     }
 
+    public void adicionarBotao(int x, int y, String text, boolean visible) {
+        Botao botao = new Botao(x, y, text, visible);
+        botoes.add(botao);
+    }
+
+    public void desenharBotoes(Graphics2D g2d) {
+        for (Botao botao : botoes) {
+            botao.desenhar(g2d);
+        }
+    }
+
+    public Botao getBotaoClicado(int x, int y) {
+        for (Botao botao : botoes) {
+            if (botao.retangulo.contains(x, y)) {
+                return botao;
+            }
+        }
+        return null;
+    }
 }

@@ -4,7 +4,6 @@ import model.ApiModel;
 import view.IniciaInterface;
 import view.Jogo;
 import view.PlayersInfo;
-import java.util.Map;
 
 public class IniciaJogo implements Observer{
     static ApiModel partida;
@@ -41,6 +40,7 @@ public class IniciaJogo implements Observer{
         obs = arg;
         lob = (Object []) obs.get();
         tipo = (String) lob[0];
+        List<String> vizinhos;
 
         switch(tipo){
             case "NovoJogo":
@@ -59,6 +59,7 @@ public class IniciaJogo implements Observer{
                 String pais = (String) lob[1];
                 String sinal = (String) lob[2];
                 partida.manipulaExercitos(pais, sinal);
+                partida.printGameState();
                 telaJogo.setExercitos(partida.getExercitosAtuais());
                 telaJogo.repaint();
                 if(partida.getExercitosAtuais() == 0){
@@ -69,7 +70,7 @@ public class IniciaJogo implements Observer{
             case "FaseAtaque":
                 String paisAtacante = (String) lob[1];
                 String paisDefensor = (String) lob[2];
-                List<String> vizinhos = partida.getVizinhos(paisAtacante);
+                vizinhos = partida.getVizinhos(paisAtacante);
 
                 if(vizinhos.contains(paisDefensor.toLowerCase())){
                     partida.validaAtaque(paisAtacante, paisDefensor);
@@ -88,6 +89,23 @@ public class IniciaJogo implements Observer{
                 telaJogo.repaint();
                 break;
 
+            case "FaseMovimento":
+                String paisOrigem = (String) lob[1];
+                String paisDestino = (String) lob[2];
+                vizinhos = partida.getVizinhos(paisOrigem);
+                if(vizinhos.contains(paisDestino.toLowerCase())){
+                    partida.movimenta(paisOrigem, paisDestino);
+                }
+                else{
+                    telaJogo.mostrarVizinhos(paisOrigem, vizinhos);
+                }
+                telaJogo.repaint();
+                break;
+            case "TrocaTurno":
+                System.out.println("Troca de turno");
+                partida.proximoTurno();
+                updateTurno();
+                break;
         }
     }
 
