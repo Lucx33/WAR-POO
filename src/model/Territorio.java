@@ -4,6 +4,7 @@ import controller.Observable;
 import controller.Observer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class Territorio implements Observable {
@@ -27,6 +28,7 @@ class Territorio implements Observable {
 
 	void setIdJogadorDono(int id_jogador_dono) {
 		this.idJogadorDono = id_jogador_dono;
+		notifyObservers();
 	}
 
 	int getQtdExercito() {
@@ -35,22 +37,9 @@ class Territorio implements Observable {
 
 	void setQtdExercito(int qtd_exercito) {
 		this.qtdExercito = qtd_exercito;
+		notifyObservers();
 	}
 
-	static void ataque(Territorio atacante, Territorio defensor){
-		Dado dado = new Dado();
-		int qtdAtaque = atacante.getQtdExercito();
-		int qtdDefesa = defensor.getQtdExercito();
-		int[] dadosAtaque = dado.DadosAtaque(qtdAtaque);
-		int[] dadosDefesa = dado.DadosDefesa(qtdDefesa);
-		dado.compararResultados(dadosAtaque, dadosDefesa);
-		if(defensor.qtdExercito == 0){
-			defensor.setIdJogadorDono(atacante.getIdJogadorDono());
-			defensor.setQtdExercito(atacante.getQtdExercito() - 1);
-			atacante.setQtdExercito(1);
-		}
-
-	}
 
 	static void movimenta(Territorio origem, Territorio destino, int qtdExercito){
 		origem.setQtdExercito(origem.getQtdExercito() - qtdExercito);

@@ -60,21 +60,5 @@ class Dado {
 
         return resultadosLancados;
     }
-    void compararResultados(int[] resultadosDefesa, int[] resultadosAtaque) {
-        int numDefesa = resultadosDefesa.length;
-        int numAtaque = resultadosAtaque.length;
-        int n = Math.min(numDefesa, numAtaque);
 
-        Arrays.sort(resultadosDefesa);
-        Arrays.sort(resultadosAtaque);
-
-        for (int i = 0; i < n; i++) {
-            if (resultadosDefesa[i] >= resultadosAtaque[i]) {
-                System.out.println("Defesa ganha!");
-            }
-            else {
-                System.out.println("Ataque ganha!");
-            }
-        }
-    }
 }

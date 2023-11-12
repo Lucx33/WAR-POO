@@ -2,10 +2,7 @@ package model;
 
 import controller.Observer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 class Tabuleiro {
@@ -154,7 +151,7 @@ class Tabuleiro {
             System.out.println("Territorios do mesmo jogador");
         }
         else if(fazFronteira(atacante.nome, defensor.nome)){
-            Territorio.ataque(atacante, defensor);
+            this.ataque(atacante, defensor);
         }
         else{
             System.out.println("Territorios não fazem fronteira");
@@ -189,5 +186,36 @@ class Tabuleiro {
 
     List<String> vizinhos(String nomeTerritorio) {
         return fronteiras.get(nomeTerritorio);
+    }
+
+    void ataque(Territorio atacante, Territorio defensor){
+        Dado dado = new Dado();
+        int qtdAtaque = atacante.getQtdExercito() - 1;
+        int qtdDefesa = defensor.getQtdExercito();
+        int[] dadosAtaque = dado.DadosAtaque(qtdAtaque);
+        int[] dadosDefesa = dado.DadosDefesa(qtdDefesa);
+
+        int numDefesa = dadosAtaque.length;
+        int numAtaque = dadosDefesa.length;
+        int n = Math.min(numDefesa, numAtaque);
+
+        Arrays.sort(dadosAtaque);
+        Arrays.sort(dadosDefesa);
+
+        for (int i = 0; i < n; i++) {
+            if (dadosDefesa[i] >= dadosAtaque[i]) {
+                buscaTerritorio(atacante.getNome()).setQtdExercito(atacante.getQtdExercito() - 1);
+            }
+            else {
+                buscaTerritorio(defensor.getNome()).setQtdExercito(defensor.getQtdExercito() - 1);
+            }
+        }
+
+        if(defensor.qtdExercito == 0){
+            defensor.setIdJogadorDono(atacante.getIdJogadorDono());
+            defensor.setQtdExercito(atacante.getQtdExercito() - 1);
+            atacante.setQtdExercito(1);
+        }
+
     }
 }

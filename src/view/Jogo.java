@@ -30,6 +30,7 @@ public class Jogo extends JPanel implements Observable{
     boolean faseMovimento = false;
 
     private Pais ultimoPaisClicado = null;
+    private Pais paisClicado = null;
     Color cor;
 
     private List<Observer> observers = new ArrayList<>();
@@ -85,8 +86,9 @@ public class Jogo extends JPanel implements Observable{
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                Pais paisClicado = desenhaTabuleiro.getPaisClicado(x, y);
+                paisClicado = desenhaTabuleiro.getPaisClicado(x, y);
 
+                // Fase de Posicionamento
                 if(fasePosicionamento){
                     if (paisClicado != null) {
                         ultimoPaisClicado = paisClicado; // Set the last clicked country
@@ -111,16 +113,30 @@ public class Jogo extends JPanel implements Observable{
                         repaint();
                     }
                 }
+
+                // Fase de Ataque
                 else if(faseAtaque){
+
+                    // Verifica se o clique foi em um país
                     if (paisClicado != null) {
-                        if(paisClicado != ultimoPaisClicado){
-                            ultimoPaisClicado = null;
+
+                        // Verifica se já existe um país selecionado
+                        if(ultimoPaisClicado == null){
+                            ultimoPaisClicado = paisClicado;
                             desenhaTabuleiro.resetarCores();
                             repaint();
                         }
-                        ultimoPaisClicado = paisClicado; // Set the last clicked country
-                        notifyObservers();
-                        repaint(); // Request to repaint the panel
+
+                        // Verifica se o país clicado é um vizinho do país selecionado
+                        else if(paisClicado != ultimoPaisClicado){
+                            notifyObservers();
+                            repaint();
+                        }
+                        else {
+                            ultimoPaisClicado = paisClicado; // Set the last clicked country
+                            notifyObservers();
+                            repaint(); // Request to repaint the panel
+                        }
                     }
                     else{
                         ultimoPaisClicado = null;
@@ -355,6 +371,7 @@ public class Jogo extends JPanel implements Observable{
 
             dados[0] = "FaseAtaque";
             dados[1] = ultimoPaisClicado.nome;
+            dados[2] = paisClicado.nome;
 
         } else if (faseMovimento) {
 

@@ -68,7 +68,15 @@ public class IniciaJogo implements Observer{
 
             case "FaseAtaque":
                 String paisAtacante = (String) lob[1];
-                telaJogo.mostrarVizinhos(paisAtacante, partida.getVizinhos(paisAtacante));
+                String paisDefensor = (String) lob[2];
+                List<String> vizinhos = partida.getVizinhos(paisAtacante);
+
+                if(vizinhos.contains(paisDefensor.toLowerCase())){
+                    partida.validaAtaque(paisAtacante, paisDefensor);
+                }
+                else{
+                    telaJogo.mostrarVizinhos(paisAtacante, vizinhos);
+                }
                 telaJogo.repaint();
                 break;
 

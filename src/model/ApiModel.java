@@ -86,8 +86,8 @@ public class ApiModel implements Observable{
     }
 
 
-    public void validaAtaque(String nome1, String nome2){
-        tabuleiro.validaAtaque(nome1, nome2);
+    public void validaAtaque(String atacante, String defensor){
+        tabuleiro.validaAtaque(atacante, defensor);
     }
 
 
