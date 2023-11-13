@@ -25,7 +25,7 @@ public class IniciaJogo implements Observer{
 
         // Cria uma instancia do jogo
         partida = ApiModel.getInstance();
-        
+
 
         // Adiciona o IniciaJogo como observador do PlayersInfo
         playersInfo.addObserver(this);
@@ -102,18 +102,18 @@ public class IniciaJogo implements Observer{
                 }
                 telaJogo.repaint();
                 break;
-            
+
             case "TrocaTurno":
                 System.out.println("Troca de turno");
                 partida.proximoTurno();
                 updateTurno();
                 break;
-                
+
             case "MudancaDeDono":
-            	System.out.println("Mudanca de Dono");
-            	int idAtacante = (int) lob[1];
-            	String nomeTerritorio = (String) lob[2];
-            	partida.trocaDono(nomeTerritorio,idAtacante);
+                System.out.println("Mudanca de Dono");
+                int idAtacante = (int) lob[1];
+                String nomeTerritorio = (String) lob[2];
+                partida.trocaDono(nomeTerritorio,idAtacante);
                 break;
         }
     }

@@ -216,7 +216,7 @@ public class Jogo extends JPanel implements Observable{
     public void setCorDono(List<String> territorios, String Cor) {
         // Iterar por todos os territórios fornecidos
         for (String nomeTerritorio : territorios) {
-            Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
+                Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
             if (pais != null) {
                 pais.setCor(corFromString(Cor));
             }

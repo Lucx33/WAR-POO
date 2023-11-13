@@ -91,13 +91,13 @@ class Jogador {
 
 	int getCorId(Jogador jogador) {
 		return switch (cor) {
-		case "Azul" -> 1;
-		case "Amarelo" -> 2;
-		case "Branco" -> 3;
-		case "Verde" -> 4;
-		case "Preto" -> 5;
-		case "Vermelho" -> 6;
-		default -> 0;
+			case "Azul" -> 1;
+			case "Amarelo" -> 2;
+			case "Branco" -> 3;
+			case "Verde" -> 4;
+			case "Preto" -> 5;
+			case "Vermelho" -> 6;
+			default -> 0;
 		};
 	}
 
@@ -131,8 +131,8 @@ class Jogador {
 				System.out.println("jogador nao tem exércitos suficientes");
 			}
 
-		} 
-		
+		}
+
 		else {
 			System.out.println("Territorio não pertence a este jogador");
 
@@ -142,19 +142,19 @@ class Jogador {
 	void addContinente(Continente continente) {
 		continentes.add(continente);
 	}
-	
-	
-	boolean possuiContinente(Continente continente) {
-        List<Territorio> territoriosDoContinente = continente.getTerritorios();
-        return territorios.containsAll(territoriosDoContinente);
-    }
 
-    void receberExercitosPorContinente(Continente continente) {
-        if (possuiContinente(continente)) {
-            int exercitosPorContinente = continente.getBonusExercitos(continente.getNome());
-            addExercitos(exercitosPorContinente);
-        }
-    }
+
+	boolean possuiContinente(Continente continente) {
+		List<Territorio> territoriosDoContinente = continente.getTerritorios();
+		return territorios.containsAll(territoriosDoContinente);
+	}
+
+	void receberExercitosPorContinente(Continente continente) {
+		if (possuiContinente(continente)) {
+			int exercitosPorContinente = continente.getBonusExercitos(continente.getNome());
+			addExercitos(exercitosPorContinente);
+		}
+	}
 
 	void setCartas(List<Carta> cartas) {
 		this.cartas = cartas;
@@ -179,15 +179,15 @@ class Jogador {
 	Objetivo getObjetivo() {
 		return objetivo;
 	}
-	
+
 	void trocarCartas(){
-        if(Carta.verificaCartas(this.cartas)){
-            System.out.println("Troca de cartas");
-            int temp = Baralho.qtdTroca;
-            Baralho.addQtdTroca(2);
-            this.addExercitos(temp);
-        };
-    }
+		if(Carta.verificaCartas(this.cartas)){
+			System.out.println("Troca de cartas");
+			int temp = Baralho.qtdTroca;
+			Baralho.addQtdTroca(2);
+			this.addExercitos(temp);
+		};
+	}
 
 	void adiconaExercitoATerritorio(String territorio) {
 		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
@@ -198,7 +198,7 @@ class Jogador {
 		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
 		territorioAtual.removeExercito();
 	}
-	
+
 	void removeTerritorio(Territorio territorio) {
 		this.territorios.remove(territorio);
 	}

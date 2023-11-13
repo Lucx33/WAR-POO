@@ -217,7 +217,7 @@ public class ApiModel implements Observable{
             }
         }
     }
-    
+
     public void addObserverToTabuleiro(Observer observer) {
         tabuleiro.addObserver(observer);
     }
@@ -225,21 +225,21 @@ public class ApiModel implements Observable{
     public List<String> getVizinhos(String nomeTerritorio) {
         return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
-    
+
     public void trocaDono(String nomeTerritorio, int idAtacante) {
-    	for(Jogador jogador : jogadoresList) {
-    		if(jogador.getTerritoriosString().contains(nomeTerritorio)) {
-    			jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
-    			System.out.println("Jogador " + jogador.getNome() + "perdeu o territorio " + nomeTerritorio);	
-    		}
-    		
-    		if(jogador.getIdJogador()== idAtacante) {
-    			jogador.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
-    			
-    		}
-    		
-    		System.out.println(jogador.getNome() + " " + idAtacante);
-    		
-    	}
+        for(Jogador jogador : jogadoresList) {
+            if(jogador.getTerritoriosString().contains(nomeTerritorio)) {
+                jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
+                System.out.println("Jogador " + jogador.getNome() + "perdeu o territorio " + nomeTerritorio);
+            }
+
+            if(jogador.getIdJogador()== idAtacante) {
+                jogador.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
+
+            }
+
+            System.out.println(jogador.getNome() + " " + idAtacante);
+
+        }
     }
 }
