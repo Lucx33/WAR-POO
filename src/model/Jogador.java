@@ -143,6 +143,7 @@ class Jogador {
 		continentes.add(continente);
 	}
 	
+	
 	boolean possuiContinente(Continente continente) {
         List<Territorio> territoriosDoContinente = continente.getTerritorios();
         return territorios.containsAll(territoriosDoContinente);
@@ -196,6 +197,10 @@ class Jogador {
 	void removeExercitoATerritorio(String territorio) {
 		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
 		territorioAtual.removeExercito();
+	}
+	
+	void removeTerritorio(Territorio territorio) {
+		this.territorios.remove(territorio);
 	}
 
 
