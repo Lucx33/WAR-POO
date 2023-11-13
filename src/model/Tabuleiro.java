@@ -13,6 +13,7 @@ class Tabuleiro implements Observable{
     static List <Continente> continentes = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
     String mudanca;
+    int nomeJogador;
     Tabuleiro(){
 
     }
@@ -65,7 +66,7 @@ class Tabuleiro implements Observable{
 
         // EUROPA
         fronteiras.put("reinounido", List.of("groelandia", "franca"));
-        fronteiras.put("franca", List.of("espanha", "italia", "suecia"));
+        fronteiras.put("franca", List.of("espanha", "italia", "suecia", "reinounido"));
         fronteiras.put("espanha", List.of("argelia", "franca"));
         fronteiras.put("italia", List.of("franca", "argelia", "polonia", "romenia", "suecia"));
         fronteiras.put("suecia", List.of("franca", "italia", "letonia", "estonia"));
@@ -81,7 +82,7 @@ class Tabuleiro implements Observable{
         fronteiras.put("russia", List.of("estonia", "letonia", "cazaquistao", "siberia"));
         fronteiras.put("cazaquistao", List.of("letonia", "turquia", "russia", "siberia", "japao", "china", "mongolia"));
         fronteiras.put("paquistao", List.of("turquia", "india", "china", "siria", "ira"));
-        fronteiras.put("siria", List.of("turquia", "arabiasaudita", "ira", "egito","paquistao"));
+        fronteiras.put("siria", List.of("turquia", "ira", "jordania", "iraque","paquistao"));
         fronteiras.put("arabiasaudita", List.of("jordania", "iraque", "somalia"));
         fronteiras.put("bangladesh", List.of("coreiadosul", "india", "tailandia", "indonesia"));
         fronteiras.put("china", List.of("turquia", "cazaquistao", "mongolia", "coreiadonorte", "coreiadosul", "paquistao", "india"));
@@ -221,6 +222,7 @@ class Tabuleiro implements Observable{
             defensor.setIdJogadorDono(atacante.getIdJogadorDono());
             defensor.setQtdExercito(atacante.getQtdExercito() - 1);
             atacante.setQtdExercito(1);
+            nomeJogador = buscaTerritorio(atacante.getNome()).getIdJogadorDono();
             mudanca = buscaTerritorio(defensor.getNome()).getNome();
             notifyObservers();
         }
@@ -241,8 +243,9 @@ class Tabuleiro implements Observable{
     public Object get() {
         Object dados[]=new Object[5];
         dados[0]= "MudancaDeDono";
-        dados[1]= mudanca;
-        return null;
+        dados[1] = nomeJogador;
+        dados[2]= mudanca;
+        return dados;
     }
 
     protected void notifyObservers() {
