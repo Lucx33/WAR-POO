@@ -98,7 +98,7 @@ public class ApiModel implements Observable{
      * @param defensor Nome do território defensor
      */
     public void validaAtaque(String atacante, String defensor){
-        tabuleiro.validaAtaque(atacante, defensor);
+        tabuleiro.validaAtaque(atacante, defensor, dado);
     }
 
 
@@ -327,8 +327,6 @@ public class ApiModel implements Observable{
     }
 
     public void trocaDono(String nomeTerritorio) {
-        System.out.println("Troca dono");
-        System.out.println("Nome: " + nomeTerritorio);
     	Jogador temp = jogadoresList.get(jogadorAtual);
 
     	for(Continente continente : tabuleiro.getContinentes()) {

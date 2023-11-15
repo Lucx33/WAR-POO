@@ -36,23 +36,26 @@ class Dado implements Observable {
         List<Integer> resultados = new ArrayList<>();
         resultados.addAll(resultadosAtaque);
         resultados.addAll(resultadosDefesa);
+
+        System.out.println("Notificando observers");
         notifyObservers();
         return resultados;
     }
 
     @Override
-    public void addObserver(Observer o) {
-        observers.add(o);
+    public void addObserver(Observer observer) {
+        observers.add(observer);
     }
 
     @Override
-    public void removeObserver(Observer o) {
-        observers.remove(o);
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
     }
 
     @Override
     public Object get() {
         Object dados[]=new Object[5];
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         dados[0]= "LancamentoDados";
         dados[1]= this.resultadosAtaque;
         dados[2]= this.resultadosDefesa;

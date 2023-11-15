@@ -520,4 +520,44 @@ public class Jogo extends JPanel implements Observable{
     public void exibeMao(Map<String, String> cartasJogadorAtual) {
         desenhaTabuleiro.setMao(cartasJogadorAtual);
     }
+
+    public void setDados(List<Integer> ataque, List<Integer> defesa) {
+        switch(ataque.size()){
+            case 1:
+                dadoAtaque1 = desenhaTabuleiro.getImagemDado(ataque.get(0), "ataque");
+                dadoAtaque2 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+                dadoAtaque3 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+                break;
+            case 2:
+                dadoAtaque1 = desenhaTabuleiro.getImagemDado(ataque.get(0), "ataque");
+                dadoAtaque2 = desenhaTabuleiro.getImagemDado(ataque.get(1), "ataque");
+                dadoAtaque3 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+                break;
+            case 3:
+                dadoAtaque1 = desenhaTabuleiro.getImagemDado(ataque.get(0), "ataque");
+                dadoAtaque2 = desenhaTabuleiro.getImagemDado(ataque.get(1), "ataque");
+                dadoAtaque3 = desenhaTabuleiro.getImagemDado(ataque.get(2), "ataque");
+                break;
+        }
+
+        switch(defesa.size()){
+            case 1:
+                dadoDefesa1 = desenhaTabuleiro.getImagemDado(defesa.get(0), "defesa");
+                dadoDefesa2 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+                dadoDefesa3 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+                break;
+            case 2:
+                dadoDefesa1 = desenhaTabuleiro.getImagemDado(defesa.get(0), "defesa");
+                dadoDefesa2 = desenhaTabuleiro.getImagemDado(defesa.get(1), "defesa");
+                dadoDefesa3 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+                break;
+            case 3:
+                dadoDefesa1 = desenhaTabuleiro.getImagemDado(defesa.get(0), "defesa");
+                dadoDefesa2 = desenhaTabuleiro.getImagemDado(defesa.get(1), "defesa");
+                dadoDefesa3 = desenhaTabuleiro.getImagemDado(defesa.get(2), "defesa");
+                break;
+        }
+
+        repaint();
+    }
 }

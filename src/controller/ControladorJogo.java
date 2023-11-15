@@ -63,6 +63,7 @@ public class ControladorJogo implements Observer{
         tipo = (String) dados[0];
 
         // Um switch para lidar com diferentes tipos de notificações.
+
         switch(tipo){
             // Cada caso no switch corresponde a um tipo específico de notificação.
             // Para cada tipo, um método 'handle' correspondente é chamado para lidar com a mudança específica.
@@ -152,8 +153,9 @@ public class ControladorJogo implements Observer{
         }
     }
 
-    private void handleLancamentoDados(List<Integer> dado, List<Integer> dado1) {
-        
+    private void handleLancamentoDados(List<Integer> ataque, List<Integer> defesa) {
+        telaJogo.setDados(ataque, defesa);
+        telaJogo.repaint();
     }
 
 

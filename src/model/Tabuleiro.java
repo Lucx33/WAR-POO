@@ -167,14 +167,14 @@ class Tabuleiro implements Observable{
         }
     }
 
-    public void validaAtaque(String nome1, String nome2){
+    public void validaAtaque(String nome1, String nome2, Dado dado){
         Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
         Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
         if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
             System.out.println("Territorios do mesmo jogador");
         }
         else if(fazFronteira(atacante.nome, defensor.nome)){
-            this.ataque(atacante, defensor);
+            this.ataque(atacante, defensor, dado);
         }
         else{
             System.out.println("Territorios não fazem fronteira");
@@ -211,8 +211,7 @@ class Tabuleiro implements Observable{
         return fronteiras.get(nomeTerritorio);
     }
 
-    void ataque(Territorio atacante, Territorio defensor){
-        Dado dado = new Dado();
+    void ataque(Territorio atacante, Territorio defensor, Dado dado){
         int qtdAtaque = Math.min(3,atacante.getQtdExercito() - 1);
         int qtdDefesa = Math.min(3,defensor.getQtdExercito());
         List<Integer> resultado = dado.lancamentoDados(qtdAtaque, qtdDefesa);
@@ -221,25 +220,14 @@ class Tabuleiro implements Observable{
 
         int n = Math.min(qtdAtaque, qtdDefesa);
 
-
-        System.out.println("Ataque: " + dadosAtaque);
-        System.out.println("Defesa: " + dadosDefesa);
-
         Collections.sort(dadosAtaque);
         Collections.sort(dadosDefesa);
 
-        System.out.println("Ataque: " + dadosAtaque);
-        System.out.println("Defesa: " + dadosDefesa);
-
         int menorTamanho = Math.min(dadosAtaque.size(), dadosDefesa.size());
-        System.out.println("Menor tamanho: " + menorTamanho);
+
         for (int i = menorTamanho; i > 0; i--) {
             int valorAtaque = dadosAtaque.get(dadosAtaque.size() - i);
             int valorDefesa = dadosDefesa.get(dadosDefesa.size() - i);
-
-            System.out.println("Iteração: " + i);
-            System.out.println("Ataque: " + valorAtaque);
-            System.out.println("Defesa: " + valorDefesa);
 
             if (valorAtaque > valorDefesa) {
                 defensor.setQtdExercito(defensor.getQtdExercito() - 1);

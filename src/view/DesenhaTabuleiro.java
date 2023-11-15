@@ -111,4 +111,16 @@ public class DesenhaTabuleiro {
     public void setMao(Map<String, String> cartas) {
         this.mao = new Mao(cartas);
     }
+
+    public BufferedImage getImagemDado(int numero, String tipo) {
+        try {
+            if(numero == -1){
+                return ImageIO.read(new File("src/images/dado_desativado.png"));
+            }
+            return ImageIO.read(new File("src/images/dado_" + tipo + "_" + numero + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
