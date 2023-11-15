@@ -13,9 +13,27 @@ class Tabuleiro implements Observable{
     static List <Continente> continentes = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
     String mudanca;
-    int nomeJogador;
     Tabuleiro(){
 
+    }
+
+    static void resetAllMovimentadosVitoria() {
+        for (Continente continente : continentes) {
+            for (Territorio territorio : continente.getTerritorios()) {
+                territorio.resetMovimentadosVitoria();
+            }
+        }
+    }
+
+    public static Continente buscaContinente(String pais) {
+        for (Continente continente : continentes) {
+            for (Territorio territorio : continente.getTerritorios()) {
+                if (territorio.getNome().equals(pais)) {
+                    return continente;
+                }
+            }
+        }
+        return null;
     }
 
     Tabuleiro criaTabuleiro() {
@@ -204,14 +222,29 @@ class Tabuleiro implements Observable{
         int n = Math.min(qtdAtaque, qtdDefesa);
 
 
+        System.out.println("Ataque: " + dadosAtaque);
+        System.out.println("Defesa: " + dadosDefesa);
+
         Collections.sort(dadosAtaque);
         Collections.sort(dadosDefesa);
 
-        for (int i = 0; i < Math.min(dadosAtaque.size(), dadosDefesa.size()); i++) {
-            if (dadosDefesa.get(i) >= dadosAtaque.get(i)) {
-                atacante.setQtdExercito(atacante.getQtdExercito() - 1);
-            } else {
+        System.out.println("Ataque: " + dadosAtaque);
+        System.out.println("Defesa: " + dadosDefesa);
+
+        int menorTamanho = Math.min(dadosAtaque.size(), dadosDefesa.size());
+        System.out.println("Menor tamanho: " + menorTamanho);
+        for (int i = menorTamanho; i > 0; i--) {
+            int valorAtaque = dadosAtaque.get(dadosAtaque.size() - i);
+            int valorDefesa = dadosDefesa.get(dadosDefesa.size() - i);
+
+            System.out.println("Iteração: " + i);
+            System.out.println("Ataque: " + valorAtaque);
+            System.out.println("Defesa: " + valorDefesa);
+
+            if (valorAtaque > valorDefesa) {
                 defensor.setQtdExercito(defensor.getQtdExercito() - 1);
+            } else {
+                atacante.setQtdExercito(atacante.getQtdExercito() - 1);
             }
         }
 
@@ -220,6 +253,7 @@ class Tabuleiro implements Observable{
             defensor.setIdJogadorDono(atacante.getIdJogadorDono());
             defensor.setQtdExercito(1); // Move um exército para o território conquistado
             atacante.setQtdExercito(atacante.getQtdExercito() - 1); // Reduz um exército do atacante
+            mudanca = defensor.getNome();
             // Atualiza os observadores sobre a mudança
             notifyObservers();
         }
@@ -239,9 +273,8 @@ class Tabuleiro implements Observable{
     @Override
     public Object get() {
         Object dados[]=new Object[5];
-        dados[0]= "MudancaDeDono";
-        dados[1] = nomeJogador;
-        dados[2]= mudanca;
+        dados[0] = "MudancaDeDono";
+        dados[1] = mudanca;
         return dados;
     }
 

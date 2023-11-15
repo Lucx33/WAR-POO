@@ -10,6 +10,7 @@ class Pais {
     Shape circulo;
     Shape trianguloCima;
     Shape trianguloBaixo;
+    Shape caixaConfirmacao;
     int tropa = 0;
     Color corDono;
 
@@ -57,6 +58,10 @@ class Pais {
     }
     boolean contaisTrianguloBaixo(int x, int y) {
         return trianguloBaixo.contains(x, y);
+    }
+
+    boolean contaisCaixaConfirmacao(int x, int y) {
+        return caixaConfirmacao.contains(x, y);
     }
 
     void setCor(Color cor) {
@@ -113,6 +118,43 @@ class Pais {
         centroY = (yPontosBaixo[0] + yPontosBaixo[1] + yPontosBaixo[2]) / 3;
 
         g2d.drawLine(centroX - lineLength / 2, centroY, centroX + lineLength / 2, centroY);
+    }
+
+    void desenharCaixaConfirmacao(Graphics2D g2d){
+        int lineLength = 8;
+        int centroX, centroY;
+
+        int tempy = y;
+        y = y + 4;
+
+
+        // Definir os pontos para o trianguloCima e Desenhar o trianguloCima
+        int[] xPontos = {x + 25, x + 45, x + 45, x + 25};
+        int[] yPontos = {y - 15, y - 15, y + 5, y + 5};
+        caixaConfirmacao = new Polygon(xPontos, yPontos, 4);
+
+        g2d.setColor(Color.GREEN);
+
+        g2d.fill(caixaConfirmacao);
+
+        g2d.setColor(Color.BLACK);
+
+        g2d.setStroke(new BasicStroke(3)); // Exemplo: Espessura do contorno de 2
+
+        // Desenhar o contorno da caixa de confirmação
+        g2d.draw(caixaConfirmacao);
+
+        centroX = (xPontos[0] + xPontos[1]) / 2;
+        centroY = (yPontos[0] + yPontos[1]) / 2;
+
+        g2d.setColor(Color.BLACK);
+        // Define the points of the check mark
+        int[] xPoints = {centroX - 5, centroX, centroX + 7};
+        int[] yPoints = {centroY + 9, centroY + 15, centroY + 1};
+
+        g2d.drawPolyline(xPoints, yPoints, 3); // Draw the check mark
+
+        y = tempy;
     }
 
     void setTropa(int tropa) {

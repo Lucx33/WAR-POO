@@ -4,26 +4,27 @@ import controller.Observer;
 import controller.Observable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ApiModel implements Observable{
 
     private static ApiModel ini=null;
 
-
     Baralho baralho;
+
     Tabuleiro tabuleiro;
-
     List<Objetivo> objetivos;
-    List<Jogador> jogadoresList;
 
+    List<Jogador> jogadoresList;
     Dado dado;
 
     private int jogadorAtual = 0;
 
     private int fase = 0;
-    boolean jaGanhou = false;
 
+    boolean jaGanhou = false;
     private List<Observer> observers = new ArrayList<>();
 
 
@@ -113,19 +114,14 @@ public class ApiModel implements Observable{
 
     /**
      * Valida e realiza um recebimento de carta
-     * @param idJogador ID do jogador que está ganhando a carta
+     * para o jogador atual
      */
-    public void ganhaCarta(int idJogador){
-
+    public void ganhaCarta(){
         // Verifica se o jogador já ganhou uma carta nesse turno
         if (!jaGanhou) {
-            for (Jogador jogador : jogadoresList) {
-                if (jogador.getIdJogador() == idJogador) {
-                    jogador.addCarta(baralho.comprarCarta());
-                    jaGanhou = true;
-                    break;
-                }
-            }
+            Jogador temp = jogadoresList.get(jogadorAtual);
+            temp.addCarta(baralho.comprarCarta());
+            jaGanhou = true;
         }
     }
 
@@ -206,6 +202,7 @@ public class ApiModel implements Observable{
     public void proximoTurno() {
         jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
         jaGanhou = false;
+        Tabuleiro.resetAllMovimentadosVitoria();
     }
 
     public void addObserver(Observer observer) {
@@ -271,6 +268,16 @@ public class ApiModel implements Observable{
 
 
 
+    public int getExercitosMovimentadosVitoria(String nomeTerritorio){
+        return Tabuleiro.buscaTerritorio(nomeTerritorio).getExercitosMovimentadosVitoria();
+    }
+
+    public int getExercitosPais(String nomeTerritorio){
+        return Tabuleiro.buscaTerritorio(nomeTerritorio).getQtdExercito();
+    }
+
+
+
     /**
      * Método para manipular os exércitos do jogador atual em um território
      * @param nome Nome do território
@@ -319,8 +326,11 @@ public class ApiModel implements Observable{
         return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
 
-    public void trocaDono(String nomeTerritorio, int idAtacante) {
+    public void trocaDono(String nomeTerritorio) {
+        System.out.println("Troca dono");
+        System.out.println("Nome: " + nomeTerritorio);
     	Jogador temp = jogadoresList.get(jogadorAtual);
+
     	for(Continente continente : tabuleiro.getContinentes()) {
     		if(continente.contemTerritorio(nomeTerritorio)){
     			
@@ -334,4 +344,30 @@ public class ApiModel implements Observable{
         }
         temp.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
     }
+
+    public Map<String, String> getCartasJogadorAtual() {
+        Jogador temp = jogadoresList.get(jogadorAtual);
+        List<String> paises = temp.getCartasString();
+        Map<String, String> cartasMap = new HashMap<>();
+
+        for (String pais : paises) {
+            String continente = Tabuleiro.buscaContinente(pais).getNomeCurto();
+            cartasMap.put(pais, continente);
+        }
+
+        return cartasMap;
+    }
+
+
+    public void movimentaVitoria(String origem, String destino) {
+        Territorio temp = Tabuleiro.buscaTerritorio(destino);
+        if (Tabuleiro.buscaTerritorio(destino).getExercitosMovimentadosVitoria() <= 3) {
+            tabuleiro.validaMovimento(origem, destino);
+            temp.addExercitoMovimentadosVitoria();
+        }
+        tabuleiro.validaMovimento(origem, destino);
+    }
+
+
+
 }

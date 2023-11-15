@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Continente {
     String nome;
+    String nomeCurto;
     List<Territorio> territorios;
     Jogador jogadorDono;  // Pode ser nulo se o continente não tiver dono
 
@@ -12,6 +13,7 @@ public class Continente {
     /* AmeSul = 2, Eur = 5, Asia = 7, AmeNor = 5, Afr = 3, Oce = 2*/
     Continente(String nome) {
         this.nome = nome;
+        this.nomeCurto = getNomeCurto(nome);
         this.territorios = new ArrayList<>();
         this.jogadorDono = null;  // Inicialmente, o continente não tem dono
     }
@@ -54,6 +56,18 @@ public class Continente {
     	        return 0;       
     	}
     }
+
+    public String getNomeCurto(String nomeContinete) {
+        return switch (nomeContinete) {
+            case "America do Norte" -> "an";
+            case "America do Sul" -> "asl";
+            case "Africa" -> "af";
+            case "Europa" -> "eu";
+            case "Asia" -> "as";
+            case "Oceania" -> "oc";
+            default -> null;
+        };
+    }
     
     public boolean contemTerritorio(String nomeTerritorio) {
         for (Territorio territorio : territorios) {
@@ -62,6 +76,10 @@ public class Continente {
             }
         }
         return false;
+    }
+
+    String getNomeCurto() {
+        return nomeCurto;
     }
    
 }

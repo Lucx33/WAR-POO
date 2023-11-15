@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class DesenhaTabuleiro {
@@ -15,6 +16,7 @@ public class DesenhaTabuleiro {
     private BufferedImage background2;
     List<Pais> paises;
     List<Botao> botoes;
+    Mao mao;
 
     public DesenhaTabuleiro(String backgroundImagePath1, String backgroundImagePath2) throws IOException {
         background1 = ImageIO.read(new File(backgroundImagePath1));
@@ -80,8 +82,8 @@ public class DesenhaTabuleiro {
         }
     }
 
-    public void adicionarBotao(int x, int y, String text, boolean visible) {
-        Botao botao = new Botao(x, y, text, visible);
+    public void adicionarBotao(int x, int y, String text, Color cor, boolean visible) {
+        Botao botao = new Botao(x, y, text, cor, visible);
         botoes.add(botao);
     }
 
@@ -98,5 +100,15 @@ public class DesenhaTabuleiro {
             }
         }
         return null;
+    }
+
+    public void desenharMao(Graphics2D g2d) {
+        if(mao != null){
+            mao.desenhar(g2d);
+        }
+    }
+
+    public void setMao(Map<String, String> cartas) {
+        this.mao = new Mao(cartas);
     }
 }

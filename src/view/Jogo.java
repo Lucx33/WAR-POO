@@ -25,9 +25,10 @@ public class Jogo extends JPanel implements Observable{
     BufferedImage dadoDefesa2;
     BufferedImage dadoDefesa3;
     private DesenhaTabuleiro desenhaTabuleiro;
+    String fase = "posicionamento";
     boolean fasePosicionamento = true;
-    boolean faseAtaque = false;
-    boolean faseMovimento = false;
+    boolean faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
+    boolean click = false;
     Botao botaoClicado = null;
     private Pais ultimoPaisClicado = null;
     private Pais paisClicado = null;
@@ -36,6 +37,7 @@ public class Jogo extends JPanel implements Observable{
     private List<Observer> observers = new ArrayList<>();
 
     String sinal;
+    int x, y;
 
     int qtd;
 
@@ -68,28 +70,14 @@ public class Jogo extends JPanel implements Observable{
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
+                x = e.getX();
+                y = e.getY();
                 paisClicado = desenhaTabuleiro.getPaisClicado(x, y);
                 botaoClicado = desenhaTabuleiro.getBotaoClicado(x, y);
 
-                // Função para tratamento de cliques
-                // Nas diferentes fases do jogo
+                click = true;
 
-                // Fase de Posicionamento
-                if(fasePosicionamento){
-                    handlePosicionamentoClick(x, y);
-                }
-
-                // Fase de Ataque
-                else if(faseAtaque){
-                    handleAtaqueClick(x, y);
-                }
-
-                // Fase de Movimento
-                else if(faseMovimento){
-                    handleMovimentoClick(x, y);
-                }
+                notifyObservers();
 
             }
         });
@@ -121,23 +109,25 @@ public class Jogo extends JPanel implements Observable{
         desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,cor);
         desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,cor);
 
+        desenhaTabuleiro.desenharMao(g2d);
+
         g2d.setColor(Color.BLACK);
-        if(fasePosicionamento){
-            AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25,490, 570);
-            AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos", 25,490, 600);
-            if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor) {
-                ultimoPaisClicado.desenharTriangulos(g2d);
-            }
-        }
-        else if(faseAtaque){
-            AuxTexto.drawOutlinedText(g2d, "Fase de Ataque", 25,490, 570);
-            if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor) {
 
-            }
+        switch (fase) {
+            case "Posicionamento":
+                AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 490, 570);
+                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos", 25, 490, 600);
+                if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor) {
+                    ultimoPaisClicado.desenharTriangulos(g2d);
+                }
+                break;
+            case "Ataque":
+                AuxTexto.drawOutlinedText(g2d, "Fase de Ataque", 25, 490, 570);
+                break;
+            case "Movimento":
+                AuxTexto.drawOutlinedText(g2d, "Fase de Movimento", 25, 490, 570);
+                break;
 
-        }
-        else if(faseMovimento){
-            AuxTexto.drawOutlinedText(g2d, "Fase de Movimento", 25,490, 570);
         }
 
     }
@@ -210,7 +200,7 @@ public class Jogo extends JPanel implements Observable{
     }
 
     public void adicionarBotoes(){
-        desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", false);
+        desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", Color.YELLOW , false);
     }
 
     public void setCorDono(List<String> territorios, String Cor) {
@@ -272,27 +262,39 @@ public class Jogo extends JPanel implements Observable{
     public Object get() {
         Object[] dados = new Object[5];
 
-        if (fasePosicionamento) {
+        if(click){
+            dados[0] = "Click";
+            dados[1] = x;
+            dados[2] = y;
+            click = false;
+        }
 
-            dados[0] = "FasePosicionamento";
-            dados[1] = ultimoPaisClicado.nome;
-            dados[2] = sinal;
-
-        } else if (faseAtaque) {
-
-            dados[0] = "FaseAtaque";
-            dados[1] = ultimoPaisClicado.nome;
-            dados[2] = paisClicado.nome;
-
-        } else if (faseMovimento) {
-            dados[0] = "FaseMovimento";
-            dados[1] = ultimoPaisClicado.nome;
-            dados[2] = paisClicado.nome;
-
-        } else {
-
-            dados[0] = "TrocaTurno";
-            fasePosicionamento = true;
+        else{
+            switch(fase){
+                case "Posicionamento":
+                    dados[0] = "FasePosicionamento";
+                    dados[1] = ultimoPaisClicado.nome;
+                    dados[2] = sinal;
+                    break;
+                case "MovimentoAtaque":
+                    dados[0] = "FaseMovimentoAtaque";
+                    dados[1] = ultimoPaisClicado.nome;
+                    dados[2] = paisClicado.nome;
+                    break;
+                case "Ataque":
+                    dados[0] = "FaseAtaque";
+                    dados[1] = ultimoPaisClicado.nome;
+                    dados[2] = paisClicado.nome;
+                    break;
+                case "Movimento":
+                    dados[0] = "FaseMovimento";
+                    dados[1] = ultimoPaisClicado.nome;
+                    dados[2] = paisClicado.nome;
+                    break;
+                default:
+                    dados[0] = "TrocaFase";
+                    break;
+            }
 
         }
 
@@ -305,25 +307,6 @@ public class Jogo extends JPanel implements Observable{
             observer.notify(this);
         }
     }
-
-    public void trocaFase(){
-        if(fasePosicionamento){
-            fasePosicionamento = false;
-            ultimoPaisClicado.trianguloCima = null;
-            ultimoPaisClicado.trianguloBaixo = null;
-            faseAtaque = true;
-            desenhaTabuleiro.botoes.get(0).setVisivel();
-        }
-        else if(faseAtaque){
-            faseAtaque = false;
-            faseMovimento = true;
-        }
-        else if(faseMovimento){
-            faseMovimento = false;
-            desenhaTabuleiro.botoes.get(0).setVisivel();
-        }
-    }
-
 
     public void setExercitos(int qtd) {
         this.qtd = qtd;
@@ -342,16 +325,16 @@ public class Jogo extends JPanel implements Observable{
         Pais p = desenhaTabuleiro.getPais(pais);
         for (String vizinho : vizinhos) {
             Pais v = desenhaTabuleiro.getPais(vizinho);
-            if(faseAtaque){
+            if(fase == "Ataque"){
                 v.setCorTemp(Color.RED);
             }
-            else if(faseMovimento){
+            else if(fase == "Movimento"){
                 v.setCorTemp(Color.GREEN);
             }
         }
     }
 
-    void handlePosicionamentoClick(int x, int y) {
+    public void handlePosicionamentoClick(int x, int y) {
         // Verifica se o clique foi em um país
         if (paisClicado != null) {
             ultimoPaisClicado = paisClicado;
@@ -387,52 +370,11 @@ public class Jogo extends JPanel implements Observable{
         }
     }
 
-    void handleAtaqueClick(int x, int y) {
+    public void handleAtaqueClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
             if(botaoClicado.getText().equals("Terminar Fase")){
-                trocaFase();
-                repaint();
-            }
-        }
-
-        // Verifica se o clique foi em um país
-        if (paisClicado != null) {
-
-            // Verifica se já existe um país selecionado
-            if(ultimoPaisClicado == null){
-                ultimoPaisClicado = paisClicado;
-                desenhaTabuleiro.resetarCores();
-                repaint();
-            }
-
-            // Verifica se o país clicado é um vizinho do país selecionado
-            else if(paisClicado != ultimoPaisClicado){
-                notifyObservers();
-                repaint();
-            }
-
-            // Se ele clicou no mesmo país duas vezes
-            else {
-                ultimoPaisClicado = paisClicado; // Set the last clicked country
-                notifyObservers();
-                repaint(); // Request to repaint the panel
-            }
-        }
-
-        // Se ele clicou em um país que não é dele ou não clicou em pais
-        else{
-            ultimoPaisClicado = null;
-            desenhaTabuleiro.resetarCores();
-            repaint();
-        }
-    }
-
-    void handleMovimentoClick(int x, int y) {
-        // Verifica se ele clicou no botão de terminar fase
-        if(botaoClicado != null){
-            if(botaoClicado.getText().equals("Terminar Fase")){
-                trocaFase();
+                fase = "null";
                 notifyObservers();
                 repaint();
             }
@@ -470,4 +412,112 @@ public class Jogo extends JPanel implements Observable{
         }
     }
 
+    public void handleMovimentoClick(int x, int y) {
+        // Verifica se ele clicou no botão de terminar fase
+        if(botaoClicado != null){
+            if(botaoClicado.getText().equals("Terminar Fase")){
+                fase = "null";
+                notifyObservers();
+                repaint();
+            }
+        }
+
+        // Verifica se o clique foi em um país
+        if (paisClicado != null) {
+
+            // Verifica se já existe um país selecionado
+            if(ultimoPaisClicado == null){
+                ultimoPaisClicado = paisClicado;
+                desenhaTabuleiro.resetarCores();
+                repaint();
+            }
+
+            // Verifica se o país clicado é um vizinho do país selecionado
+            else if(paisClicado != ultimoPaisClicado){
+                notifyObservers();
+                repaint();
+            }
+
+            // Se ele clicou no mesmo país duas vezes
+            else {
+                ultimoPaisClicado = paisClicado; // Set the last clicked country
+                notifyObservers();
+                repaint(); // Request to repaint the panel
+            }
+        }
+
+        // Se ele clicou em um país que não é dele ou não clicou em pais
+        else{
+            ultimoPaisClicado = null;
+            desenhaTabuleiro.resetarCores();
+            repaint();
+        }
+    }
+
+    public void handleMovimentoAtaqueClick(int x, int y){
+        // Verifica se ele clicou no botão de terminar fase
+        if(botaoClicado != null){
+            if(botaoClicado.getText().equals("✓")){
+                fase = "null";
+                notifyObservers();
+                repaint();
+            }
+        }
+
+        // Verifica se o clique foi em um país
+        if (paisClicado != null) {
+
+            // Verifica se já existe um país selecionado
+            if(ultimoPaisClicado == null){
+                ultimoPaisClicado = paisClicado;
+                desenhaTabuleiro.resetarCores();
+                repaint();
+            }
+
+            // Verifica se o país clicado é um vizinho do país selecionado
+            else if(paisClicado != ultimoPaisClicado){
+                notifyObservers();
+                repaint();
+            }
+
+            // Se ele clicou no mesmo país duas vezes
+            else {
+                ultimoPaisClicado = paisClicado; // Set the last clicked country
+                notifyObservers();
+                repaint(); // Request to repaint the panel
+            }
+        }
+
+        // Se ele clicou em um país que não é dele ou não clicou em pais
+        else{
+            ultimoPaisClicado = null;
+            desenhaTabuleiro.resetarCores();
+            repaint();
+        }
+    }
+
+    public void terminaMovimentacaoAtaque() {
+        faseMovimentoAtaque = false;
+        repaint();
+    }
+
+    public void resetTriangulos() {
+        if(ultimoPaisClicado != null){
+            ultimoPaisClicado.trianguloCima = null;
+            ultimoPaisClicado.trianguloBaixo = null;
+        }
+
+    }
+
+    public void resetBotoes() {
+        desenhaTabuleiro.botoes.get(0).setVisivel();
+    }
+
+    public void setFase(String fase){
+        this.fase = fase;
+    }
+
+    public void exibeMao(Map<String, String> cartasJogadorAtual) {
+        desenhaTabuleiro.setMao(cartasJogadorAtual);
+    }
 }

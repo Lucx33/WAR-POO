@@ -14,7 +14,7 @@ public class PlayersInfo implements Observable {
 
     static boolean status = false;
 
-    void setPlayersInfo(List<String> nomes, List<String> cores) {
+    public void setPlayersInfo(List<String> nomes, List<String> cores) {
         names = nomes;
         colors = cores;
         status = true;

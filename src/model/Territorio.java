@@ -11,6 +11,7 @@ class Territorio implements Observable {
 	String nome;
 	int idJogadorDono;
 	int qtdExercito;
+	int exercitosMovimentadosVitoria;
 
 	private List<Observer> observers = new ArrayList<>();
 	
@@ -28,7 +29,6 @@ class Territorio implements Observable {
 
 	void setIdJogadorDono(int id_jogador_dono) {
 		this.idJogadorDono = id_jogador_dono;
-		System.out.println("Territorio: " + this.nome + " dono: " + this.idJogadorDono);
 		notifyObservers();
 	}
 
@@ -92,4 +92,17 @@ class Territorio implements Observable {
 		}
 	}
 
+
+	int getExercitosMovimentadosVitoria() {
+		return exercitosMovimentadosVitoria;
+	}
+
+	void addExercitoMovimentadosVitoria() {
+		this.exercitosMovimentadosVitoria += 1;
+		notifyObservers();
+	}
+
+	public void resetMovimentadosVitoria() {
+		this.exercitosMovimentadosVitoria = 0;
+	}
 }

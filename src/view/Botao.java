@@ -8,20 +8,21 @@ public class Botao {
     private int y;
     private String text;
     private boolean visible;
-
     Shape retangulo;
 
-    public Botao(int x, int y, String text, boolean visible) {
+    Color cor = new Color(255, 255, 255);
+    public Botao(int x, int y, String text, Color cor, boolean visible) {
         this.x = x;
         this.y = y;
         this.text = text;
         this.visible = visible;
+        this.cor = cor;
         this.retangulo = new Rectangle2D.Double(x, y, 100, 50);
     }
 
     public void desenhar(Graphics2D g2d) {
         if(visible) {
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(cor);
             g2d.fill(retangulo);
             g2d.setColor(Color.BLACK);
             g2d.draw(retangulo);

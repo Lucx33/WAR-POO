@@ -6,12 +6,12 @@ import view.Jogo;
 import view.PlayersInfo;
 
 public class ControladorJogo implements Observer{
-    static ApiModel partida;
-    static IniciaInterface interfaceJogo;
-    static PlayersInfo playersInfo;
-    static Jogo telaJogo;
+    ApiModel partida;
+    IniciaInterface interfaceJogo;
+    PlayersInfo playersInfo;
+    Jogo telaJogo;
     
-    boolean posicionamentoInicial, fasePosicionamento, faseAtaque, faseMovimento;
+    boolean posicionamentoInicial = false, fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
 
     Observable obs;
     Object dados[];
@@ -23,7 +23,7 @@ public class ControladorJogo implements Observer{
         playersInfo = new PlayersInfo();
 
         //Inicia Interface
-        interfaceJogo = new IniciaInterface(playersInfo);
+        //interfaceJogo = new IniciaInterface(playersInfo);
 
         // Cria uma instancia do jogo
         partida = ApiModel.getInstance();
@@ -35,9 +35,11 @@ public class ControladorJogo implements Observer{
 
     }
 
+    /*
     public static void main(String[] args) {
         new ControladorJogo();
     }
+     */
     
     
     
@@ -93,15 +95,60 @@ public class ControladorJogo implements Observer{
                 break;
 
             case "MudancaDeDono":
-                handleMudancaDeDono((int) dados[1], (String) dados[2]);
+                handleMudancaDeDono((String) dados[1]);
                 break;
 
             case "TrocaTurno":
                 handleTrocaTurno();
                 break;
+
             case "LancamentoDados":
             	handleLancamentoDados((List<Integer>) dados[1], (List<Integer>) dados[2]);
             	break;
+
+            case "TrocaFase":
+                handleTrocaFase();
+                break;
+
+            case "Click":
+                handleClick((Integer) dados[1], (Integer) dados[2]);
+                break;
+        }
+    }
+
+    private void handleClick(int x, int y) {
+        if(fasePosicionamento){
+            telaJogo.handlePosicionamentoClick(x,y);
+        }
+        else if(faseMovimentoAtaque){
+            telaJogo.handleMovimentoAtaqueClick(x,y);
+        }
+        else if(faseAtaque){
+            telaJogo.handleAtaqueClick(x,y);
+        }
+        else if(faseMovimento){
+            telaJogo.handleMovimentoClick(x,y);
+        }
+    }
+
+    private void handleTrocaFase() {
+        if(fasePosicionamento){
+            fasePosicionamento = false;
+            telaJogo.resetTriangulos();
+            telaJogo.resetBotoes();
+            faseAtaque = true;
+            telaJogo.setFase("Ataque");
+        }
+        else if(faseAtaque){
+            faseAtaque = false;
+            faseMovimento = true;
+            telaJogo.setFase("Movimento");
+        }
+        else if(faseMovimento){
+            faseMovimento = false;
+            telaJogo.resetBotoes();
+            fasePosicionamento = true;
+            handleTrocaTurno();
         }
     }
 
@@ -131,7 +178,9 @@ public class ControladorJogo implements Observer{
         for (String player : playerNames) {
             telaJogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
         }
+
         telaJogo.repaint();
+        fasePosicionamento = true;
         handleTrocaTurno();
     }
     
@@ -145,9 +194,13 @@ public class ControladorJogo implements Observer{
     public void handleTrocaTurno(){
     	partida.proximoTurno();
         partida.turno(partida.getJogadorAtual());
-       
+
+
+
         telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
         telaJogo.setExercitos(partida.getExercitosAtuais());
+        telaJogo.exibeMao(partida.getCartasJogadorAtual());
+        telaJogo.setFase("Posicionamento");
         telaJogo.repaint();
     }
     
@@ -182,7 +235,7 @@ public class ControladorJogo implements Observer{
         telaJogo.repaint();
 
         if(partida.getExercitosAtuais() == 0){
-            telaJogo.trocaFase();
+            handleTrocaFase();
         }
     }
     
@@ -248,15 +301,33 @@ public class ControladorJogo implements Observer{
      * Este método é chamado quando um território muda de dono após um ataque bem-sucedido
      * E o defensor chegou a 0 exércitos.
      *
-     * @param idAtacante O ID do jogador que conquistou o território.
      * @param nomeTerritorio O nome do território conquistado.
      */
-    public void handleMudancaDeDono(int idAtacante, String nomeTerritorio) {
-        System.out.println("Mudanca de Dono");
-        partida.trocaDono(nomeTerritorio, idAtacante);
-        partida.ganhaCarta(idAtacante);
+    public void handleMudancaDeDono(String nomeTerritorio) {
+        partida.trocaDono(nomeTerritorio);
+        partida.ganhaCarta();
+        telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
+        telaJogo.repaint();
     }
 
 
+    /**
+     * Gerencia a fase de posicionamento de exércitos no jogo.
+     * Este método é chamado durante a fase de posicionamento e
+     * é responsável por manipular os exércitos de acordo com as ações do jogador.
+     *
+     * @param pais O país onde os exércitos serão posicionados ou removidos.
+     * @param sinal Indica se os exércitos serão adicionados ('+') ou removidos ('-').
+     */
+    public void handlePassaExercitosVitoria(String pais, String sinal) {
+        partida.movimentaVitoria(pais, sinal);
+
+        telaJogo.setExercitos(Math.min(partida.getExercitosPais(pais), partida.getExercitosMovimentadosVitoria(pais)));
+        telaJogo.repaint();
+
+        if(partida.getExercitosMovimentadosVitoria(pais) == 3){
+            telaJogo.terminaMovimentacaoAtaque();
+        }
+    }
 
 }

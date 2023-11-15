@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 class Jogador {
 	String nome;
@@ -58,6 +55,14 @@ class Jogador {
 
 	List<Carta> getCartas() {
 		return cartas;
+	}
+
+	List<String> getCartasString() {
+		List<String> cartasString = new ArrayList<>();
+		for (Carta carta : cartas) {
+			cartasString.add(carta.getTerritorio());
+		}
+		return cartasString;
 	}
 
 	void addTerritorio(Territorio territorio) {
