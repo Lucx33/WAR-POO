@@ -53,7 +53,15 @@ public class Continente {
     	    default:
     	        return 0;       
     	}
-   
+    }
+    
+    public boolean contemTerritorio(String nomeTerritorio) {
+        for (Territorio territorio : territorios) {
+            if (territorio.getNome().equalsIgnoreCase(nomeTerritorio)) {
+                return true;
+            }
+        }
+        return false;
     }
    
 }

@@ -195,35 +195,32 @@ class Tabuleiro implements Observable{
 
     void ataque(Territorio atacante, Territorio defensor){
         Dado dado = new Dado();
-        int qtdAtaque = atacante.getQtdExercito() - 1;
-        int qtdDefesa = defensor.getQtdExercito();
-        int[] dadosAtaque = dado.DadosAtaque(qtdAtaque);
-        int[] dadosDefesa = dado.DadosDefesa(qtdDefesa);
+        int qtdAtaque = Math.min(3,atacante.getQtdExercito() - 1);
+        int qtdDefesa = Math.min(3,defensor.getQtdExercito());
+        List<Integer> resultado = dado.lancamentoDados(qtdAtaque, qtdDefesa);
+        List<Integer> dadosAtaque = resultado.subList(0, qtdAtaque);
+        List<Integer> dadosDefesa = resultado.subList(qtdAtaque, resultado.size());
 
-        int numDefesa = dadosAtaque.length;
-        int numAtaque = dadosDefesa.length;
-        int n = Math.min(numDefesa, numAtaque);
+        int n = Math.min(qtdAtaque, qtdDefesa);
 
-        Arrays.sort(dadosAtaque);
-        Arrays.sort(dadosDefesa);
 
-        for (int i = 0; i < n; i++) {
-            int indiceAtaque = dadosAtaque.length - 1 - i;
-            int indiceDefesa = dadosDefesa.length - 1 - i;
+        Collections.sort(dadosAtaque);
+        Collections.sort(dadosDefesa);
 
-            if (dadosDefesa[indiceDefesa] >= dadosAtaque[indiceAtaque]) {
-                buscaTerritorio(atacante.getNome()).setQtdExercito(atacante.getQtdExercito() - 1);
+        for (int i = 0; i < Math.min(dadosAtaque.size(), dadosDefesa.size()); i++) {
+            if (dadosDefesa.get(i) >= dadosAtaque.get(i)) {
+                atacante.setQtdExercito(atacante.getQtdExercito() - 1);
             } else {
-                buscaTerritorio(defensor.getNome()).setQtdExercito(defensor.getQtdExercito() - 1);
+                defensor.setQtdExercito(defensor.getQtdExercito() - 1);
             }
         }
 
-        if(defensor.qtdExercito == 0){
+        // Verifica se o defensor foi derrotado
+        if (defensor.getQtdExercito() == 0) {
             defensor.setIdJogadorDono(atacante.getIdJogadorDono());
-            defensor.setQtdExercito(atacante.getQtdExercito() - 1);
-            atacante.setQtdExercito(1);
-            nomeJogador = buscaTerritorio(atacante.getNome()).getIdJogadorDono();
-            mudanca = buscaTerritorio(defensor.getNome()).getNome();
+            defensor.setQtdExercito(1); // Move um exército para o território conquistado
+            atacante.setQtdExercito(atacante.getQtdExercito() - 1); // Reduz um exército do atacante
+            // Atualiza os observadores sobre a mudança
             notifyObservers();
         }
 

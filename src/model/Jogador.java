@@ -117,6 +117,10 @@ class Jogador {
 	void receberExercitos() {
 		int numTerritorios = territorios.size();
 		int numExercitosRecebidos = numTerritorios / 2;
+		for(Continente continente : continentes) {
+			receberExercitosPorContinente(continente);
+		}
+		trocarCartas();
 		addExercitos(numExercitosRecebidos);
 	}
 
@@ -142,6 +146,10 @@ class Jogador {
 	void addContinente(Continente continente) {
 		continentes.add(continente);
 	}
+	
+	void removeContinente(Continente continente) {
+		continentes.remove(continente);
+	}
 
 
 	boolean possuiContinente(Continente continente) {
@@ -151,6 +159,7 @@ class Jogador {
 
 	void receberExercitosPorContinente(Continente continente) {
 		if (possuiContinente(continente)) {
+			System.out.println(this.nome + "possui" + continente.nome);
 			int exercitosPorContinente = continente.getBonusExercitos(continente.getNome());
 			addExercitos(exercitosPorContinente);
 		}

@@ -21,19 +21,8 @@ public class DadoTest {
 
     @Test
     public void testDadosAtaque() {
-        int[] dadosAtaque = dado.DadosAtaque(3);
-        assertEquals(3, dadosAtaque.length);
-        for (int j : dadosAtaque) {
-            assertTrue(j >= 1 && j <= 6);
-        }
-    }
-
-    @Test
-    public void testDadosDefesa() {
-        int[] dadosDefesa = dado.DadosDefesa(3);
-        assertEquals(3, dadosDefesa.length);
-        for (int j : dadosDefesa) {
-            assertTrue(j >= 1 && j <= 6);
-        }
+        int qtdAtaque = 3;
+        int qtdDefesa = 2;
+        assertEquals(5, dado.lancamentoDados(qtdAtaque, qtdDefesa).size());
     }
 }

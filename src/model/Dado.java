@@ -1,13 +1,21 @@
 package model;
 
+import controller.Observable;
+import controller.Observer;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static java.util.Arrays.sort;
 
-class Dado {
+class Dado implements Observable {
     Random random;
+    private List<Observer> observers = new ArrayList<>();
 
+    List<Integer> resultadosAtaque = new ArrayList<>();
+    List<Integer> resultadosDefesa = new ArrayList<>();
     Dado() {
         random = new Random();
     }
@@ -16,31 +24,44 @@ class Dado {
         return random.nextInt(6) + 1;
     }
 
-    int[] DadosAtaque(int qtd_exercitosAtaque){
-        int numDados = Math.min(qtd_exercitosAtaque, 3);
-        int[] resultadosAtaque = new int[numDados];
-
-        for (int i = 0; i < numDados; i++) {
-            resultadosAtaque[i] = rolar();
+    List<Integer> lancamentoDados(int qtdAtaque, int qtdDefesa) {;
+        resultadosAtaque.clear();
+        resultadosDefesa.clear();
+        for (int i = 0; i < qtdAtaque; i++) {
+            resultadosAtaque.add(rolar());
         }
-
-        sort(resultadosAtaque);
-
-
-        return resultadosAtaque;
+        for (int i = 0; i < qtdDefesa; i++) {
+            resultadosDefesa.add(rolar());
+        }
+        List<Integer> resultados = new ArrayList<>();
+        resultados.addAll(resultadosAtaque);
+        resultados.addAll(resultadosDefesa);
+        notifyObservers();
+        return resultados;
     }
 
-    int[] DadosDefesa(int qtd_exercitosDefesa) {
-        int numDados = Math.min(qtd_exercitosDefesa, 3);
-        int[] resultadosDefesa = new int[numDados];
-
-        for (int i = 0; i < numDados; i++) {
-            resultadosDefesa[i] = rolar();
-        }
-
-        sort(resultadosDefesa);
-
-        return resultadosDefesa;
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
     }
 
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public Object get() {
+        Object dados[]=new Object[5];
+        dados[0]= "LancamentoDados";
+        dados[1]= this.resultadosAtaque;
+        dados[2]= this.resultadosDefesa;
+        return dados;
+    }
+
+    protected void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.notify(this);
+        }
+    }
 }

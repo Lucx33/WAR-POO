@@ -22,6 +22,7 @@ public class ApiModel implements Observable{
     private int jogadorAtual = 0;
 
     private int fase = 0;
+    boolean jaGanhou = false;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -41,13 +42,17 @@ public class ApiModel implements Observable{
         return ini;
     }
 
-
+    /**
+     * Inicia o jogo, criando o baralho, o tabuleiro, os objetivos e distribuindo os territórios.
+     * @param players Lista de nomes dos jogadores
+     * @param cores Lista de cores dos jogadores
+     */
     public void setGame(List<String> players, List<String> cores) {
         // Cria o baralho e embaralha
         this.baralho.criaBaralho();
         this.baralho.shuf();
 
-        // Cria o tabuleiro
+        // Cria os objetivos
         this.objetivos = Objetivo.criarObjetivos();
 
         // Cria o tabuleiro
@@ -85,31 +90,62 @@ public class ApiModel implements Observable{
     }
 
 
+
+    /**
+     * Valida e realiza um ataque
+     * @param atacante Nome do território atacante
+     * @param defensor Nome do território defensor
+     */
     public void validaAtaque(String atacante, String defensor){
         tabuleiro.validaAtaque(atacante, defensor);
     }
 
 
-    public void movimenta(String nome1, String nome2) {
-        tabuleiro.validaMovimento(nome1, nome2);
+
+    /**
+     * Valida e realiza um movimento
+     * @param origem Nome do território de origem
+     * @param destino Nome do território de destino
+     */
+    public void movimenta(String origem, String destino) {
+        tabuleiro.validaMovimento(origem, destino);
     }
 
-    public void ganhaCarta(String jogador){
-        this.jogadoresList.get(Integer.parseInt(jogador)).addCarta(baralho.comprarCarta());
+    /**
+     * Valida e realiza um recebimento de carta
+     * @param idJogador ID do jogador que está ganhando a carta
+     */
+    public void ganhaCarta(int idJogador){
+
+        // Verifica se o jogador já ganhou uma carta nesse turno
+        if (!jaGanhou) {
+            for (Jogador jogador : jogadoresList) {
+                if (jogador.getIdJogador() == idJogador) {
+                    jogador.addCarta(baralho.comprarCarta());
+                    jaGanhou = true;
+                    break;
+                }
+            }
+        }
     }
 
+
+
+    /**
+     * Executa o turno do jogador atual
+     * @param jogador valor da Posição do jogador na lista de jogadores
+     */
     public void turno(Integer jogador){
         Jogador temp = this.jogadoresList.get(jogador);
         temp.receberExercitos();
         notifyObservers();
     }
 
-    public void fasePosicionamento(Integer jogador){
-        Jogador temp = this.jogadoresList.get(jogador);
-        temp.receberExercitos();
-        notifyObservers();
-    }
 
+
+    /**
+     * Método auxiliar para printar o estado do jogo
+     */
     public void printGameState() {
         System.out.println("====== Estado do Jogo ======");
 
@@ -128,6 +164,12 @@ public class ApiModel implements Observable{
         System.out.println("==============================");
     }
 
+
+
+    /**
+     * Resgata os territórios de um jogador pelo nome
+     * @param jogadorNome Nome do jogador
+     */
     public List<String> getTerritoriosPorDono(String jogadorNome) {
         for (Jogador jogador : jogadoresList) {
             if (jogador.getNome().equals(jogadorNome)) {
@@ -137,23 +179,37 @@ public class ApiModel implements Observable{
         return new ArrayList<>();
     }
 
+
+
+    /**
+     * Resgata a posição do jogador atual na lista de jogadores
+     */
     public int getJogadorAtual() {
         return jogadorAtual;
     }
 
+
+
+    /**
+     * Resgata a cor do Jogador atual
+     */
     public String getCorJogadorAtual() {
         return jogadoresList.get(jogadorAtual).getCor();
     }
 
+
+
+    /**
+     * Troca o jogador atual para o próximo da lista
+     * trocando assim o "Turno"
+     */
     public void proximoTurno() {
         jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
+        jaGanhou = false;
     }
 
     public void addObserver(Observer observer) {
         observers.add(observer);
-    }
-    public void addObserverTerritorios(Observer observer) {
-        //aqui
     }
 
     public void removeObserver(Observer observer) {
@@ -174,6 +230,11 @@ public class ApiModel implements Observable{
         }
     }
 
+
+
+    /**
+     * Método para resgatar os nomes dos jogadores
+     */
     public List<String> getNomesJogadores() {
         List<String> nomes = new ArrayList<>();
 
@@ -184,6 +245,11 @@ public class ApiModel implements Observable{
         return nomes;
     }
 
+
+
+    /**
+     * Método para resgatar as cores dos jogadores
+     */
     public List<String> getCoresJogadores() {
         List<String> cores = new ArrayList<>();
 
@@ -194,10 +260,22 @@ public class ApiModel implements Observable{
         return cores;
     }
 
+
+
+    /**
+     * Método para resgatar a quantidade de exércitos do jogador atual
+     */
     public int getExercitosAtuais(){
         return jogadoresList.get(jogadorAtual).getExercitos();
     }
 
+
+
+    /**
+     * Método para manipular os exércitos do jogador atual em um território
+     * @param nome Nome do território
+     * @param sinal Sinal de adição ou subtração
+     */
     public void manipulaExercitos(String nome, String sinal){
         Jogador temp = jogadoresList.get(jogadorAtual);
         if(sinal.equals("+")) {
@@ -210,6 +288,9 @@ public class ApiModel implements Observable{
         }
     }
 
+
+
+
     public void addObserverToAllTerritories(Observer observer) {
         for (Continente continente : tabuleiro.getContinentes()) {
             for (Territorio territorio : continente.getTerritorios()) {
@@ -218,28 +299,39 @@ public class ApiModel implements Observable{
         }
     }
 
+
+
     public void addObserverToTabuleiro(Observer observer) {
         tabuleiro.addObserver(observer);
     }
 
+    public void addObserverToDice(Observer observer) {
+    	dado.addObserver(observer);
+    }
+
+
+
+    /**
+     * Método para resgatar os territórios vizinhos de um território
+     * @param nomeTerritorio Nome do território
+     */
     public List<String> getVizinhos(String nomeTerritorio) {
         return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
 
     public void trocaDono(String nomeTerritorio, int idAtacante) {
+    	Jogador temp = jogadoresList.get(jogadorAtual);
+    	for(Continente continente : tabuleiro.getContinentes()) {
+    		if(continente.contemTerritorio(nomeTerritorio)){
+    			
+    		}
+    	}
         for(Jogador jogador : jogadoresList) {
             if(jogador.getTerritoriosString().contains(nomeTerritorio)) {
                 jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
-                System.out.println("Jogador " + jogador.getNome() + "perdeu o territorio " + nomeTerritorio);
             }
-
-            if(jogador.getIdJogador()== idAtacante) {
-                jogador.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
-
-            }
-
-            System.out.println(jogador.getNome() + " " + idAtacante);
 
         }
+        temp.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
     }
 }
