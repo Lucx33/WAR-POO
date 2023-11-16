@@ -11,7 +11,9 @@ public class ControladorJogo implements Observer{
     PlayersInfo playersInfo;
     Jogo telaJogo;
     
-    boolean posicionamentoInicial = false, fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
+    boolean fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
+
+    int posicionamentoInicial = 0;
 
     Observable obs;
     Object[] dados;
@@ -179,6 +181,7 @@ public class ControladorJogo implements Observer{
 
         for (String player : playerNames) {
             telaJogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
+            posicionamentoInicial ++;
         }
 
         telaJogo.repaint();
@@ -196,8 +199,6 @@ public class ControladorJogo implements Observer{
     public void handleTrocaTurno(){
     	partida.proximoTurno();
         partida.turno(partida.getJogadorAtual());
-
-
 
         telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
         telaJogo.setExercitos(partida.getExercitosAtuais());
@@ -238,7 +239,17 @@ public class ControladorJogo implements Observer{
         telaJogo.repaint();
 
         if(partida.getExercitosAtuais() == 0){
-            handleTrocaFase();
+            System.out.println("Fase de posicionamento terminada");
+            if(posicionamentoInicial > 0){
+                System.out.println("Posicionamento inicial");
+                System.out.println(posicionamentoInicial);
+                posicionamentoInicial --;
+                telaJogo.resetTriangulos();
+                handleTrocaTurno();
+            }
+            else {
+                handleTrocaFase();
+            }
         }
     }
     
@@ -253,10 +264,11 @@ public class ControladorJogo implements Observer{
      */
     public void handleFaseAtaque(String paisAtacante, String paisDefensor) {
         List<String> vizinhos = partida.getVizinhos(paisAtacante);
-
-        if(vizinhos.contains(paisDefensor.toLowerCase()) && partida.getExercitosPais(paisAtacante) > 1){
+        paisAtacante = paisAtacante.toLowerCase();
+        paisDefensor = paisDefensor.toLowerCase();
+        if(partida.getTerritoriosAtuais().contains(paisAtacante) && vizinhos.contains(paisDefensor) && partida.getExercitosPais(paisAtacante) > 1){
             partida.validaAtaque(paisAtacante, paisDefensor);
-        } else {
+        } else if(partida.getTerritoriosAtuais().contains(paisAtacante)){
             telaJogo.mostrarVizinhos(paisAtacante, vizinhos);
         }
         telaJogo.repaint();

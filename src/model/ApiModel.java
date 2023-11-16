@@ -370,4 +370,8 @@ public class ApiModel implements Observable{
     public int getObjetivoJogadorAtual() {
         return jogadoresList.get(jogadorAtual).getObjetivo().getObjetivoId();
     }
+
+    public List<String> getTerritoriosAtuais(){
+        return jogadoresList.get(jogadorAtual).getTerritoriosString();
+    }
 }
