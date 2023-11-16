@@ -14,7 +14,7 @@ public class ControladorJogo implements Observer{
     boolean posicionamentoInicial = false, fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
 
     Observable obs;
-    Object dados[];
+    Object[] dados;
     String tipo;
 
 
@@ -254,7 +254,7 @@ public class ControladorJogo implements Observer{
     public void handleFaseAtaque(String paisAtacante, String paisDefensor) {
         List<String> vizinhos = partida.getVizinhos(paisAtacante);
 
-        if(vizinhos.contains(paisDefensor.toLowerCase())){
+        if(vizinhos.contains(paisDefensor.toLowerCase()) && partida.getExercitosPais(paisAtacante) > 1){
             partida.validaAtaque(paisAtacante, paisDefensor);
         } else {
             telaJogo.mostrarVizinhos(paisAtacante, vizinhos);
@@ -308,7 +308,7 @@ public class ControladorJogo implements Observer{
      */
     public void handleMudancaDeDono(String nomeTerritorio, String nomeContinente) {
         partida.trocaDono(nomeTerritorio);
-        if(!nomeContinente.equals("nada")){
+        if(nomeContinente != null){
             partida.trocaDono(nomeContinente);
         }
         partida.ganhaCarta();

@@ -399,6 +399,7 @@ public class Jogo extends JPanel implements Observable{
             if(ultimoPaisClicado == null){
                 ultimoPaisClicado = paisClicado;
                 desenhaTabuleiro.resetarCores();
+                notifyObservers();
                 repaint();
             }
 
@@ -445,6 +446,7 @@ public class Jogo extends JPanel implements Observable{
             if(ultimoPaisClicado == null){
                 ultimoPaisClicado = paisClicado;
                 desenhaTabuleiro.resetarCores();
+                notifyObservers();
                 repaint();
             }
 
