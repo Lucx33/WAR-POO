@@ -96,7 +96,7 @@ public class ControladorJogo implements Observer{
                 break;
 
             case "MudancaDeDono":
-                handleMudancaDeDono((String) dados[1]);
+                handleMudancaDeDono((String) dados[1], (String) dados[2]);
                 break;
 
             case "TrocaTurno":
@@ -202,6 +202,7 @@ public class ControladorJogo implements Observer{
         telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
         telaJogo.setExercitos(partida.getExercitosAtuais());
         telaJogo.exibeMao(partida.getCartasJogadorAtual());
+        telaJogo.setObjetivo(partida.getObjetivoJogadorAtual());
         telaJogo.setFase("Posicionamento");
         telaJogo.repaint();
     }
@@ -305,8 +306,11 @@ public class ControladorJogo implements Observer{
      *
      * @param nomeTerritorio O nome do território conquistado.
      */
-    public void handleMudancaDeDono(String nomeTerritorio) {
+    public void handleMudancaDeDono(String nomeTerritorio, String nomeContinente) {
         partida.trocaDono(nomeTerritorio);
+        if(!nomeContinente.equals("nada")){
+            partida.trocaDono(nomeContinente);
+        }
         partida.ganhaCarta();
         telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
         telaJogo.repaint();

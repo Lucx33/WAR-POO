@@ -48,12 +48,12 @@ public class Jogo extends JPanel implements Observable{
             desenhaTabuleiro = new DesenhaTabuleiro("src/images/war_tabuleiro_fundo.png", "src/images/war_tabuleiro_mapa copy.png");
             adicionarPaises();
             adicionarBotoes();
-            dadoAtaque1 = ImageIO.read(new File("src/images/dado_ataque_1.png"));
-            dadoAtaque2 = ImageIO.read(new File("src/images/dado_ataque_2.png"));
-            dadoAtaque3 = ImageIO.read(new File("src/images/dado_ataque_3.png"));
-            dadoDefesa1 = ImageIO.read(new File("src/images/dado_defesa_1.png"));
-            dadoDefesa2 = ImageIO.read(new File("src/images/dado_defesa_2.png"));
-            dadoDefesa3 = ImageIO.read(new File("src/images/dado_defesa_3.png"));
+            dadoAtaque1 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+            dadoAtaque2 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+            dadoAtaque3 = desenhaTabuleiro.getImagemDado(-1, "ataque");
+            dadoDefesa1 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+            dadoDefesa2 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+            dadoDefesa3 = desenhaTabuleiro.getImagemDado(-1, "defesa");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,21 +111,23 @@ public class Jogo extends JPanel implements Observable{
 
         desenhaTabuleiro.desenharMao(g2d);
 
+        desenhaTabuleiro.desenharObjetivo(g2d);
+
         g2d.setColor(Color.BLACK);
 
         switch (fase) {
             case "Posicionamento":
-                AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 490, 570);
-                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos", 25, 490, 600);
+                AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 470, 535);
+                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos", 25, 470, 570);
                 if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor) {
                     ultimoPaisClicado.desenharTriangulos(g2d);
                 }
                 break;
             case "Ataque":
-                AuxTexto.drawOutlinedText(g2d, "Fase de Ataque", 25, 490, 570);
+                AuxTexto.drawOutlinedText(g2d, "Fase de Ataque", 25, 500, 535);
                 break;
             case "Movimento":
-                AuxTexto.drawOutlinedText(g2d, "Fase de Movimento", 25, 490, 570);
+                AuxTexto.drawOutlinedText(g2d, "Fase de Movimento", 25, 490, 535);
                 break;
 
         }
@@ -201,6 +203,7 @@ public class Jogo extends JPanel implements Observable{
 
     public void adicionarBotoes(){
         desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", Color.YELLOW , false);
+        desenhaTabuleiro.adicionarBotao(300, 600, "Objetivo", Color.YELLOW , true);
     }
 
     public void setCorDono(List<String> territorios, String Cor) {
@@ -325,16 +328,21 @@ public class Jogo extends JPanel implements Observable{
         Pais p = desenhaTabuleiro.getPais(pais);
         for (String vizinho : vizinhos) {
             Pais v = desenhaTabuleiro.getPais(vizinho);
-            if(fase == "Ataque"){
+            if(fase.equals("Ataque")){
                 v.setCorTemp(Color.RED);
             }
-            else if(fase == "Movimento"){
+            else if(fase.equals("Movimento")){
                 v.setCorTemp(Color.GREEN);
             }
         }
     }
 
     public void handlePosicionamentoClick(int x, int y) {
+        // Verifica se ele clicou no botão de terminar fase
+        if(botaoClicado != null){
+            desenhaTabuleiro.alternarObjetivo();
+            repaint();
+        }
         // Verifica se o clique foi em um país
         if (paisClicado != null) {
             ultimoPaisClicado = paisClicado;
@@ -376,6 +384,10 @@ public class Jogo extends JPanel implements Observable{
             if(botaoClicado.getText().equals("Terminar Fase")){
                 fase = "null";
                 notifyObservers();
+                repaint();
+            }
+            else if(botaoClicado.getText().equals("Objetivo")){
+                desenhaTabuleiro.alternarObjetivo();
                 repaint();
             }
         }
@@ -420,6 +432,10 @@ public class Jogo extends JPanel implements Observable{
                 notifyObservers();
                 repaint();
             }
+            else if(botaoClicado.getText().equals("Objetivo")){
+                desenhaTabuleiro.alternarObjetivo();
+                repaint();
+            }
         }
 
         // Verifica se o clique foi em um país
@@ -460,6 +476,10 @@ public class Jogo extends JPanel implements Observable{
             if(botaoClicado.getText().equals("✓")){
                 fase = "null";
                 notifyObservers();
+                repaint();
+            }
+            else if(botaoClicado.getText().equals("Objetivo")){
+                desenhaTabuleiro.alternarObjetivo();
                 repaint();
             }
         }
@@ -559,5 +579,9 @@ public class Jogo extends JPanel implements Observable{
         }
 
         repaint();
+    }
+
+    public void setObjetivo(int objetivo) {
+        desenhaTabuleiro.setObjetivo(objetivo);
     }
 }

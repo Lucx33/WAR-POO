@@ -17,6 +17,8 @@ public class DesenhaTabuleiro {
     List<Pais> paises;
     List<Botao> botoes;
     Mao mao;
+    Image objetivo;
+    boolean visibilidadeObjetivo = false;
 
     public DesenhaTabuleiro(String backgroundImagePath1, String backgroundImagePath2) throws IOException {
         background1 = ImageIO.read(new File(backgroundImagePath1));
@@ -122,5 +124,33 @@ public class DesenhaTabuleiro {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void desenharObjetivo(Graphics2D g2d) {
+        if(visibilidadeObjetivo){
+            g2d.drawImage(objetivo, 470, 60, null);
+        }
+    }
+
+    public void alternarObjetivo() {
+        if(visibilidadeObjetivo){
+            visibilidadeObjetivo = false;
+        }
+        else{
+            visibilidadeObjetivo = true;
+        }
+    }
+
+    public void setObjetivo(int idObjetivo) {
+
+        try {
+            String formataObjetivo = idObjetivo < 10 ? String.format("0%d", idObjetivo) : String.valueOf(idObjetivo);
+
+            BufferedImage temp = ImageIO.read(new File("src/images/obj_" + formataObjetivo + ".jpg"));
+            objetivo = temp.getScaledInstance(270, 440, Image.SCALE_SMOOTH);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

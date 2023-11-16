@@ -44,6 +44,7 @@ class Objetivo {
         for (int i = 0; i < objetivoId.length; i++) {
             objetivos.add(new Objetivo(objetivoId[i], descricao[i]));
         }
+        Collections.shuffle(objetivos);
         return objetivos;
     }
 

@@ -46,11 +46,18 @@ public class Mao {
             int newHeight = 100; // Altura desejada para as cartas
             for (String carta : cartas.keySet()) {
                 try {
-                    System.out.println("src/images/war_carta_"+ cartas.get(carta) +"_"+ carta + ".png");
-                    BufferedImage image = ImageIO.read(new File("src/images/war_carta_"+ cartas.get(carta) +"_"+ carta + ".png"));
-                    Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-                    cardImages.add(image);
-                    g2d.drawImage(resizedImage, x + xOffset, y + 10, null);
+                    if(carta.equals("?")){
+                        BufferedImage image = ImageIO.read(new File("src/images/war_carta_coringa.png"));
+                        Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+                        cardImages.add(image);
+                        g2d.drawImage(resizedImage, x + xOffset, y + 10, null);
+                    }
+                    else {
+                        BufferedImage image = ImageIO.read(new File("src/images/war_carta_" + cartas.get(carta) + "_" + carta + ".png"));
+                        Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+                        cardImages.add(image);
+                        g2d.drawImage(resizedImage, x + xOffset, y + 10, null);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

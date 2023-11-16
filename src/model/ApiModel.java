@@ -326,21 +326,21 @@ public class ApiModel implements Observable{
         return tabuleiro.vizinhos(nomeTerritorio.toLowerCase());
     }
 
-    public void trocaDono(String nomeTerritorio) {
+    public void trocaDono(String nome) {
     	Jogador temp = jogadoresList.get(jogadorAtual);
 
     	for(Continente continente : tabuleiro.getContinentes()) {
-    		if(continente.contemTerritorio(nomeTerritorio)){
+    		if(continente.contemTerritorio(nome)){
     			
     		}
     	}
         for(Jogador jogador : jogadoresList) {
-            if(jogador.getTerritoriosString().contains(nomeTerritorio)) {
-                jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
+            if(jogador.getTerritoriosString().contains(nome)) {
+                jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nome));
             }
 
         }
-        temp.addTerritorio(Tabuleiro.buscaTerritorio(nomeTerritorio));
+        temp.addTerritorio(Tabuleiro.buscaTerritorio(nome));
     }
 
     public Map<String, String> getCartasJogadorAtual() {
@@ -367,5 +367,7 @@ public class ApiModel implements Observable{
     }
 
 
-
+    public int getObjetivoJogadorAtual() {
+        return jogadoresList.get(jogadorAtual).getObjetivo().getObjetivoId();
+    }
 }

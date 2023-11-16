@@ -248,6 +248,24 @@ class Tabuleiro implements Observable{
 
     }
 
+    /**
+     * Verifica se todos os territórios de um continente estão presentes em uma lista.
+     *
+     * @param territoriosJogador Lista de nomes de territórios.
+     * @param nomeContinente Nome do continente a ser verificado.
+     * @return `true` se todos os territórios do continente estão na lista, `false` caso contrário.
+     */
+    public boolean verificaTerritoriosContinente(List<String> territoriosJogador, String nomeContinente) {
+        Continente continente = buscaContinente(nomeContinente);
+
+        for (Territorio territorio : continente.getTerritorios()) {
+            if (!territoriosJogador.contains(territorio.getNome().toLowerCase())) {
+                return false; // Território do continente não encontrado na lista
+            }
+        }
+        return true; // Todos os territórios do continente estão na lista
+    }
+
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);

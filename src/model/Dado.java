@@ -37,7 +37,6 @@ class Dado implements Observable {
         resultados.addAll(resultadosAtaque);
         resultados.addAll(resultadosDefesa);
 
-        System.out.println("Notificando observers");
         notifyObservers();
         return resultados;
     }
@@ -55,7 +54,6 @@ class Dado implements Observable {
     @Override
     public Object get() {
         Object dados[]=new Object[5];
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         dados[0]= "LancamentoDados";
         dados[1]= this.resultadosAtaque;
         dados[2]= this.resultadosDefesa;
