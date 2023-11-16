@@ -323,6 +323,7 @@ public class ControladorJogo implements Observer{
         if(nomeContinente != null){
             partida.trocaDono(nomeContinente);
         }
+        partida.verificaObjetivo();
         partida.ganhaCarta();
         telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
         telaJogo.repaint();

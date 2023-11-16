@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Baralho {
+class Baralho {
     List<Carta> baralho;
     static int qtdTroca;
 

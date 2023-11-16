@@ -25,7 +25,7 @@ class Tabuleiro implements Observable{
         }
     }
 
-    public static Continente buscaContinente(String pais) {
+    static Continente buscaContinente(String pais) {
         for (Continente continente : continentes) {
             for (Territorio territorio : continente.getTerritorios()) {
                 if (territorio.getNome().equals(pais)) {
@@ -167,7 +167,7 @@ class Tabuleiro implements Observable{
         }
     }
 
-    public void validaAtaque(String nome1, String nome2, Dado dado){
+    void validaAtaque(String nome1, String nome2, Dado dado){
         Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
         Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
         if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
@@ -181,7 +181,7 @@ class Tabuleiro implements Observable{
         }
     }
 
-    public void validaMovimento(String nome1, String nome2) {
+    void validaMovimento(String nome1, String nome2) {
         Territorio origem = Tabuleiro.buscaTerritorio(nome1);
         Territorio destino = Tabuleiro.buscaTerritorio(nome2);
 
@@ -203,7 +203,7 @@ class Tabuleiro implements Observable{
         territorio.setQtdExercito(territorio.getQtdExercito() + qtdExercito);
     }
 
-    public List<Continente> getContinentes() {
+    List<Continente> getContinentes() {
         return continentes;
     }
 
@@ -255,7 +255,7 @@ class Tabuleiro implements Observable{
      * @param nomeContinente Nome do continente a ser verificado.
      * @return `true` se todos os territórios do continente estão na lista, `false` caso contrário.
      */
-    public boolean verificaTerritoriosContinente(List<String> territoriosJogador, String nomeContinente) {
+    boolean verificaTerritoriosContinente(List<String> territoriosJogador, String nomeContinente) {
         Continente continente = buscaContinente(nomeContinente);
 
         for (Territorio territorio : continente.getTerritorios()) {

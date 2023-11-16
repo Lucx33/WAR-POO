@@ -102,7 +102,7 @@ class Territorio implements Observable {
 		notifyObservers();
 	}
 
-	public void resetMovimentadosVitoria() {
+	void resetMovimentadosVitoria() {
 		this.exercitosMovimentadosVitoria = 0;
 	}
 }

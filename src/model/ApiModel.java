@@ -101,6 +101,14 @@ public class ApiModel implements Observable{
         tabuleiro.validaAtaque(atacante, defensor, dado);
     }
 
+    public void verificaObjetivo() {
+    	Jogador temp = jogadoresList.get(jogadorAtual);
+    	Objetivo objetivo = temp.getObjetivo();
+    	if(Objetivo.verificaObjetivo(objetivo, temp)) {
+    		System.out.println("Objetivo cumprido");
+    	}
+    }
+
 
 
     /**

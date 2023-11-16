@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Continente {
+class Continente {
     String nome;
     String nomeCurto;
     List<Territorio> territorios;
@@ -38,7 +38,7 @@ public class Continente {
         this.jogadorDono = jogadorDono;
     }
     
-    public int getBonusExercitos(String nomeContinete) {
+    int getBonusExercitos(String nomeContinete) {
     	switch (nomeContinete) {
     	 case "America do Norte":
     	        return 5;
@@ -57,7 +57,7 @@ public class Continente {
     	}
     }
 
-    public String getNomeCurto(String nomeContinete) {
+    String getNomeCurto(String nomeContinete) {
         return switch (nomeContinete) {
             case "America do Norte" -> "an";
             case "America do Sul" -> "asl";
@@ -69,7 +69,7 @@ public class Continente {
         };
     }
     
-    public boolean contemTerritorio(String nomeTerritorio) {
+    boolean contemTerritorio(String nomeTerritorio) {
         for (Territorio territorio : territorios) {
             if (territorio.getNome().equalsIgnoreCase(nomeTerritorio)) {
                 return true;
