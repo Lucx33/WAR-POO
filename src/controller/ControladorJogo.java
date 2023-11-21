@@ -10,7 +10,7 @@ public class ControladorJogo implements Observer{
     IniciaInterface interfaceJogo;
     PlayersInfo playersInfo;
     Jogo telaJogo;
-    
+
     boolean fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
 
     int posicionamentoInicial = 0;
@@ -72,7 +72,7 @@ public class ControladorJogo implements Observer{
         switch(tipo){
             // Cada caso no switch corresponde a um tipo específico de notificação.
             // Para cada tipo, um método 'handle' correspondente é chamado para lidar com a mudança específica.
-        	// Os campos de 'dados' mudam pra cada tipo de notificação
+            // Os campos de 'dados' mudam pra cada tipo de notificação
 
             case "NovoJogo":
 
@@ -80,16 +80,16 @@ public class ControladorJogo implements Observer{
                 break;
             case "AtualizaExercitos":
 
-            	handleAtualizaExercitos((Integer)dados[1]);
+                handleAtualizaExercitos((Integer)dados[1]);
                 break;
 
-            case "FasePoscionamentoContinente":
+            case "FasePosicionamentoContinente":
                 handleFasePosicionamentoContinente((String) dados[1], (String) dados[2]);
                 break;
 
             case "FasePosicionamento":
 
-            	handleFasePosicionamento((String) dados[1], (String) dados[2]);
+                handleFasePosicionamento((String) dados[1], (String) dados[2]);
                 break;
 
             case "FaseAtaque":
@@ -113,8 +113,8 @@ public class ControladorJogo implements Observer{
                 break;
 
             case "LancamentoDados":
-            	handleLancamentoDados((List<Integer>) dados[1], (List<Integer>) dados[2]);
-            	break;
+                handleLancamentoDados((List<Integer>) dados[1], (List<Integer>) dados[2]);
+                break;
 
             case "TrocaFase":
                 handleTrocaFase();
@@ -128,16 +128,17 @@ public class ControladorJogo implements Observer{
 
     private void handleFasePosicionamentoContinente(String pais, String sinal) {
         partida.manipulaExercitos(pais, sinal);
-
         telaJogo.setExercitos(partida.getExercitosAtuais());
         telaJogo.repaint();
-
         if(partida.getExercitosAtuais() == 0){
             if(tempContinentes.size() > 1){
                 handleTrocaContinente();
             }
             else {
-                //handleFasePosicionamento();
+                partida.turno(partida.getJogadorAtual());
+                telaJogo.setExercitos(partida.getExercitosAtuais());
+                telaJogo.setFase("Posicionamento");
+                telaJogo.repaint();
             }
         }
     }
@@ -146,6 +147,7 @@ public class ControladorJogo implements Observer{
         tempContinentes.remove(0);
         telaJogo.setContinente(tempContinentes.get(0));
         telaJogo.setExercitos(partida.getExercitosContinente(tempContinentes.get(0)));
+        partida.setExercitosAtuais(partida.getExercitosContinente(tempContinentes.get(0)));
         telaJogo.repaint();
     }
 
@@ -174,6 +176,7 @@ public class ControladorJogo implements Observer{
     private void handleClick(int x, int y) {
         System.out.println("Clique");
         if(fasePosicionamento){
+            System.out.println("Posicionamento");
             telaJogo.handlePosicionamentoClick(x,y);
         }
         else if(faseMovimentoAtaque){
@@ -256,7 +259,7 @@ public class ControladorJogo implements Observer{
      * atualizando o estado do jogo e a interface do usuário de acordo.
      */
     public void handleTrocaTurno(){
-    	partida.proximoTurno();
+        partida.proximoTurno();
         if(!partida.getContinentesAtuais().isEmpty()){
             tempContinentes = partida.getContinentesAtuais();
             telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
@@ -288,7 +291,7 @@ public class ControladorJogo implements Observer{
      * @param qtd A quantidade de exércitos a serem atualizados na interface do jogo.
      */
     public void handleAtualizaExercitos(int qtd) {
-    	telaJogo.setExercitos(qtd);
+        telaJogo.setExercitos(qtd);
         telaJogo.repaint();
     }
 
@@ -397,7 +400,7 @@ public class ControladorJogo implements Observer{
         telaJogo.repaint();
 
         if(partida.getExercitosMovimentadosVitoria(pais) == 3){
-            telaJogo.terminaMovimentacaoAtaque();
+            //telaJogo.terminaMovimentacaoAtaque();
         }
     }
 

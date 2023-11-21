@@ -122,9 +122,6 @@ class Jogador {
 	void receberExercitos() {
 		int numTerritorios = territorios.size();
 		int numExercitosRecebidos = numTerritorios / 2;
-		for(Continente continente : continentes) {
-			receberExercitosPorContinente(continente);
-		}
 		trocarCartas();
 		addExercitos(numExercitosRecebidos);
 	}
