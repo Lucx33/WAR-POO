@@ -5,6 +5,7 @@ import java.awt.geom.*;
 
 class Pais {
     String nome;
+    String continente;
     int x, y;
     static final int RAIO = 30;
     Shape circulo;
@@ -16,8 +17,9 @@ class Pais {
 
     Color corTemp = Color.BLACK;
 
-    Pais(String nome, int x, int y) {
+    Pais(String nome, String continente, int x, int y) {
         this.nome = nome;
+        this.continente = continente;
         this.x = x;
         this.y = y;
         this.tropa = 1;

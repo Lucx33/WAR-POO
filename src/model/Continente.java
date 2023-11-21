@@ -39,22 +39,15 @@ class Continente {
     }
     
     int getBonusExercitos(String nomeContinete) {
-    	switch (nomeContinete) {
-    	 case "America do Norte":
-    	        return 5;
-    	    case "America do Sul":
-    	        return 2;
-    	    case "Africa":
-    	        return 3;
-    	    case "Europa":
-    	        return 5;
-    	    case "Asia":
-    	        return 7;
-    	    case "Oceania":
-    	        return 2;
-    	    default:
-    	        return 0;       
-    	}
+        return switch (nomeContinete) {
+            case "America do Norte" -> 5;
+            case "America do Sul" -> 2;
+            case "Africa" -> 3;
+            case "Europa" -> 5;
+            case "Asia" -> 7;
+            case "Oceania" -> 2;
+            default -> 0;
+        };
     }
 
     String getNomeCurto(String nomeContinete) {

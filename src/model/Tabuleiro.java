@@ -25,12 +25,21 @@ class Tabuleiro implements Observable{
         }
     }
 
-    static Continente buscaContinente(String pais) {
+    static Continente buscaContinentePais(String pais) {
         for (Continente continente : continentes) {
             for (Territorio territorio : continente.getTerritorios()) {
                 if (territorio.getNome().equals(pais)) {
                     return continente;
                 }
+            }
+        }
+        return null;
+    }
+
+    static Continente buscaContinente(String nome){
+        for(Continente continente : continentes){
+            if(continente.getNome().equals(nome)){
+                return continente;
             }
         }
         return null;
@@ -256,7 +265,7 @@ class Tabuleiro implements Observable{
      * @return `true` se todos os territórios do continente estão na lista, `false` caso contrário.
      */
     boolean verificaTerritoriosContinente(List<String> territoriosJogador, String nomeContinente) {
-        Continente continente = buscaContinente(nomeContinente);
+        Continente continente = buscaContinentePais(nomeContinente);
 
         for (Territorio territorio : continente.getTerritorios()) {
             if (!territoriosJogador.contains(territorio.getNome().toLowerCase())) {

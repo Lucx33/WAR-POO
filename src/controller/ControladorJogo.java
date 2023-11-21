@@ -15,6 +15,9 @@ public class ControladorJogo implements Observer{
 
     int posicionamentoInicial = 0;
 
+    List<String> tempContinentes;
+    int tempExercitos;
+
     Observable obs;
     Object[] dados;
     String tipo;
@@ -42,9 +45,9 @@ public class ControladorJogo implements Observer{
         new ControladorJogo();
     }
      */
-    
-    
-    
+
+
+
 
     /**
      * Método de notificação chamado quando um objeto observável é alterado.
@@ -70,18 +73,22 @@ public class ControladorJogo implements Observer{
             // Cada caso no switch corresponde a um tipo específico de notificação.
             // Para cada tipo, um método 'handle' correspondente é chamado para lidar com a mudança específica.
         	// Os campos de 'dados' mudam pra cada tipo de notificação
-        
+
             case "NovoJogo":
-            	
+
                 handleNovoJogo((List<String>) dados[1], (List<String>) dados[2]);
                 break;
             case "AtualizaExercitos":
-                
+
             	handleAtualizaExercitos((Integer)dados[1]);
                 break;
 
+            case "FasePoscionamentoContinente":
+                handleFasePosicionamentoContinente((String) dados[1], (String) dados[2]);
+                break;
+
             case "FasePosicionamento":
-            	
+
             	handleFasePosicionamento((String) dados[1], (String) dados[2]);
                 break;
 
@@ -98,7 +105,7 @@ public class ControladorJogo implements Observer{
                 break;
 
             case "MudancaDeDono":
-                handleMudancaDeDono((String) dados[1], (String) dados[2]);
+                handleMudancaDeDono((String) dados[1]);
                 break;
 
             case "TrocaTurno":
@@ -119,7 +126,53 @@ public class ControladorJogo implements Observer{
         }
     }
 
+    private void handleFasePosicionamentoContinente(String pais, String sinal) {
+        partida.manipulaExercitos(pais, sinal);
+
+        telaJogo.setExercitos(partida.getExercitosAtuais());
+        telaJogo.repaint();
+
+        if(partida.getExercitosAtuais() == 0){
+            if(tempContinentes.size() > 1){
+                handleTrocaContinente();
+            }
+            else {
+                //handleFasePosicionamento();
+            }
+        }
+    }
+
+    private void handleTrocaContinente() {
+        tempContinentes.remove(0);
+        telaJogo.setContinente(tempContinentes.get(0));
+        telaJogo.setExercitos(partida.getExercitosContinente(tempContinentes.get(0)));
+        telaJogo.repaint();
+    }
+
+    /**
+     * Gerencia a mudança de dono de um território no jogo.
+     * Este método é chamado quando um território muda de dono após um ataque bem-sucedido
+     * E o defensor chegou a 0 exércitos.
+     *
+     * @param nomeTerritorio O nome do território conquistado.
+     */
+    public void handleMudancaDeDono(String nomeTerritorio) {
+        partida.trocaDono(nomeTerritorio);
+        partida.verificaObjetivo();
+        partida.ganhaCarta();
+        telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
+        telaJogo.repaint();
+    }
+
+
+    /**
+     * Lida com o clique do mouse na interface do jogo.
+     * @param x
+     * @param y
+     */
+
     private void handleClick(int x, int y) {
+        System.out.println("Clique");
         if(fasePosicionamento){
             telaJogo.handlePosicionamentoClick(x,y);
         }
@@ -133,6 +186,12 @@ public class ControladorJogo implements Observer{
             telaJogo.handleMovimentoClick(x,y);
         }
     }
+
+
+    /**
+     * Lida com a troca de fase no jogo.
+     * Resetando os botões e os triângulos.
+     */
 
     private void handleTrocaFase() {
         if(fasePosicionamento){
@@ -188,9 +247,9 @@ public class ControladorJogo implements Observer{
         fasePosicionamento = true;
         handleTrocaTurno();
     }
-    
-    
-    
+
+
+
     /**
      * Gerencia a troca de turnos no jogo.
      * Este método é responsável por avançar o jogo para o próximo turno,
@@ -198,8 +257,19 @@ public class ControladorJogo implements Observer{
      */
     public void handleTrocaTurno(){
     	partida.proximoTurno();
+        if(!partida.getContinentesAtuais().isEmpty()){
+            tempContinentes = partida.getContinentesAtuais();
+            telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
+            partida.setExercitosAtuais(partida.getExercitosContinente(tempContinentes.get(0)));
+            telaJogo.setExercitos(partida.getExercitosAtuais());
+            telaJogo.exibeMao(partida.getCartasJogadorAtual());
+            telaJogo.setObjetivo(partida.getObjetivoJogadorAtual());
+            telaJogo.setFase("Posicionamento Continente");
+            telaJogo.setContinente(tempContinentes.get(0));
+            telaJogo.repaint();
+            return;
+        }
         partida.turno(partida.getJogadorAtual());
-
         telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
         telaJogo.setExercitos(partida.getExercitosAtuais());
         telaJogo.exibeMao(partida.getCartasJogadorAtual());
@@ -207,23 +277,23 @@ public class ControladorJogo implements Observer{
         telaJogo.setFase("Posicionamento");
         telaJogo.repaint();
     }
-    
-    
-    
+
+
+
     /**
      * Atualiza a quantidade de exércitos na interface do jogo
      * Na fase de posicionamento
-     * 
-     * 
+     *
+     *
      * @param qtd A quantidade de exércitos a serem atualizados na interface do jogo.
      */
     public void handleAtualizaExercitos(int qtd) {
     	telaJogo.setExercitos(qtd);
         telaJogo.repaint();
     }
-    
-    
-    
+
+
+
     /**
      * Gerencia a fase de posicionamento de exércitos no jogo.
      * Este método é chamado durante a fase de posicionamento e
@@ -252,9 +322,9 @@ public class ControladorJogo implements Observer{
             }
         }
     }
-    
-    
-    
+
+
+
     /**
      * Gerencia a fase de ataque no jogo.
      * Este método é chamado durante a fase de ataque e verifica se o ataque é válido.
@@ -273,9 +343,9 @@ public class ControladorJogo implements Observer{
         }
         telaJogo.repaint();
     }
-    
-    
-    
+
+
+
     /**
      * Atualiza as informações de um território no jogo.
      * Este método é chamado quando um território é atualizado, seja por conquista ou movimentação de tropas.
@@ -288,8 +358,8 @@ public class ControladorJogo implements Observer{
         telaJogo.setPais(nome, idJogadorDono, qtdExercito);
         telaJogo.repaint();
     }
-    
-    
+
+
 
     /**
      * Gerencia a fase de movimento de exércitos entre territórios.
@@ -308,26 +378,8 @@ public class ControladorJogo implements Observer{
         }
         telaJogo.repaint();
     }
-    
-    
 
-    /**
-     * Gerencia a mudança de dono de um território no jogo.
-     * Este método é chamado quando um território muda de dono após um ataque bem-sucedido
-     * E o defensor chegou a 0 exércitos.
-     *
-     * @param nomeTerritorio O nome do território conquistado.
-     */
-    public void handleMudancaDeDono(String nomeTerritorio, String nomeContinente) {
-        partida.trocaDono(nomeTerritorio);
-        if(nomeContinente != null){
-            partida.trocaDono(nomeContinente);
-        }
-        partida.verificaObjetivo();
-        partida.ganhaCarta();
-        telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
-        telaJogo.repaint();
-    }
+
 
 
     /**

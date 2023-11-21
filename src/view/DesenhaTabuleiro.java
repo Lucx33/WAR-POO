@@ -37,8 +37,8 @@ public class DesenhaTabuleiro {
     }
 
 
-    public void adicionarPais(String nome, int x, int y) {
-        Pais pais = new Pais(nome, x, y);
+    public void adicionarPais(String nome, String continente, int x, int y) {
+        Pais pais = new Pais(nome, continente, x, y);
         paises.add(pais);
     }
 

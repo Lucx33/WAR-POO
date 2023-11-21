@@ -2,15 +2,11 @@ package view;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import controller.Observable;
 import controller.Observer;
@@ -26,6 +22,7 @@ public class Jogo extends JPanel implements Observable{
     BufferedImage dadoDefesa3;
     private DesenhaTabuleiro desenhaTabuleiro;
     String fase = "posicionamento";
+    String posicionamentoContinente = "";
     boolean fasePosicionamento = true;
     boolean faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
     boolean click = false;
@@ -116,6 +113,13 @@ public class Jogo extends JPanel implements Observable{
         g2d.setColor(Color.BLACK);
 
         switch (fase) {
+            case "Posicionamento Continente":
+                AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 470, 535);
+                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos para posicionar na" + posicionamentoContinente, 25, 370, 570);
+                if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor && ultimoPaisClicado.continente.equals(posicionamentoContinente)) {
+                    ultimoPaisClicado.desenharTriangulos(g2d);
+                }
+                break;
             case "Posicionamento":
                 AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 470, 535);
                 AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos", 25, 470, 570);
@@ -137,69 +141,70 @@ public class Jogo extends JPanel implements Observable{
 
 
     public void adicionarPaises() {
-        // America do Sul
-        desenhaTabuleiro.adicionarPais("Brasil", 391, 387);
-        desenhaTabuleiro.adicionarPais("Argentina", 378, 482);
-        desenhaTabuleiro.adicionarPais("Peru", 333, 421);
-        desenhaTabuleiro.adicionarPais("Venezuela", 302, 357);
+        // América do Sul
+        desenhaTabuleiro.adicionarPais("Brasil", "America do Sul", 391, 387);
+        desenhaTabuleiro.adicionarPais("Argentina", "America do Sul", 378, 482);
+        desenhaTabuleiro.adicionarPais("Peru", "America do Sul", 333, 421);
+        desenhaTabuleiro.adicionarPais("Venezuela", "America do Sul", 302, 357);
 
-        // America do Norte
-        desenhaTabuleiro.adicionarPais("Mexico", 246, 284);
-        desenhaTabuleiro.adicionarPais("California", 215, 184);
-        desenhaTabuleiro.adicionarPais("Texas", 279, 174);
-        desenhaTabuleiro.adicionarPais("NovaYork", 354, 162);
-        desenhaTabuleiro.adicionarPais("Vancouver", 256, 116);
-        desenhaTabuleiro.adicionarPais("Quebec", 394, 111);
-        desenhaTabuleiro.adicionarPais("Alasca", 195, 64);
-        desenhaTabuleiro.adicionarPais("Calgary", 303, 67);
-        desenhaTabuleiro.adicionarPais("Groelandia", 444, 60);
+        // América do Norte
+        desenhaTabuleiro.adicionarPais("Mexico", "America do Norte", 246, 284);
+        desenhaTabuleiro.adicionarPais("California", "America do Norte", 215, 184);
+        desenhaTabuleiro.adicionarPais("Texas", "America do Norte", 279, 174);
+        desenhaTabuleiro.adicionarPais("NovaYork", "America do Norte", 354, 162);
+        desenhaTabuleiro.adicionarPais("Vancouver", "America do Norte", 256, 116);
+        desenhaTabuleiro.adicionarPais("Quebec", "America do Norte", 394, 111);
+        desenhaTabuleiro.adicionarPais("Alasca", "America do Norte", 195, 64);
+        desenhaTabuleiro.adicionarPais("Calgary", "America do Norte", 303, 67);
+        desenhaTabuleiro.adicionarPais("Groelandia", "America do Norte", 444, 60);
 
         // África
-        desenhaTabuleiro.adicionarPais("Argelia", 562, 293);
-        desenhaTabuleiro.adicionarPais("Nigeria", 608, 366);
-        desenhaTabuleiro.adicionarPais("Egito", 670, 313);
-        desenhaTabuleiro.adicionarPais("Somalia", 722, 413);
-        desenhaTabuleiro.adicionarPais("Angola", 655, 432);
-        desenhaTabuleiro.adicionarPais("AfricaDoSul", 677, 500);
+        desenhaTabuleiro.adicionarPais("Argelia", "Africa", 562, 293);
+        desenhaTabuleiro.adicionarPais("Nigeria", "Africa", 608, 366);
+        desenhaTabuleiro.adicionarPais("Egito", "Africa", 670, 313);
+        desenhaTabuleiro.adicionarPais("Somalia", "Africa", 722, 413);
+        desenhaTabuleiro.adicionarPais("Angola", "Africa", 655, 432);
+        desenhaTabuleiro.adicionarPais("AfricaDoSul", "Africa", 677, 500);
 
         // Europa
-        desenhaTabuleiro.adicionarPais("Espanha", 533, 211);
-        desenhaTabuleiro.adicionarPais("Franca", 587, 172);
-        desenhaTabuleiro.adicionarPais("Italia", 643, 188);
-        desenhaTabuleiro.adicionarPais("Polonia", 677, 117);
-        desenhaTabuleiro.adicionarPais("Romenia", 689, 198);
-        desenhaTabuleiro.adicionarPais("Ucrania", 707, 160);
-        desenhaTabuleiro.adicionarPais("Suecia", 633, 64);
-        desenhaTabuleiro.adicionarPais("ReinoUnido", 558, 99);
+        desenhaTabuleiro.adicionarPais("Espanha", "Europa", 533, 211);
+        desenhaTabuleiro.adicionarPais("Franca", "Europa", 587, 172);
+        desenhaTabuleiro.adicionarPais("Italia", "Europa", 643, 188);
+        desenhaTabuleiro.adicionarPais("Polonia", "Europa", 677, 117);
+        desenhaTabuleiro.adicionarPais("Romenia", "Europa", 689, 198);
+        desenhaTabuleiro.adicionarPais("Ucrania", "Europa", 707, 160);
+        desenhaTabuleiro.adicionarPais("Suecia", "Europa", 633, 64);
+        desenhaTabuleiro.adicionarPais("ReinoUnido", "Europa", 558, 99);
 
         // Oceania
-        desenhaTabuleiro.adicionarPais("Australia", 976, 525);
-        desenhaTabuleiro.adicionarPais("NovaZelandia", 1034, 564);
-        desenhaTabuleiro.adicionarPais("Perth", 903, 525);
-        desenhaTabuleiro.adicionarPais("Indonesia", 995, 427);
+        desenhaTabuleiro.adicionarPais("Australia", "Oceania", 976, 525);
+        desenhaTabuleiro.adicionarPais("NovaZelandia", "Oceania", 1034, 564);
+        desenhaTabuleiro.adicionarPais("Perth", "Oceania", 903, 525);
+        desenhaTabuleiro.adicionarPais("Indonesia", "Oceania", 995, 427);
 
         // Ásia
-        desenhaTabuleiro.adicionarPais("ArabiaSaudita", 771, 336);
-        desenhaTabuleiro.adicionarPais("Jordania", 722, 273);
-        desenhaTabuleiro.adicionarPais("Iraque", 773, 270);
-        desenhaTabuleiro.adicionarPais("Siria", 749, 210);
-        desenhaTabuleiro.adicionarPais("Turquia", 827, 168);
-        desenhaTabuleiro.adicionarPais("Paquistao", 851, 237);
-        desenhaTabuleiro.adicionarPais("Ira", 817, 279);
-        desenhaTabuleiro.adicionarPais("China", 895, 219);
-        desenhaTabuleiro.adicionarPais("India", 898, 317);
-        desenhaTabuleiro.adicionarPais("Bangladesh", 946, 311);
-        desenhaTabuleiro.adicionarPais("Tailandia", 1001, 318);
-        desenhaTabuleiro.adicionarPais("CoreiaDoNorte", 961, 234);
-        desenhaTabuleiro.adicionarPais("CoreiaDoSul", 1001, 257);
-        desenhaTabuleiro.adicionarPais("Japao", 1050, 193);
-        desenhaTabuleiro.adicionarPais("Mongolia", 963, 182);
-        desenhaTabuleiro.adicionarPais("Cazaquistao", 925, 143);
-        desenhaTabuleiro.adicionarPais("Russia", 883, 77);
-        desenhaTabuleiro.adicionarPais("Siberia", 1000, 75);
-        desenhaTabuleiro.adicionarPais("Estonia", 768, 60);
-        desenhaTabuleiro.adicionarPais("Letonia", 762, 123);
+        desenhaTabuleiro.adicionarPais("ArabiaSaudita", "Asia", 771, 336);
+        desenhaTabuleiro.adicionarPais("Jordania", "Asia", 722, 273);
+        desenhaTabuleiro.adicionarPais("Iraque", "Asia", 773, 270);
+        desenhaTabuleiro.adicionarPais("Siria", "Asia", 749, 210);
+        desenhaTabuleiro.adicionarPais("Turquia", "Asia", 827, 168);
+        desenhaTabuleiro.adicionarPais("Paquistao", "Asia", 851, 237);
+        desenhaTabuleiro.adicionarPais("Ira", "Asia", 817, 279);
+        desenhaTabuleiro.adicionarPais("China", "Asia", 895, 219);
+        desenhaTabuleiro.adicionarPais("India", "Asia", 898, 317);
+        desenhaTabuleiro.adicionarPais("Bangladesh", "Asia", 946, 311);
+        desenhaTabuleiro.adicionarPais("Tailandia", "Asia", 1001, 318);
+        desenhaTabuleiro.adicionarPais("CoreiaDoNorte", "Asia", 961, 234);
+        desenhaTabuleiro.adicionarPais("CoreiaDoSul", "Asia", 1001, 257);
+        desenhaTabuleiro.adicionarPais("Japao", "Asia", 1050, 193);
+        desenhaTabuleiro.adicionarPais("Mongolia", "Asia", 963, 182);
+        desenhaTabuleiro.adicionarPais("Cazaquistao", "Asia", 925, 143);
+        desenhaTabuleiro.adicionarPais("Russia", "Asia", 883, 77);
+        desenhaTabuleiro.adicionarPais("Siberia", "Asia", 1000, 75);
+        desenhaTabuleiro.adicionarPais("Estonia", "Asia", 768, 60);
+        desenhaTabuleiro.adicionarPais("Letonia", "Asia", 762, 123);
     }
+
 
     public void adicionarBotoes(){
         desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", Color.YELLOW , false);
@@ -274,6 +279,11 @@ public class Jogo extends JPanel implements Observable{
 
         else{
             switch(fase){
+                case "Posicionamento Continente":
+                    dados[0] = "FasePosicionamentoContinente";
+                    dados[1] = ultimoPaisClicado.nome;
+                    dados[2] = sinal;
+                    break;
                 case "Posicionamento":
                     dados[0] = "FasePosicionamento";
                     dados[1] = ultimoPaisClicado.nome;
@@ -338,6 +348,47 @@ public class Jogo extends JPanel implements Observable{
     }
 
     public void handlePosicionamentoClick(int x, int y) {
+        // Verifica se ele clicou no botão de terminar fase
+        if(botaoClicado != null){
+            desenhaTabuleiro.alternarObjetivo();
+            repaint();
+        }
+        // Verifica se o clique foi em um país
+        if (paisClicado != null) {
+            ultimoPaisClicado = paisClicado;
+            repaint();
+        }
+
+        // Se ele clicou em um país que é dele
+        else if(ultimoPaisClicado != null){
+
+            // Verifica se ele clicou no trianguloCima
+            if(ultimoPaisClicado.trianguloCima != null && ultimoPaisClicado.contaisTrianguloCima(x,y)){
+                sinal = "+";
+                notifyObservers();
+            }
+
+            // Verifica se ele clicou no trianguloBaixo
+            else if(ultimoPaisClicado.trianguloBaixo != null && ultimoPaisClicado.contaisTrianguloBaixo(x,y) && qtdInicial - qtd > 0){
+                sinal = "-";
+                notifyObservers();
+            }
+
+            // Se ele clicou em um país que não é dele
+            else{
+                ultimoPaisClicado = null;
+                repaint();
+            }
+        }
+
+        // Se ele clicou em um país que não é dele ou não clicou em pais
+        else{
+            ultimoPaisClicado = null;
+            repaint();
+        }
+    }
+
+    public void handlePosicionamentoContinenteClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
             desenhaTabuleiro.alternarObjetivo();
@@ -585,5 +636,9 @@ public class Jogo extends JPanel implements Observable{
 
     public void setObjetivo(int objetivo) {
         desenhaTabuleiro.setObjetivo(objetivo);
+    }
+
+    public void setContinente(String s) {
+        posicionamentoContinente = s;
     }
 }

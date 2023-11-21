@@ -217,8 +217,24 @@ class Jogador {
 		this.territorios.remove(territorio);
 	}
 
+	public boolean verificaControleContinente(Jogador jogador, Continente continente) {
+		List<String> territoriosJogador = jogador.getTerritoriosString();
+
+		for (Territorio territorio : continente.getTerritorios()) {
+			if (!territoriosJogador.contains(territorio.getNome())) {
+				return false;
+			}
+		}
+
+		return true; // O jogador tem todos os territórios do continente
+	}
 
 
-
-
+	public List<String> getContinentesString() {
+		List<String> continentesString = new ArrayList<>();
+		for (Continente continente : continentes) {
+			continentesString.add(continente.getNome());
+		}
+		return continentesString;
+	}
 }

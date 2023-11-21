@@ -101,6 +101,10 @@ public class ApiModel implements Observable{
         tabuleiro.validaAtaque(atacante, defensor, dado);
     }
 
+
+    /**
+     * Verifica se o jogador atual cumpriu seu objetivo
+     */
     public void verificaObjetivo() {
     	Jogador temp = jogadoresList.get(jogadorAtual);
     	Objetivo objetivo = temp.getObjetivo();
@@ -275,11 +279,17 @@ public class ApiModel implements Observable{
     }
 
 
-
+    /**
+     * Método para resgatar a quantidade de exércitos do jogador atual
+     */
     public int getExercitosMovimentadosVitoria(String nomeTerritorio){
         return Tabuleiro.buscaTerritorio(nomeTerritorio).getExercitosMovimentadosVitoria();
     }
 
+    /**
+     * Método para resgatar a quantidade de exércitos de um território
+     * @param nomeTerritorio Nome do território
+     */
     public int getExercitosPais(String nomeTerritorio){
         return Tabuleiro.buscaTerritorio(nomeTerritorio).getQtdExercito();
     }
@@ -305,7 +315,9 @@ public class ApiModel implements Observable{
 
 
 
-
+    /**
+     * Adiciona um observador a todos os territórios do tabuleiro
+     */
     public void addObserverToAllTerritories(Observer observer) {
         for (Continente continente : tabuleiro.getContinentes()) {
             for (Territorio territorio : continente.getTerritorios()) {
@@ -336,28 +348,41 @@ public class ApiModel implements Observable{
 
     public void trocaDono(String nome) {
     	Jogador temp = jogadoresList.get(jogadorAtual);
-
+        Continente continenteTemp = null;
     	for(Continente continente : tabuleiro.getContinentes()) {
     		if(continente.contemTerritorio(nome)){
-    			
+    			continenteTemp = continente;
     		}
     	}
         for(Jogador jogador : jogadoresList) {
             if(jogador.getTerritoriosString().contains(nome)) {
                 jogador.removeTerritorio(Tabuleiro.buscaTerritorio(nome));
             }
+            if(jogador.getContinentes().contains(continenteTemp)) {
+            	jogador.removeContinente(continenteTemp);
+            }
 
         }
         temp.addTerritorio(Tabuleiro.buscaTerritorio(nome));
+
+        if(temp.verificaControleContinente(temp, continenteTemp)) {
+            System.out.println("Controle de continente");
+        	temp.addContinente(continenteTemp);
+        }
+
     }
 
+
+    /**
+     * Resgata as cartas do jogador atual
+     */
     public Map<String, String> getCartasJogadorAtual() {
         Jogador temp = jogadoresList.get(jogadorAtual);
         List<String> paises = temp.getCartasString();
         Map<String, String> cartasMap = new HashMap<>();
 
         for (String pais : paises) {
-            String continente = Tabuleiro.buscaContinente(pais).getNomeCurto();
+            String continente = Tabuleiro.buscaContinentePais(pais).getNomeCurto();
             cartasMap.put(pais, continente);
         }
 
@@ -381,5 +406,17 @@ public class ApiModel implements Observable{
 
     public List<String> getTerritoriosAtuais(){
         return jogadoresList.get(jogadorAtual).getTerritoriosString();
+    }
+
+    public List<String> getContinentesAtuais() {
+        return jogadoresList.get(jogadorAtual).getContinentesString();
+    }
+
+    public int getExercitosContinente(String nome) {
+        return Tabuleiro.buscaContinente(nome).getBonusExercitos(nome);
+    }
+
+    public void setExercitosAtuais(int exercitosContinente) {
+        jogadoresList.get(jogadorAtual).addExercitos(exercitosContinente);
     }
 }
