@@ -83,7 +83,7 @@ public class ControladorJogo implements Observer{
             	handleAtualizaExercitos((Integer)dados[1]);
                 break;
 
-            case "FasePoscionamentoContinente":
+            case "FasePosicionamentoContinente":
                 handleFasePosicionamentoContinente((String) dados[1], (String) dados[2]);
                 break;
 
@@ -128,16 +128,17 @@ public class ControladorJogo implements Observer{
 
     private void handleFasePosicionamentoContinente(String pais, String sinal) {
         partida.manipulaExercitos(pais, sinal);
-
         telaJogo.setExercitos(partida.getExercitosAtuais());
         telaJogo.repaint();
-
         if(partida.getExercitosAtuais() == 0){
             if(tempContinentes.size() > 1){
                 handleTrocaContinente();
             }
             else {
-                //handleFasePosicionamento();
+                partida.turno(partida.getJogadorAtual());
+                telaJogo.setExercitos(partida.getExercitosAtuais());
+                telaJogo.setFase("Posicionamento");
+                telaJogo.repaint();
             }
         }
     }
@@ -146,6 +147,7 @@ public class ControladorJogo implements Observer{
         tempContinentes.remove(0);
         telaJogo.setContinente(tempContinentes.get(0));
         telaJogo.setExercitos(partida.getExercitosContinente(tempContinentes.get(0)));
+        partida.setExercitosAtuais(partida.getExercitosContinente(tempContinentes.get(0)));
         telaJogo.repaint();
     }
 
@@ -174,6 +176,7 @@ public class ControladorJogo implements Observer{
     private void handleClick(int x, int y) {
         System.out.println("Clique");
         if(fasePosicionamento){
+            System.out.println("Posicionamento");
             telaJogo.handlePosicionamentoClick(x,y);
         }
         else if(faseMovimentoAtaque){

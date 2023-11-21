@@ -115,7 +115,7 @@ public class Jogo extends JPanel implements Observable{
         switch (fase) {
             case "Posicionamento Continente":
                 AuxTexto.drawOutlinedText(g2d, "Fase de Posicionamento", 25, 470, 535);
-                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos para posicionar na" + posicionamentoContinente, 25, 370, 570);
+                AuxTexto.drawOutlinedText(g2d, "Você possui " + qtd + " exercitos para posicionar na " + posicionamentoContinente, 25, 270, 570);
                 if (ultimoPaisClicado != null && ultimoPaisClicado.corDono == cor && ultimoPaisClicado.continente.equals(posicionamentoContinente)) {
                     ultimoPaisClicado.desenharTriangulos(g2d);
                 }
@@ -280,6 +280,7 @@ public class Jogo extends JPanel implements Observable{
         else{
             switch(fase){
                 case "Posicionamento Continente":
+                    System.out.println("Posicionamento Continente");
                     dados[0] = "FasePosicionamentoContinente";
                     dados[1] = ultimoPaisClicado.nome;
                     dados[2] = sinal;
