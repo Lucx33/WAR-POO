@@ -153,4 +153,17 @@ public class DesenhaTabuleiro {
             e.printStackTrace();
         }
     }
+
+    public BufferedImage getImagemSuperJogador() {
+        try {
+            return ImageIO.read(new File("src/images/war_btnJogarDados.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void desenharSuperJogador(BufferedImage superJogador, Graphics2D g2d, int i, int i1, Color cor) {
+        g2d.drawImage(superJogador, i, i1, null);
+    }
 }

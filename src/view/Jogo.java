@@ -12,19 +12,16 @@ import controller.Observable;
 import controller.Observer;
 
 public class Jogo extends JPanel implements Observable{
-    BufferedImage tabuleiro;
-    BufferedImage oceano;
     BufferedImage dadoAtaque1;
     BufferedImage dadoAtaque2;
     BufferedImage dadoAtaque3;
     BufferedImage dadoDefesa1;
     BufferedImage dadoDefesa2;
     BufferedImage dadoDefesa3;
+    BufferedImage SuperJogador;
     private DesenhaTabuleiro desenhaTabuleiro;
     String fase = "posicionamento";
     String posicionamentoContinente = "";
-    boolean fasePosicionamento = true;
-    boolean faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
     boolean click = false;
     Botao botaoClicado = null;
     private Pais ultimoPaisClicado = null;
@@ -51,6 +48,7 @@ public class Jogo extends JPanel implements Observable{
             dadoDefesa1 = desenhaTabuleiro.getImagemDado(-1, "defesa");
             dadoDefesa2 = desenhaTabuleiro.getImagemDado(-1, "defesa");
             dadoDefesa3 = desenhaTabuleiro.getImagemDado(-1, "defesa");
+            SuperJogador = desenhaTabuleiro.getImagemSuperJogador();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,6 +103,8 @@ public class Jogo extends JPanel implements Observable{
         desenhaTabuleiro.desenharDado(dadoDefesa1, g2d, 10, 160,cor);
         desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,cor);
         desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,cor);
+
+        desenhaTabuleiro.desenharSuperJogador(SuperJogador, g2d, 10, 280,cor);
 
         desenhaTabuleiro.desenharMao(g2d);
 
@@ -209,12 +209,13 @@ public class Jogo extends JPanel implements Observable{
     public void adicionarBotoes(){
         desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", Color.YELLOW , false);
         desenhaTabuleiro.adicionarBotao(300, 600, "Objetivo", Color.YELLOW , true);
+        desenhaTabuleiro.adicionarBotao(5,280,"Dados",Color.YELLOW, false);
     }
 
     public void setCorDono(List<String> territorios, String Cor) {
         // Iterar por todos os territórios fornecidos
         for (String nomeTerritorio : territorios) {
-                Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
+            Pais pais = desenhaTabuleiro.getPais(nomeTerritorio);
             if (pais != null) {
                 pais.setCor(corFromString(Cor));
             }
@@ -568,11 +569,6 @@ public class Jogo extends JPanel implements Observable{
             desenhaTabuleiro.resetarCores();
             repaint();
         }
-    }
-
-    public void terminaMovimentacaoAtaque() {
-        faseMovimentoAtaque = false;
-        repaint();
     }
 
     public void resetTriangulos() {

@@ -17,12 +17,18 @@ public class Botao {
         this.text = text;
         this.visible = visible;
         this.cor = cor;
-        if (text.equals("Objetivo")){
-            this.retangulo = new Rectangle2D.Double(x - 25, y - 25, 50, 50);
+        switch (text){
+            case "Objetivo":
+                this.retangulo = new Ellipse2D.Double(x - 25, y - 25, 50, 50);
+                break;
+            case "Dados":
+                this.retangulo = new Rectangle2D.Double(x, y, 70, 45);
+                break;
+            default:
+                this.retangulo = new Rectangle2D.Double(x, y, 100, 100);
+                break;
         }
-        else {
-            this.retangulo = new Rectangle2D.Double(x, y, 100, 100);
-        }
+
     }
 
 
@@ -61,6 +67,13 @@ public class Botao {
 
                     g2d.fillOval(x - raio, y - raio, 2 * raio, 2 * raio);
 
+                    break;
+                case "Dados":
+                    g2d.setColor(cor);
+                    g2d.fill(retangulo);
+                    g2d.setColor(Color.BLACK);
+                    g2d.draw(retangulo);
+                    g2d.setColor(Color.BLACK);
                     break;
             }
         }
