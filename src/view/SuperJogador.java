@@ -118,8 +118,7 @@ public class SuperJogador extends JFrame implements Observable {
     @Override
     public Object get() {
         Object[] dados = new Object[5];
-        dados[0] = "SuperJogador"; // Exemplo de identificação
-        dados[1] = getDadosAtaque();
+        dados[0] = "dadosSuperJogador"; // Exemplo de identificação
         return dados;
     }
 

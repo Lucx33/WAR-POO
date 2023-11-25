@@ -10,8 +10,9 @@ public class ControladorJogo implements Observer{
     ApiModel partida;
     IniciaInterface interfaceJogo;
     PlayersInfo playersInfo;
-    SuperJogador superJogador;
     Jogo telaJogo;
+
+    SuperJogador superJogador;
 
     boolean fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
 
@@ -36,13 +37,11 @@ public class ControladorJogo implements Observer{
         // Cria uma instancia do jogo
         partida = ApiModel.getInstance();
 
-        superJogador = new SuperJogador();
-
 
         // Adiciona o IniciaJogo como observador do PlayersInfo
         playersInfo.addObserver(this);
         partida.addObserver(this);
-        superJogador.addObserver(this);
+
 
 
     }
@@ -134,12 +133,15 @@ public class ControladorJogo implements Observer{
             case "SuperJogador":
                 handleSuperJogador();
                 break;
+           case "dadosSuperJogador":
+               hack = !hack;
+               System.out.println(hack);
+               break;
         }
     }
 
     private void handleSuperJogador() {
-        System.out.println("Super Jogador");
-        hack = !hack;
+        superJogador.alternaVisibilidade();
     }
 
     private void handleFasePosicionamentoContinente(String pais, String sinal) {
@@ -256,6 +258,9 @@ public class ControladorJogo implements Observer{
         telaJogo = new Jogo(partida.getNomesJogadores(), partida.getCoresJogadores());
         telaJogo.addObserver(this);
 
+        superJogador = new SuperJogador();
+
+        superJogador.addObserver(this);
 
         for (String player : playerNames) {
             telaJogo.setCorDono(partida.getTerritoriosPorDono(player), playerColors.get(playerNames.indexOf(player)));
@@ -352,14 +357,20 @@ public class ControladorJogo implements Observer{
      * @param paisDefensor O país que está sendo atacado.
      */
     public void handleFaseAtaque(String paisAtacante, String paisDefensor) {
-        if(hack){
-            System.out.println("Super Jogador");
-            partida.superJogador(paisAtacante, paisDefensor, superJogador.getDadosAtaque(), superJogador.getDadosDefesa());
-            return;
-        }
         List<String> vizinhos = partida.getVizinhos(paisAtacante);
         paisAtacante = paisAtacante.toLowerCase();
         paisDefensor = paisDefensor.toLowerCase();
+
+        if(hack){
+            if(partida.getTerritoriosAtuais().contains(paisAtacante) && vizinhos.contains(paisDefensor) && partida.getExercitosPais(paisAtacante) > 1){
+                partida.superJogador(paisAtacante, paisDefensor, superJogador.getDadosAtaque(), superJogador.getDadosDefesa());
+            } else if(partida.getTerritoriosAtuais().contains(paisAtacante)){
+                telaJogo.mostrarVizinhos(paisAtacante, vizinhos);
+            }
+            telaJogo.repaint();
+            return;
+        }
+
         if(partida.getTerritoriosAtuais().contains(paisAtacante) && vizinhos.contains(paisDefensor) && partida.getExercitosPais(paisAtacante) > 1){
             partida.validaAtaque(paisAtacante, paisDefensor);
         } else if(partida.getTerritoriosAtuais().contains(paisAtacante)){

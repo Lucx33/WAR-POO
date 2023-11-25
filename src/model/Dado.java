@@ -53,6 +53,8 @@ class Dado implements Observable {
         List<Integer> resultados = new ArrayList<>();
         resultados.addAll(resultadosAtaque);
         resultados.addAll(resultadosDefesa);
+
+        notifyObservers();
         return resultados;
     }
 

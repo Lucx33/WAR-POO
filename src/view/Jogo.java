@@ -18,9 +18,8 @@ public class Jogo extends JPanel implements Observable{
     BufferedImage dadoDefesa1;
     BufferedImage dadoDefesa2;
     BufferedImage dadoDefesa3;
-    BufferedImage SuperJogador;
+    BufferedImage superJogador;
 
-    SuperJogador superJogador;
     private DesenhaTabuleiro desenhaTabuleiro;
     String fase = "posicionamento";
     String posicionamentoContinente = "";
@@ -29,6 +28,8 @@ public class Jogo extends JPanel implements Observable{
     private Pais ultimoPaisClicado = null;
     private Pais paisClicado = null;
     Color cor;
+
+    boolean sp = false;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -50,7 +51,7 @@ public class Jogo extends JPanel implements Observable{
             dadoDefesa1 = desenhaTabuleiro.getImagemDado(-1, "defesa");
             dadoDefesa2 = desenhaTabuleiro.getImagemDado(-1, "defesa");
             dadoDefesa3 = desenhaTabuleiro.getImagemDado(-1, "defesa");
-            SuperJogador = desenhaTabuleiro.getImagemSuperJogador();
+            superJogador = desenhaTabuleiro.getImagemSuperJogador();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,8 +79,6 @@ public class Jogo extends JPanel implements Observable{
 
             }
         });
-
-        superJogador = new view.SuperJogador();
     }
 
 
@@ -105,7 +104,7 @@ public class Jogo extends JPanel implements Observable{
         desenhaTabuleiro.desenharDado(dadoDefesa2, g2d, 10, 200,cor);
         desenhaTabuleiro.desenharDado(dadoDefesa3, g2d, 10, 240,cor);
 
-        desenhaTabuleiro.desenharSuperJogador(SuperJogador, g2d, 10, 280,cor);
+        desenhaTabuleiro.desenharSuperJogador(superJogador, g2d, 10, 280,cor);
 
         desenhaTabuleiro.desenharMao(g2d);
 
@@ -272,7 +271,12 @@ public class Jogo extends JPanel implements Observable{
     public Object get() {
         Object[] dados = new Object[5];
 
-        if(click){
+        if(sp){
+            dados[0] = "SuperJogador";
+            sp = false;
+        }
+
+        else if(click){
             dados[0] = "Click";
             dados[1] = x;
             dados[2] = y;
@@ -359,8 +363,9 @@ public class Jogo extends JPanel implements Observable{
                     repaint();
                     break;
                 case "Dados":
-                    desenhaTabuleiro.alternarDados();
-                    repaint();
+                    System.out.println("Dados");
+                    sp = true;
+                    notifyObservers();
                     break;
             }
         }
@@ -399,58 +404,25 @@ public class Jogo extends JPanel implements Observable{
         }
     }
 
-    public void handlePosicionamentoContinenteClick(int x, int y) {
-        // Verifica se ele clicou no botão de terminar fase
-        if(botaoClicado != null){
-            desenhaTabuleiro.alternarObjetivo();
-            repaint();
-        }
-        // Verifica se o clique foi em um país
-        if (paisClicado != null) {
-            ultimoPaisClicado = paisClicado;
-            repaint();
-        }
-
-        // Se ele clicou em um país que é dele
-        else if(ultimoPaisClicado != null){
-
-            // Verifica se ele clicou no trianguloCima
-            if(ultimoPaisClicado.trianguloCima != null && ultimoPaisClicado.contaisTrianguloCima(x,y)){
-                sinal = "+";
-                notifyObservers();
-            }
-
-            // Verifica se ele clicou no trianguloBaixo
-            else if(ultimoPaisClicado.trianguloBaixo != null && ultimoPaisClicado.contaisTrianguloBaixo(x,y) && qtdInicial - qtd > 0){
-                sinal = "-";
-                notifyObservers();
-            }
-
-            // Se ele clicou em um país que não é dele
-            else{
-                ultimoPaisClicado = null;
-                repaint();
-            }
-        }
-
-        // Se ele clicou em um país que não é dele ou não clicou em pais
-        else{
-            ultimoPaisClicado = null;
-            repaint();
-        }
-    }
 
     public void handleAtaqueClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
-            if(botaoClicado.getText().equals("Terminar Fase")){
-                fase = "null";
-                notifyObservers();
-                repaint();
-            }
-            else if(botaoClicado.getText().equals("Objetivo")){
-                desenhaTabuleiro.alternarObjetivo();
-                repaint();
+            System.out.println(botaoClicado.getText());
+            switch(botaoClicado.getText()){
+                case "Terminar Fase":
+                    fase = "null";
+                    notifyObservers();
+                    repaint();
+                    break;
+                case "Objetivo":
+                    desenhaTabuleiro.alternarObjetivo();
+                    repaint();
+                    break;
+                case "Dados":
+                    sp = true;
+                    notifyObservers();
+                    break;
             }
         }
 
@@ -648,7 +620,5 @@ public class Jogo extends JPanel implements Observable{
         posicionamentoContinente = s;
     }
 
-    public void addObserverSuperJogador(Observer observer) {
-        observers.add(observer);
-    }
+
 }
