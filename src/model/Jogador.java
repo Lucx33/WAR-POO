@@ -126,25 +126,6 @@ class Jogador {
 		addExercitos(numExercitosRecebidos);
 	}
 
-	void posicionarExercitos(Territorio territorio, int numExercitos) {
-		if (territorios.contains(territorio)) {
-			if (numExercitos <= getExercitos()) {
-				this.addExercitos(numExercitos);
-				removeExercitos(numExercitos);
-			}
-
-			else {
-				System.out.println("jogador nao tem exércitos suficientes");
-			}
-
-		}
-
-		else {
-			System.out.println("Territorio não pertence a este jogador");
-
-		}
-	}
-
 	void addContinente(Continente continente) {
 		continentes.add(continente);
 	}
@@ -157,14 +138,6 @@ class Jogador {
 	boolean possuiContinente(Continente continente) {
 		List<Territorio> territoriosDoContinente = continente.getTerritorios();
 		return territorios.containsAll(territoriosDoContinente);
-	}
-
-	void receberExercitosPorContinente(Continente continente) {
-		if (possuiContinente(continente)) {
-			System.out.println(this.nome + "possui" + continente.nome);
-			int exercitosPorContinente = continente.getBonusExercitos(continente.getNome());
-			addExercitos(exercitosPorContinente);
-		}
 	}
 
 	void setCartas(List<Carta> cartas) {

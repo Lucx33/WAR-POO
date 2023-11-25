@@ -179,14 +179,8 @@ class Tabuleiro implements Observable{
     void validaAtaque(String nome1, String nome2, Dado dado){
         Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
         Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
-        if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
-            System.out.println("Territorios do mesmo jogador");
-        }
-        else if(fazFronteira(atacante.nome, defensor.nome)){
+        if(fazFronteira(atacante.nome, defensor.nome)){
             this.ataque(atacante, defensor, dado);
-        }
-        else{
-            System.out.println("Territorios não fazem fronteira");
         }
     }
 

@@ -286,7 +286,6 @@ public class Jogo extends JPanel implements Observable{
         else{
             switch(fase){
                 case "Posicionamento Continente":
-                    System.out.println("Posicionamento Continente");
                     dados[0] = "FasePosicionamentoContinente";
                     dados[1] = ultimoPaisClicado.nome;
                     dados[2] = sinal;
@@ -363,7 +362,6 @@ public class Jogo extends JPanel implements Observable{
                     repaint();
                     break;
                 case "Dados":
-                    System.out.println("Dados");
                     sp = true;
                     notifyObservers();
                     break;
@@ -408,7 +406,6 @@ public class Jogo extends JPanel implements Observable{
     public void handleAtaqueClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
-            System.out.println(botaoClicado.getText());
             switch(botaoClicado.getText()){
                 case "Terminar Fase":
                     fase = "null";
@@ -462,7 +459,6 @@ public class Jogo extends JPanel implements Observable{
     public void handleMovimentoClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
-            System.out.println(botaoClicado.getText());
             switch(botaoClicado.getText()){
                 case "Terminar Fase":
                     fase = "null";
@@ -628,4 +624,7 @@ public class Jogo extends JPanel implements Observable{
     }
 
 
+    public void fimJogo(String jogador) {
+        JOptionPane.showMessageDialog(null, "O jogador " + jogador + " venceu o jogo!");
+    }
 }

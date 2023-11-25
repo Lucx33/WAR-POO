@@ -27,6 +27,8 @@ public class ApiModel implements Observable{
     boolean jaGanhou = false;
     private List<Observer> observers = new ArrayList<>();
 
+    private boolean end = false;
+
 
     public ApiModel(){
         this.baralho = new Baralho();
@@ -110,6 +112,8 @@ public class ApiModel implements Observable{
     	Objetivo objetivo = temp.getObjetivo();
     	if(Objetivo.verificaObjetivo(objetivo, temp)) {
     		System.out.println("Objetivo cumprido");
+            end = true;
+            notifyObservers();
     	}
     }
 
@@ -228,6 +232,11 @@ public class ApiModel implements Observable{
     @Override
     public Object get() {
         Object dados[]=new Object[5];
+        if(end){
+            dados[0]= "FimJogo";
+            dados[1]= getCorJogadorAtual();
+            return dados;
+        }
         dados[0]= "AtualizaExercitos";
         dados[1]= getExercitosAtuais();
         return dados;

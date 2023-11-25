@@ -133,9 +133,14 @@ public class ControladorJogo implements Observer{
             case "SuperJogador":
                 handleSuperJogador();
                 break;
-           case "dadosSuperJogador":
+
+            case "dadosSuperJogador":
                hack = !hack;
                break;
+
+            case "FimJogo":
+                telaJogo.fimJogo((String) dados[1]);
+                break;
         }
     }
 
