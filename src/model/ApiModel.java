@@ -366,7 +366,6 @@ public class ApiModel implements Observable{
         temp.addTerritorio(Tabuleiro.buscaTerritorio(nome));
 
         if(temp.verificaControleContinente(temp, continenteTemp)) {
-            System.out.println("Controle de continente");
         	temp.addContinente(continenteTemp);
         }
 

@@ -462,14 +462,21 @@ public class Jogo extends JPanel implements Observable{
     public void handleMovimentoClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
-            if(botaoClicado.getText().equals("Terminar Fase")){
-                fase = "null";
-                notifyObservers();
-                repaint();
-            }
-            else if(botaoClicado.getText().equals("Objetivo")){
-                desenhaTabuleiro.alternarObjetivo();
-                repaint();
+            System.out.println(botaoClicado.getText());
+            switch(botaoClicado.getText()){
+                case "Terminar Fase":
+                    fase = "null";
+                    notifyObservers();
+                    repaint();
+                    break;
+                case "Objetivo":
+                    desenhaTabuleiro.alternarObjetivo();
+                    repaint();
+                    break;
+                case "Dados":
+                    sp = true;
+                    notifyObservers();
+                    break;
             }
         }
 

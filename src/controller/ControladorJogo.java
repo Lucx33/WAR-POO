@@ -135,7 +135,6 @@ public class ControladorJogo implements Observer{
                 break;
            case "dadosSuperJogador":
                hack = !hack;
-               System.out.println(hack);
                break;
         }
     }
@@ -192,9 +191,7 @@ public class ControladorJogo implements Observer{
      */
 
     private void handleClick(int x, int y) {
-        System.out.println("Clique");
         if(fasePosicionamento){
-            System.out.println("Posicionamento");
             telaJogo.handlePosicionamentoClick(x,y);
         }
         else if(faseMovimentoAtaque){
@@ -333,10 +330,7 @@ public class ControladorJogo implements Observer{
         telaJogo.repaint();
 
         if(partida.getExercitosAtuais() == 0){
-            System.out.println("Fase de posicionamento terminada");
             if(posicionamentoInicial > 0){
-                System.out.println("Posicionamento inicial");
-                System.out.println(posicionamentoInicial);
                 posicionamentoInicial --;
                 telaJogo.resetTriangulos();
                 handleTrocaTurno();

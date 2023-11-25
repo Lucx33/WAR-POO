@@ -55,7 +55,7 @@ class Objetivo {
 
     static boolean verificaObjetivo(Objetivo objetivo, Jogador jogador){
         List<String> obj = new ArrayList<>();
-        List<String> plyCnt = jogador.getTerritoriosString();
+        List<String> plyCnt = jogador.getContinentesString();
         switch (objetivo.getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
                 if(objetivo.getObjetivoId() == jogador.getCorId(jogador))
