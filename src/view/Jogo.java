@@ -19,6 +19,8 @@ public class Jogo extends JPanel implements Observable{
     BufferedImage dadoDefesa2;
     BufferedImage dadoDefesa3;
     BufferedImage SuperJogador;
+
+    SuperJogador superJogador;
     private DesenhaTabuleiro desenhaTabuleiro;
     String fase = "posicionamento";
     String posicionamentoContinente = "";
@@ -77,8 +79,7 @@ public class Jogo extends JPanel implements Observable{
             }
         });
 
-
-
+        superJogador = new view.SuperJogador();
     }
 
 
@@ -352,8 +353,16 @@ public class Jogo extends JPanel implements Observable{
     public void handlePosicionamentoClick(int x, int y) {
         // Verifica se ele clicou no botão de terminar fase
         if(botaoClicado != null){
-            desenhaTabuleiro.alternarObjetivo();
-            repaint();
+            switch(botaoClicado.getText()){
+                case "Objetivo":
+                    desenhaTabuleiro.alternarObjetivo();
+                    repaint();
+                    break;
+                case "Dados":
+                    desenhaTabuleiro.alternarDados();
+                    repaint();
+                    break;
+            }
         }
         // Verifica se o clique foi em um país
         if (paisClicado != null) {
@@ -637,5 +646,9 @@ public class Jogo extends JPanel implements Observable{
 
     public void setContinente(String s) {
         posicionamentoContinente = s;
+    }
+
+    public void addObserverSuperJogador(Observer observer) {
+        observers.add(observer);
     }
 }

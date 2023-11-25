@@ -41,6 +41,21 @@ class Dado implements Observable {
         return resultados;
     }
 
+    List<Integer> simulacaoDados(int qtdAtaque, int qtdDefesa, List<Integer> ataque, List<Integer> defesa) {
+        resultadosAtaque.clear();
+        resultadosDefesa.clear();
+        for (int i = 0; i < qtdAtaque; i++) {
+            resultadosAtaque.add(ataque.get(i));
+        }
+        for (int i = 0; i < qtdDefesa; i++) {
+            resultadosDefesa.add(defesa.get(i));
+        }
+        List<Integer> resultados = new ArrayList<>();
+        resultados.addAll(resultadosAtaque);
+        resultados.addAll(resultadosDefesa);
+        return resultados;
+    }
+
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);

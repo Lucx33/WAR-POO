@@ -18,6 +18,7 @@ public class DesenhaTabuleiro {
     List<Botao> botoes;
     Mao mao;
     Image objetivo;
+    SuperJogador superJogador;
     boolean visibilidadeObjetivo = false;
 
     public DesenhaTabuleiro(String backgroundImagePath1, String backgroundImagePath2) throws IOException {
@@ -26,6 +27,8 @@ public class DesenhaTabuleiro {
 
         paises = new ArrayList<>();
         botoes = new ArrayList<>();
+
+        superJogador = new SuperJogador();
     }
 
     public void desenharFundo(Graphics2D g2d) {
@@ -165,5 +168,9 @@ public class DesenhaTabuleiro {
 
     public void desenharSuperJogador(BufferedImage superJogador, Graphics2D g2d, int i, int i1, Color cor) {
         g2d.drawImage(superJogador, i, i1, null);
+    }
+
+    public void alternarDados() {
+        superJogador.alternaVisibilidade();
     }
 }

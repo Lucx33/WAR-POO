@@ -419,4 +419,8 @@ public class ApiModel implements Observable{
     public void setExercitosAtuais(int exercitosContinente) {
         jogadoresList.get(jogadorAtual).addExercitos(exercitosContinente);
     }
+
+    public void superJogador(String paisAtacante, String paisDefensor, List<Integer> dadosAtaque, List<Integer> dadosDefesa) {
+        tabuleiro.simulaAtaque(paisAtacante, paisDefensor, dado, dadosAtaque, dadosDefesa);
+    }
 }

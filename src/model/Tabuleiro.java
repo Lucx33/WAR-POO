@@ -257,6 +257,7 @@ class Tabuleiro implements Observable{
 
     }
 
+
     /**
      * Verifica se todos os territórios de um continente estão presentes em uma lista.
      *
@@ -296,6 +297,56 @@ class Tabuleiro implements Observable{
     protected void notifyObservers() {
         for (Observer observer : observers) {
             observer.notify(this);
+        }
+    }
+
+    public void simulaAtaque(String paisAtacante, String paisDefensor, Dado dado, List<Integer> dadosAtaque, List<Integer> dadosDefesa) {
+        Territorio atacante = Tabuleiro.buscaTerritorio(paisAtacante);
+        Territorio defensor = Tabuleiro.buscaTerritorio(paisDefensor);
+        if(atacante.getIdJogadorDono() == defensor.getIdJogadorDono()) {
+            System.out.println("Territorios do mesmo jogador");
+        }
+        else if(fazFronteira(atacante.nome, defensor.nome)){
+            this.hack(atacante, defensor, dado, dadosAtaque, dadosDefesa);
+        }
+        else{
+            System.out.println("Territorios não fazem fronteira");
+        }
+    }
+
+    private void hack(Territorio atacante, Territorio defensor, Dado dado, List<Integer> dadosAtaque, List<Integer> dadosDefesa) {
+        int qtdAtaque = Math.min(3,atacante.getQtdExercito() - 1);
+        int qtdDefesa = Math.min(3,defensor.getQtdExercito());
+        List<Integer> resultado = dado.simulacaoDados(qtdAtaque, qtdDefesa, dadosAtaque, dadosDefesa);
+        List<Integer> dadosAtaqueSimulacao = resultado.subList(0, qtdAtaque);
+        List<Integer> dadosDefesaSimulacao = resultado.subList(qtdAtaque, resultado.size());
+
+        int n = Math.min(qtdAtaque, qtdDefesa);
+
+        Collections.sort(dadosAtaqueSimulacao);
+        Collections.sort(dadosDefesaSimulacao);
+
+        int menorTamanho = Math.min(dadosAtaqueSimulacao.size(), dadosDefesaSimulacao.size());
+
+        for (int i = menorTamanho; i > 0; i--) {
+            int valorAtaque = dadosAtaqueSimulacao.get(dadosAtaqueSimulacao.size() - i);
+            int valorDefesa = dadosDefesaSimulacao.get(dadosDefesaSimulacao.size() - i);
+
+            if (valorAtaque > valorDefesa) {
+                defensor.setQtdExercito(defensor.getQtdExercito() - 1);
+            } else {
+                atacante.setQtdExercito(atacante.getQtdExercito() - 1);
+            }
+        }
+
+        // Verifica se o defensor foi derrotado
+        if (defensor.getQtdExercito() == 0) {
+            defensor.setIdJogadorDono(atacante.getIdJogadorDono());
+            defensor.setQtdExercito(1); // Move um exército para o território conquistado
+            atacante.setQtdExercito(atacante.getQtdExercito() - 1); // Reduz um exército do atacante
+            mudanca = defensor.getNome();
+            // Atualiza os observadores sobre a mudança
+            notifyObservers();
         }
     }
 }

@@ -4,11 +4,13 @@ import model.ApiModel;
 import view.IniciaInterface;
 import view.Jogo;
 import view.PlayersInfo;
+import view.SuperJogador;
 
 public class ControladorJogo implements Observer{
     ApiModel partida;
     IniciaInterface interfaceJogo;
     PlayersInfo playersInfo;
+    SuperJogador superJogador;
     Jogo telaJogo;
 
     boolean fasePosicionamento = false, faseAtaque = false, faseMovimentoAtaque = false, faseMovimento = false;
@@ -21,6 +23,7 @@ public class ControladorJogo implements Observer{
     Observable obs;
     Object[] dados;
     String tipo;
+    boolean hack = false;
 
 
     ControladorJogo(){
@@ -33,10 +36,14 @@ public class ControladorJogo implements Observer{
         // Cria uma instancia do jogo
         partida = ApiModel.getInstance();
 
+        superJogador = new SuperJogador();
+
 
         // Adiciona o IniciaJogo como observador do PlayersInfo
         playersInfo.addObserver(this);
         partida.addObserver(this);
+        superJogador.addObserver(this);
+
 
     }
 
@@ -123,7 +130,16 @@ public class ControladorJogo implements Observer{
             case "Click":
                 handleClick((Integer) dados[1], (Integer) dados[2]);
                 break;
+
+            case "SuperJogador":
+                handleSuperJogador();
+                break;
         }
+    }
+
+    private void handleSuperJogador() {
+        System.out.println("Super Jogador");
+        hack = !hack;
     }
 
     private void handleFasePosicionamentoContinente(String pais, String sinal) {
@@ -336,6 +352,11 @@ public class ControladorJogo implements Observer{
      * @param paisDefensor O país que está sendo atacado.
      */
     public void handleFaseAtaque(String paisAtacante, String paisDefensor) {
+        if(hack){
+            System.out.println("Super Jogador");
+            partida.superJogador(paisAtacante, paisDefensor, superJogador.getDadosAtaque(), superJogador.getDadosDefesa());
+            return;
+        }
         List<String> vizinhos = partida.getVizinhos(paisAtacante);
         paisAtacante = paisAtacante.toLowerCase();
         paisDefensor = paisDefensor.toLowerCase();
