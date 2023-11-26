@@ -78,4 +78,13 @@ class Baralho {
             System.out.println(carta.getTerritorio() + " " + carta.getFormaGeometrica());
         }
     }
+
+    Carta getCarta(String territorio){
+        for (Carta carta : baralho) {
+            if(carta.getTerritorio().equals(territorio)){
+                return carta;
+            }
+        }
+        return null;
+    }
 }

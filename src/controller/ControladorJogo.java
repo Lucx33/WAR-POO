@@ -1,4 +1,5 @@
 package controller;
+import java.io.IOException;
 import java.util.List;
 import model.ApiModel;
 import view.IniciaInterface;
@@ -32,7 +33,7 @@ public class ControladorJogo implements Observer{
         playersInfo = new PlayersInfo();
 
         //Inicia Interface
-        //interfaceJogo = new IniciaInterface(playersInfo);
+        interfaceJogo = new IniciaInterface(playersInfo);
 
         // Cria uma instancia do jogo
         partida = ApiModel.getInstance();
@@ -41,6 +42,8 @@ public class ControladorJogo implements Observer{
         // Adiciona o IniciaJogo como observador do PlayersInfo
         playersInfo.addObserver(this);
         partida.addObserver(this);
+
+        interfaceJogo.f.addObserver(this);
 
 
 
@@ -115,6 +118,7 @@ public class ControladorJogo implements Observer{
                 break;
 
             case "TrocaTurno":
+
                 handleTrocaTurno();
                 break;
 
@@ -141,7 +145,24 @@ public class ControladorJogo implements Observer{
             case "FimJogo":
                 telaJogo.fimJogo((String) dados[1]);
                 break;
+
+            case "Salvar":
+                handleSaveGame();
+                break;
+
+            case "Continuar":
+                handleContinueGame();
+                break;
         }
+    }
+
+    private void handleContinueGame() {
+        partida.loadGameState();
+    }
+
+    private void handleSaveGame(){
+        System.out.println("Salvando jogo...");
+        partida.saveGameState();
     }
 
     private void handleSuperJogador() {
@@ -271,7 +292,14 @@ public class ControladorJogo implements Observer{
 
         telaJogo.repaint();
         fasePosicionamento = true;
-        handleTrocaTurno();
+
+        partida.turno(partida.getJogadorAtual());
+        telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
+        telaJogo.setExercitos(partida.getExercitosAtuais());
+        telaJogo.exibeMao(partida.getCartasJogadorAtual());
+        telaJogo.setObjetivo(partida.getObjetivoJogadorAtual());
+        telaJogo.setFase("Posicionamento");
+        telaJogo.repaint();
     }
 
 

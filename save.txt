@@ -1,0 +1,19 @@
+Nome: André
+Cor: Verde
+Exércitos: 8
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios 17: coreiadonorte 4 1, paquistao 4 1, australia 4 1, egito 4 1, novayork 4 1, jordania 4 1, novazelandia 4 1, somalia 4 1, bangladesh 4 1, polonia 4 1, russia 4 1, tailandia 4 1, arabiasaudita 4 1, siria 4 1, ira 4 1, argentina 4 1, suecia 4 1
+Cartas: 
+Nome: John
+Cor: Vermelho
+Exércitos: 0
+Objetivo: Destruir todos os exércitos Vermelhos!6
+Territórios 17: siberia 6 1, africadosul 6 1, italia 6 1, groelandia 6 1, reinounido 6 1, estonia 6 1, mongolia 6 1, alasca 6 1, letonia 6 1, vancouver 6 1, venezuela 6 1, calgary 6 1, iraque 6 1, japao 6 1, angola 6 1, india 6 1, espanha 6 1
+Cartas: 
+Nome: Cano
+Cor: Branco
+Exércitos: 0
+Objetivo: Conquistar 18 territorios com pelo menos 2 exercitos em cada!13
+Territórios 17: indonesia 3 1, franca 3 1, romenia 3 1, turquia 3 1, cazaquistao 3 1, nigeria 3 1, perth 3 1, coreiadosul 3 1, argelia 3 1, quebec 3 1, california 3 1, ucrania 3 1, peru 3 1, brasil 3 1, china 3 1, texas 3 1, mexico 3 1
+Cartas: 
+model.Baralho@40536629

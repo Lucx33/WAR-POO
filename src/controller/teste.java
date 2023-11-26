@@ -15,7 +15,7 @@ public class teste {
 
         List<String> names = new ArrayList<>();
         names.add("Cano");
-        names.add("John Kennedy");
+        names.add("John");
         names.add("André");
 
         List<String> cores = new ArrayList<>();

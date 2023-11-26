@@ -52,9 +52,7 @@ class Territorio implements Observable {
 
 	@Override
     public String toString() {
-        return  "Territorio = " + nome +
-                ", ID Jogador Dono = " + idJogadorDono +
-                ", Exercitos = " + qtdExercito;
+        return  nome + " " + idJogadorDono + " " + qtdExercito;
 
     }
 

@@ -23,13 +23,11 @@ public class Jogo extends JPanel implements Observable{
     private DesenhaTabuleiro desenhaTabuleiro;
     String fase = "posicionamento";
     String posicionamentoContinente = "";
-    boolean click = false;
     Botao botaoClicado = null;
     private Pais ultimoPaisClicado = null;
     private Pais paisClicado = null;
     Color cor;
-
-    boolean sp = false;
+    boolean sp, click, save = false;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -210,6 +208,7 @@ public class Jogo extends JPanel implements Observable{
         desenhaTabuleiro.adicionarBotao(900, 600, "Terminar Fase", Color.YELLOW , false);
         desenhaTabuleiro.adicionarBotao(300, 600, "Objetivo", Color.YELLOW , true);
         desenhaTabuleiro.adicionarBotao(5,280,"Dados",Color.YELLOW, false);
+        desenhaTabuleiro.adicionarBotao(1000,600,"Salvar",Color.YELLOW, true);
     }
 
     public void setCorDono(List<String> territorios, String Cor) {
@@ -274,6 +273,11 @@ public class Jogo extends JPanel implements Observable{
         if(sp){
             dados[0] = "SuperJogador";
             sp = false;
+        }
+
+        else if(save){
+            dados[0] = "Salvar";
+            save = false;
         }
 
         else if(click){
@@ -365,6 +369,12 @@ public class Jogo extends JPanel implements Observable{
                     sp = true;
                     notifyObservers();
                     break;
+                case "Salvar":
+                    save = true;
+                    notifyObservers();
+                    repaint();
+                    break;
+
             }
         }
         // Verifica se o clique foi em um país
@@ -565,6 +575,7 @@ public class Jogo extends JPanel implements Observable{
 
     public void resetBotoes() {
         desenhaTabuleiro.botoes.get(0).setVisivel();
+        desenhaTabuleiro.botoes.get(3).setVisivel();
     }
 
     public void setFase(String fase){

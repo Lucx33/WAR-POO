@@ -1,5 +1,9 @@
 package view;
 
+import controller.ControladorJogo;
+import controller.Observable;
+import controller.Observer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,13 +23,15 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Menu extends JFrame {
+public class Menu extends JFrame implements Observable {
 
     public final int LARG_DEFAULT = 1200;
     public final int ALT_DEFAULT = 700;
     private JComboBox<String> playerCountComboBox;
     private JPanel playerInfoPanel;
     PlayersInfo info;
+
+    List<Observer> observers = new ArrayList<>();
 
     public Menu(PlayersInfo playersInfo) {
         setSize(LARG_DEFAULT, ALT_DEFAULT);
@@ -62,7 +68,7 @@ public class Menu extends JFrame {
         continueGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implemente a lógica para continuar o jogo aqui
+                notifyObservers();
             }
         });
 
@@ -126,4 +132,27 @@ public class Menu extends JFrame {
 
     }
 
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.notify(this);
+        }
+    }
+    @Override
+    public void addObserver(Observer o) {
+
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public Object get() {
+        Object dados[]=new Object[5];
+        dados[0]= "Continuar";
+        return dados;
+    }
 }

@@ -3,10 +3,9 @@ package model;
 import controller.Observer;
 import controller.Observable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.swing.*;
+import java.io.*;
+import java.util.*;
 
 public class ApiModel implements Observable{
 
@@ -218,7 +217,6 @@ public class ApiModel implements Observable{
     public void proximoTurno() {
         jogadorAtual = (jogadorAtual + 1) % jogadoresList.size();
         jaGanhou = false;
-        Tabuleiro.resetAllMovimentadosVitoria();
     }
 
     public void addObserver(Observer observer) {
@@ -431,4 +429,99 @@ public class ApiModel implements Observable{
     public void superJogador(String paisAtacante, String paisDefensor, List<Integer> dadosAtaque, List<Integer> dadosDefesa) {
         tabuleiro.simulaAtaque(paisAtacante, paisDefensor, dado, dadosAtaque, dadosDefesa);
     }
+
+
+    public void saveGameState() {
+        // Cria um JFileChooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salvar estado do jogo");
+
+        // Mostra o diálogo de salvar arquivo e verifica se o usuário selecionou um arquivo
+        int userSelection = fileChooser.showSaveDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // Obtém o arquivo selecionado pelo usuário
+            File fileToSave = fileChooser.getSelectedFile();
+
+            // Salva o estado do jogo no arquivo
+            try (FileWriter outputStream = new FileWriter(fileToSave)) {
+                for (Jogador jogador : jogadoresList) {
+                    outputStream.write("Nome: " + jogador.getNome() + "\n");
+                    outputStream.write("Cor: " + jogador.getCor() + "\n");
+                    outputStream.write("Exércitos: " + jogador.getExercitos() + "\n");
+                    outputStream.write("Objetivo: " + jogador.getObjetivo().getDescricao() + "!" + jogador.getObjetivo().getObjetivoId() + "\n");
+                    String territorios = jogador.getTerritorios().toString();
+                    String territoriosSemColchetes = territorios.substring(1, territorios.length() - 1);
+                    outputStream.write("Territórios " + jogador.getTerritorios().size() + ": " + territoriosSemColchetes + "\n");
+                    String cartas = jogador.getCartas().toString();
+                    String cartasSemColchetes = cartas.substring(1, cartas.length() - 1);
+                    outputStream.write("Cartas: " + cartasSemColchetes + "\n");
+                }
+                
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao salvar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    public void loadGameState() {
+        // Cria um JFileChooser para escolher o arquivo
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Carregar estado do jogo");
+        tabuleiro.criaTabuleiro();
+        baralho.criaBaralho();
+
+        // Mostra o diálogo de abrir arquivo e verifica se o usuário selecionou um arquivo
+        int userSelection = fileChooser.showOpenDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // Obtém o arquivo escolhido pelo usuário
+            File fileToLoad = fileChooser.getSelectedFile();
+
+            // Limpa o estado atual do jogo
+            jogadoresList.clear();
+            // outros estados do jogo também devem ser limpos ou reinicializados aqui
+            String line;
+            // Carrega o estado do jogo a partir do arquivo
+            try (Scanner scanner = new Scanner(fileToLoad)) {
+                line = scanner.nextLine();
+                while (line.contains("Nome")) {
+                    String nome = line.substring(6);
+                    line = scanner.nextLine();
+                    String cor = line.substring(5);
+                    Jogador jogador = new Jogador(nome, cor);
+                    jogadoresList.add(jogador);
+                    line = scanner.nextLine();
+                    jogador.exercitos = Integer.parseInt(line.substring(11));
+                    line = scanner.nextLine();
+                    String descricao = line.substring(10, line.indexOf("!"));
+                    int id = Integer.parseInt(line.substring(line.indexOf("!") + 1));
+                    Objetivo objetivo = new Objetivo(id, descricao);
+                    jogador.setObjetivo(objetivo);
+                    line = scanner.nextLine();
+                    // Territórios
+                    String todosTerritorios = line.substring(line.indexOf(":") + 2);
+                    String[] territoriosArray = todosTerritorios.split(", ");
+
+                    for (String terr : territoriosArray) {
+                        String[] detalhesTerritorio = terr.split(" "); // Supondo que cada detalhe esteja separado por espaço
+                        if (detalhesTerritorio.length == 3) {
+                            String nomeTerritorio = detalhesTerritorio[0];
+                            int idDono = Integer.parseInt(detalhesTerritorio[1]);
+                            int qtdExercito = Integer.parseInt(detalhesTerritorio[2]);
+                            Territorio territorio = Tabuleiro.buscaTerritorio(nomeTerritorio);
+                            territorio.setIdJogadorDono(idDono);
+                            territorio.setQtdExercito(qtdExercito);
+                            jogador.addTerritorio(territorio);
+                        }
+                    }
+                    line = scanner.nextLine();
+                    // Cartas
+                    line = scanner.nextLine();
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao carregar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
 }

@@ -35,7 +35,7 @@ public class Botao {
     public void desenhar(Graphics2D g2d) {
         if(visible) {
             switch (text) {
-                case "Terminar Fase":
+                case "Terminar Fase", "Salvar":
                     g2d.setColor(cor);
                     g2d.fill(retangulo);
                     g2d.setColor(Color.BLACK);
