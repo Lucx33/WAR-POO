@@ -1,0 +1,18 @@
+Nome: A
+Cor: Vermelho
+Exércitos: 0
+Objetivo: Conquistar na totalidade a America do Norte e a Africa!7
+Territórios 19: suecia 6 1, argelia 6 13, india 6 1, peru 6 1, cazaquistao 6 1, alasca 6 1, venezuela 6 1, egito 6 1, turquia 6 1, polonia 6 1, russia 6 1, argentina 6 1, romenia 6 1, coreiadonorte 6 1, brasil 6 1, indonesia 6 1, vancouver 6 1, espanha 6 1, nigeria 6 1
+Cartas: suecia 
+Nome: C
+Cor: Amarelo
+Exércitos: 7
+Objetivo: Conquistar na totalidade a Asia e a America do Sul!11
+Territórios 15: australia 2 1, paquistao 2 1, ira 2 1, tailandia 2 1, novayork 2 1, siria 2 1, estonia 2 1, mongolia 2 1, california 2 1, bangladesh 2 1, calgary 2 1, groelandia 2 1, letonia 2 1, siberia 2 1, italia 2 9
+Cartas: 
+Nome: B
+Cor: Azul
+Exércitos: 0
+Objetivo: Destruir todos os exércitos Vermelhos!6
+Territórios 17: novazelandia 1 1, franca 1 9, angola 1 1, perth 1 1, arabiasaudita 1 1, jordania 1 1, iraque 1 1, japao 1 1, quebec 1 1, coreiadosul 1 1, somalia 1 1, africadosul 1 1, texas 1 1, ucrania 1 1, reinounido 1 1, china 1 1, mexico 1 1
+Cartas: 

@@ -26,7 +26,7 @@ public class ApiModel implements Observable{
     boolean jaGanhou = false;
     private List<Observer> observers = new ArrayList<>();
 
-    private boolean end = false;
+    private boolean end, load = false;
 
 
     public ApiModel(){
@@ -167,8 +167,8 @@ public class ApiModel implements Observable{
             System.out.println("Id: " + jogador.getIdJogador());
             System.out.println("Exércitos: " + jogador.getExercitos());
             System.out.println("Objetivo: " + jogador.getObjetivo().toString());
-            System.out.println("Territórios: " + jogador.getTerritorios().toString()); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de territórios.
-            System.out.println("Cartas: " + jogador.getCartas().toString()); // Assumindo que Jogador tem um método getCartas() que retorna uma lista de cartas.
+            System.out.println("Territórios: " + jogador.getTerritorios().toString());
+            System.out.println("Cartas: " + jogador.getCartas().toString());
             System.out.println("-----------------------------");
         }
 
@@ -184,7 +184,7 @@ public class ApiModel implements Observable{
     public List<String> getTerritoriosPorDono(String jogadorNome) {
         for (Jogador jogador : jogadoresList) {
             if (jogador.getNome().equals(jogadorNome)) {
-                return jogador.getTerritoriosString(); // Assumindo que Jogador tem um método getTerritorios() que retorna uma lista de nomes de territórios.
+                return jogador.getTerritoriosString();
             }
         }
         return new ArrayList<>();
@@ -230,7 +230,13 @@ public class ApiModel implements Observable{
     @Override
     public Object get() {
         Object dados[]=new Object[5];
-        if(end){
+        if(load){
+            dados[0]= "Load";
+            dados[1]= getCorJogadorAtual();
+            load = false;
+            return dados;
+        }
+        else if(end){
             dados[0]= "FimJogo";
             dados[1]= getCorJogadorAtual();
             return dados;
@@ -444,24 +450,37 @@ public class ApiModel implements Observable{
 
             // Salva o estado do jogo no arquivo
             try (FileWriter outputStream = new FileWriter(fileToSave)) {
-                for (Jogador jogador : jogadoresList) {
+                // Salva os dados a partir do jogador atual até o final da lista
+                for (int i = jogadorAtual; i < jogadoresList.size(); i++) {
+                    Jogador jogador = jogadoresList.get(i);
                     outputStream.write("Nome: " + jogador.getNome() + "\n");
                     outputStream.write("Cor: " + jogador.getCor() + "\n");
-                    outputStream.write("Exércitos: " + jogador.getExercitos() + "\n");
                     outputStream.write("Objetivo: " + jogador.getObjetivo().getDescricao() + "!" + jogador.getObjetivo().getObjetivoId() + "\n");
                     String territorios = jogador.getTerritorios().toString();
                     String territoriosSemColchetes = territorios.substring(1, territorios.length() - 1);
-                    outputStream.write("Territórios " + jogador.getTerritorios().size() + ": " + territoriosSemColchetes + "\n");
-                    String cartas = jogador.getCartas().toString();
-                    String cartasSemColchetes = cartas.substring(1, cartas.length() - 1);
-                    outputStream.write("Cartas: " + cartasSemColchetes + "\n");
+                    outputStream.write("Territórios: " + territoriosSemColchetes + "\n");
+                    outputStream.write("Cartas: " + jogador.getCartasNomes() + "\n");
                 }
-                
+
+                // Continua salvando do início da lista até o jogador atual
+                for (int i = 0; i < jogadorAtual; i++) {
+                    Jogador jogador = jogadoresList.get(i);
+                    outputStream.write("Nome: " + jogador.getNome() + "\n");
+                    outputStream.write("Cor: " + jogador.getCor() + "\n");
+                    outputStream.write("Objetivo: " + jogador.getObjetivo().getDescricao() + "!" + jogador.getObjetivo().getObjetivoId() + "\n");
+                    String territorios = jogador.getTerritorios().toString();
+                    String territoriosSemColchetes = territorios.substring(1, territorios.length() - 1);
+                    outputStream.write("Territórios: " + territoriosSemColchetes + "\n");
+                    outputStream.write("Cartas: " + jogador.getCartasNomes() + "\n");
+                }
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Erro ao salvar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
+
+
 
     public void loadGameState() {
         // Cria um JFileChooser para escolher o arquivo
@@ -469,6 +488,10 @@ public class ApiModel implements Observable{
         fileChooser.setDialogTitle("Carregar estado do jogo");
         tabuleiro.criaTabuleiro();
         baralho.criaBaralho();
+        baralho.shuf();
+        baralho.addCoringa();
+        objetivos = Objetivo.criarObjetivos();
+
 
         // Mostra o diálogo de abrir arquivo e verifica se o usuário selecionou um arquivo
         int userSelection = fileChooser.showOpenDialog(null);
@@ -490,8 +513,6 @@ public class ApiModel implements Observable{
                     Jogador jogador = new Jogador(nome, cor);
                     jogadoresList.add(jogador);
                     line = scanner.nextLine();
-                    jogador.exercitos = Integer.parseInt(line.substring(11));
-                    line = scanner.nextLine();
                     String descricao = line.substring(10, line.indexOf("!"));
                     int id = Integer.parseInt(line.substring(line.indexOf("!") + 1));
                     Objetivo objetivo = new Objetivo(id, descricao);
@@ -500,7 +521,6 @@ public class ApiModel implements Observable{
                     // Territórios
                     String todosTerritorios = line.substring(line.indexOf(":") + 2);
                     String[] territoriosArray = todosTerritorios.split(", ");
-
                     for (String terr : territoriosArray) {
                         String[] detalhesTerritorio = terr.split(" "); // Supondo que cada detalhe esteja separado por espaço
                         if (detalhesTerritorio.length == 3) {
@@ -514,14 +534,25 @@ public class ApiModel implements Observable{
                         }
                     }
                     line = scanner.nextLine();
-                    // Cartas
-                    line = scanner.nextLine();
+                    //
+                    String todasCartas = line.substring(line.indexOf(":") + 1);
+                    String[] cartasArray = todasCartas.split(" ");
+                    if (cartasArray.length > 1) {
+                        for (String carta : cartasArray) {
+                            jogador.addCarta(baralho.pegaCarta(carta));
+                        }
+                    }
+                    if(scanner.hasNextLine()) {
+                        line = scanner.nextLine();
+                    } else {
+                        load = true;
+                        notifyObservers();
+                        break;
+                    }
                 }
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Erro ao carregar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
-
 }

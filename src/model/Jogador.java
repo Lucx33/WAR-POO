@@ -207,4 +207,12 @@ class Jogador {
 		}
 		return continentesString;
 	}
+
+    public String getCartasNomes() {
+		String cartasNomes = "";
+		for (Carta carta : cartas) {
+			cartasNomes += carta.getTerritorio() + " ";
+		}
+		return cartasNomes;
+    }
 }

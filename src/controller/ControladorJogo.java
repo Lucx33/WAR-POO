@@ -153,7 +153,42 @@ public class ControladorJogo implements Observer{
             case "Continuar":
                 handleContinueGame();
                 break;
+
+            case "Load":
+                handleLoadGame();
+                break;
         }
+    }
+
+    private void handleLoadGame() {
+        interfaceJogo.f.dispose();
+        partida.addObserverToAllTerritories(this);
+        partida.addObserverToTabuleiro(this);
+        partida.addObserverToDice(this);
+
+        telaJogo = new Jogo();
+        telaJogo.addObserver(this);
+
+        superJogador = new SuperJogador();
+
+        superJogador.addObserver(this);
+
+        for (String player : partida.getNomesJogadores()) {
+            telaJogo.setCorDono(partida.getTerritoriosPorDono(player), partida.getCoresJogadores().get(partida.getNomesJogadores().indexOf(player)));
+            for(String pais : partida.getTerritoriosPorDono(player)){
+                telaJogo.setExercitosPais(pais, partida.getExercitosPais(pais));
+            }
+        }
+
+        fasePosicionamento = true;
+
+        partida.turno(partida.getJogadorAtual());
+        telaJogo.atualizaJogadorAtual(partida.getCorJogadorAtual());
+        telaJogo.setExercitos(partida.getExercitosAtuais());
+        telaJogo.exibeMao(partida.getCartasJogadorAtual());
+        telaJogo.setObjetivo(partida.getObjetivoJogadorAtual());
+        telaJogo.setFase("Posicionamento");
+        telaJogo.repaint();
     }
 
     private void handleContinueGame() {
@@ -278,7 +313,7 @@ public class ControladorJogo implements Observer{
         partida.addObserverToTabuleiro(this);
         partida.addObserverToDice(this);
 
-        telaJogo = new Jogo(partida.getNomesJogadores(), partida.getCoresJogadores());
+        telaJogo = new Jogo();
         telaJogo.addObserver(this);
 
         superJogador = new SuperJogador();

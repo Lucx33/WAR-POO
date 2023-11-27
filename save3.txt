@@ -1,0 +1,15 @@
+Nome: ASD
+Cor: Branco
+Objetivo: Destruir todos os exércitos Pretos!5
+Territórios: calgary 3 1, novazelandia 3 1, vancouver 3 1, australia 3 1, argelia 3 1, siria 3 1, mongolia 3 1, india 3 1, coreiadosul 3 1, tailandia 3 1, africadosul 3 1, estonia 3 1, egito 3 1, cazaquistao 3 1, argentina 3 1, letonia 3 1, brasil 3 9
+Cartas:
+Nome: 231
+Cor: Verde
+Objetivo: Destruir todos os exércitos Amarelos!2
+Territórios: bangladesh 4 1, groelandia 4 1, jordania 4 1, ucrania 4 1, russia 4 1, perth 4 1, romenia 4 1, china 4 1, turquia 4 1, mexico 4 9, italia 4 1, iraque 4 1, alasca 4 1, somalia 4 1, angola 4 1, espanha 4 1, paquistao 4 1
+Cartas:
+Nome: TESTE
+Cor: Vermelho
+Objetivo: Destruir todos os exércitos Vermelhos!6
+Territórios: venezuela 6 1, coreiadonorte 6 1, arabiasaudita 6 1, polonia 6 1, siberia 6 1, california 6 1, indonesia 6 1, suecia 6 1, ira 6 1, peru 6 17, reinounido 6 1, quebec 6 1, nigeria 6 1, texas 6 1, novayork 6 1, japao 6 1, franca 6 1
+Cartas: 

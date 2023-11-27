@@ -48,4 +48,10 @@ class Carta{
     String getFormaGeometrica() {
         return formaGeometrica;
     }
+
+    @Override
+    public String toString() {
+        return  formaGeometrica + " " + territorio;
+
+    }
 }

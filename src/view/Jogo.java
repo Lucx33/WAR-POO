@@ -38,7 +38,7 @@ public class Jogo extends JPanel implements Observable{
 
     int qtdInicial = 0;
 
-    public Jogo(List<String> playerNames, List<String> playerColors) {
+    public Jogo() {
         try {
             desenhaTabuleiro = new DesenhaTabuleiro("src/images/war_tabuleiro_fundo.png", "src/images/war_tabuleiro_mapa copy.png");
             adicionarPaises();
@@ -341,6 +341,11 @@ public class Jogo extends JPanel implements Observable{
     public void setPais(String pais, int cor, int qtdExercito) {
         Pais p = desenhaTabuleiro.getPais(pais);
         p.setCor(corFromInt(cor));
+        p.setExercitos(qtdExercito);
+    }
+
+    public void setExercitosPais(String pais, int qtdExercito) {
+        Pais p = desenhaTabuleiro.getPais(pais);
         p.setExercitos(qtdExercito);
     }
 

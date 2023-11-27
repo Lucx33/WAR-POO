@@ -87,4 +87,13 @@ class Baralho {
         }
         return null;
     }
+
+    Carta pegaCarta(String territorio) {
+        for (Carta carta : baralho) {
+            if (carta.getTerritorio().equals(territorio)) {
+                return carta;
+            }
+        }
+        return null;
+    }
 }
