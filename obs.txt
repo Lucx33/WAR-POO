@@ -1,0 +1,15 @@
+Nome: André
+Cor: Verde
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios: ira 4 1, quebec 4 1, vancouver 4 1, peru 4 1, tailandia 4 1, siberia 4 1, novayork 4 1, italia 4 1, polonia 4 1, romenia 4 1, africadosul 4 1, coreiadosul 4 1, argentina 4 1, nigeria 4 1, australia 4 1, angola 4 1, california 4 1
+Cartas: 
+Nome: John
+Cor: Vermelho
+Objetivo: Conquistar na totalidade a America do Norte e a Africa!7
+Territórios: calgary 6 1, arabiasaudita 6 1, texas 6 1, russia 6 1, china 6 1, groelandia 6 1, bangladesh 6 1, india 6 1, franca 6 1, ucrania 6 1, perth 6 1, brasil 6 1, coreiadonorte 6 1, estonia 6 1, venezuela 6 1, siria 6 1, egito 6 1
+Cartas: 
+Nome: Cano
+Cor: Branco
+Objetivo: Conquistar na totalidade a Europa, a America do Sul e mais um continente a sua escolha!10
+Territórios: alasca 3 1, reinounido 3 1, jordania 3 1, mongolia 3 1, indonesia 3 1, cazaquistao 3 1, letonia 3 1, paquistao 3 1, espanha 3 1, japao 3 1, somalia 3 1, iraque 3 1, argelia 3 1, suecia 3 1, turquia 3 1, novazelandia 3 1, mexico 3 1
+Cartas: 
