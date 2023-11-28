@@ -22,7 +22,7 @@ class Jogador {
 		this.ordemjogo = -1;
 		this.exercitos = 0;
 		this.objetivo = null;
-		this.idJogador = getCorId(this);
+		this.idJogador = getCorId();
 	}
 
 	String getNome() {
@@ -94,7 +94,7 @@ class Jogador {
 		return order;
 	}
 
-	int getCorId(Jogador jogador) {
+	int getCorId() {
 		return switch (cor) {
 			case "Azul" -> 1;
 			case "Amarelo" -> 2;
@@ -122,7 +122,6 @@ class Jogador {
 	void receberExercitos() {
 		int numTerritorios = territorios.size();
 		int numExercitosRecebidos = numTerritorios / 2;
-		trocarCartas();
 		addExercitos(numExercitosRecebidos);
 	}
 

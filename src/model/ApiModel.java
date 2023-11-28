@@ -100,6 +100,16 @@ public class ApiModel implements Observable{
      */
     public void validaAtaque(String atacante, String defensor){
         tabuleiro.validaAtaque(atacante, defensor, dado);
+        for(Jogador jogador : jogadoresList) {
+            if(jogador.getTerritoriosString().isEmpty()) {
+                System.out.println("Jogador " + jogador.getNome() + " perdeu");
+                Jogador assasino = jogadoresList.get(jogadorAtual);
+                Jogador morto = jogador;
+                if(assasino.getObjetivo().getObjetivoId() == morto.getCorId()){
+                    System.out.println("O jogador " + assasino.getCor() + " matou o jogador " + morto.getCor() + " e ganhou o jogo!");
+                }
+            }
+        }
     }
 
 
@@ -535,10 +545,11 @@ public class ApiModel implements Observable{
                     }
                     line = scanner.nextLine();
                     //
-                    String todasCartas = line.substring(line.indexOf(":") + 1);
+                    String todasCartas = line.substring(line.indexOf(":") + 2);
                     String[] cartasArray = todasCartas.split(" ");
-                    if (cartasArray.length > 1) {
-                        for (String carta : cartasArray) {
+                    for (String carta : cartasArray) {
+                        if(!carta.isEmpty()){
+                            System.out.println(carta);
                             jogador.addCarta(baralho.pegaCarta(carta));
                         }
                     }
@@ -550,6 +561,7 @@ public class ApiModel implements Observable{
                         break;
                     }
                 }
+                printGameState();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Erro ao carregar o arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }

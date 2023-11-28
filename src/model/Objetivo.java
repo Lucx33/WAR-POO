@@ -58,8 +58,9 @@ class Objetivo {
         List<String> plyCnt = jogador.getContinentesString();
         switch (objetivo.getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
-                if(objetivo.getObjetivoId() == jogador.getCorId(jogador))
+                if(objetivo.getObjetivoId() == jogador.getCorId()) {
                     mudarObjetivo(objetivo);
+                }
                 break;
             case 7:
                 obj = List.of("America do Norte", "Africa");
@@ -122,5 +123,4 @@ class Objetivo {
         }
         return false;
     }
-
 }
