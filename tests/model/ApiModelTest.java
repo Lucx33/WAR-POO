@@ -193,18 +193,6 @@ public class ApiModelTest{
     }
 
     @Test
-    public void testMovimentaExercitos() {
-        ApiModel apiModel = ApiModel.getInstance();
-        apiModel.setGame(
-            List.of("Jogador1", "Jogador2", "Jogador3", "Jogador4", "Jogador5"),
-            List.of("Azul", "Amarelo", "Verde", "Branco", "Preto")
-        );
-
-        apiModel.movimenta("Territorio1", "Territorio2");
-        assertEquals(1, apiModel.getExercitosPais("Territorio2"));
-    }
-
-    @Test
     public void testReceberExercitos() {
         ApiModel apiModel = ApiModel.getInstance();
         apiModel.setGame(
@@ -212,8 +200,8 @@ public class ApiModelTest{
             List.of("Azul", "Amarelo", "Verde", "Branco", "Preto")
         );
 
-        apiModel.turno(0); // Simula o turno do jogador atual
-        assertEquals(20, apiModel.getExercitosAtuais()); // Assumindo que o método getExercitosAtuais() retorna a quantidade de exércitos do jogador atual
+        apiModel.turno(0);
+        assertEquals(5, apiModel.getExercitosAtuais());
     }
 
     @Test

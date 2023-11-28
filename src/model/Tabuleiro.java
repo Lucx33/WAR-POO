@@ -261,7 +261,7 @@ class Tabuleiro implements Observable{
      */
     boolean verificaTerritoriosContinente(List<String> territoriosJogador, String nomeContinente) {
         Continente continente = buscaContinentePais(nomeContinente);
-
+        System.out.println(continente.getNome());
         for (Territorio territorio : continente.getTerritorios()) {
             if (!territoriosJogador.contains(territorio.getNome().toLowerCase())) {
                 return false; // Território do continente não encontrado na lista
