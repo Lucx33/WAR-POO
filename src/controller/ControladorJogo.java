@@ -438,6 +438,7 @@ public class ControladorJogo implements Observer{
         } else if(partida.getTerritoriosAtuais().contains(paisAtacante)){
             telaJogo.mostrarVizinhos(paisAtacante, vizinhos);
         }
+        telaJogo.exibeMao(partida.getCartasJogadorAtual());
         telaJogo.repaint();
     }
 
