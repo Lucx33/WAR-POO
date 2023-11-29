@@ -157,7 +157,28 @@ public class ControladorJogo implements Observer{
             case "Load":
                 handleLoadGame();
                 break;
+
+            case "Reiniciar":
+                handleResetGame();
+                break;
+
+            case "Menu":
+                handleMenu();
+                break;
         }
+    }
+
+    private void handleMenu() {
+        interfaceJogo.f.dispose();
+        playersInfo = new PlayersInfo();
+        playersInfo.addObserver(this);
+        interfaceJogo = new IniciaInterface(playersInfo);
+        interfaceJogo.f.addObserver(this);
+    }
+
+    private void handleResetGame() {
+        partida.resetGame();
+        handleNovoJogo(partida.getNomesJogadores(), partida.getCoresJogadores());
     }
 
     private void handleLoadGame() {

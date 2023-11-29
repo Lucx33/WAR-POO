@@ -290,11 +290,13 @@ public class Jogo extends JPanel implements Observable{
         else if(reiniciar){
             dados[0] = "Reiniciar";
             reiniciar = false;
+            return dados;
         }
 
         else if(menu){
             dados[0] = "Menu";
             menu = false;
+            return dados;
         }
 
         else{
@@ -659,8 +661,11 @@ public class Jogo extends JPanel implements Observable{
 
         if (resposta == JOptionPane.YES_OPTION) {
             reiniciar = true;
+            notifyObservers();
         } else {
             menu = true;
+            frame.dispose();
+            notifyObservers();
         }
     }
 }

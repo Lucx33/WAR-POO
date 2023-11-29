@@ -89,10 +89,31 @@ package model;
 	        // Adiciona os coringas ao baralho
 	        baralho.addCoringa();
 	    }
-	    
-	
-	
-	    /**
+
+
+		/**
+		 * Reseta o jogo para o estado inicial.
+		 */
+		public void resetGame() {
+			// Reinicializa os componentes do jogo
+			this.baralho = new Baralho();
+			this.tabuleiro = new Tabuleiro();
+			this.objetivos = new ArrayList<>();
+			this.dado = new Dado();
+			this.jogadorAtual = 0;
+			this.fase = 0;
+			this.jaGanhou = false;
+			this.end = false;
+			this.load = false;
+
+			// Notifica os observers que o jogo foi resetado
+			notifyObservers();
+		}
+
+
+
+
+		/**
 	     * Valida e realiza um ataque
 	     * @param atacante Nome do território atacante
 	     * @param defensor Nome do território defensor
@@ -101,22 +122,15 @@ package model;
 	        tabuleiro.validaAtaque(atacante, defensor, dado);
 	        for(Jogador jogador : jogadoresList) {
 	            if(jogador.getTerritoriosString().isEmpty()) {
-	                Jogador morto = jogador;
-	                Jogador assasino = jogadoresList.get(jogadorAtual);
-	                if(assasino.getObjetivo().getObjetivoId() == morto.getCorId()){
+                    Jogador assasino = jogadoresList.get(jogadorAtual);
+	                if(assasino.getObjetivo().getObjetivoId() == jogador.getIdJogador()){
 	                	end = true;
 	                	notifyObservers();
 	                }
 	            }
 	        }
-			for(Jogador jogador : jogadoresList) {
-				if(jogador.getTerritoriosString().isEmpty()) {
-					System.out.println("Jogador " + jogador.getNome() + " perdeu");
-					jogadoresList.remove(jogador);
-					break;
-				}
-			}
-	        for(Jogador jogador: jogadoresList) {
+			jogadoresList.removeIf(jogador -> jogador.getTerritoriosString().isEmpty());
+			for(Jogador jogador: jogadoresList) {
 	        	boolean result = Objetivo.verificaObjetivo(jogador.objetivo, jogador, jogadoresList);
 	    		if(result) {
 	    			end = true;
@@ -467,6 +481,23 @@ package model;
 	
 	    public void superJogador(String paisAtacante, String paisDefensor, List<Integer> dadosAtaque, List<Integer> dadosDefesa) {
 	        tabuleiro.simulaAtaque(paisAtacante, paisDefensor, dado, dadosAtaque, dadosDefesa);
+			for(Jogador jogador : jogadoresList) {
+				if(jogador.getTerritoriosString().isEmpty()) {
+					Jogador assasino = jogadoresList.get(jogadorAtual);
+					if(assasino.getObjetivo().getObjetivoId() == jogador.getIdJogador()){
+						end = true;
+						notifyObservers();
+					}
+				}
+			}
+			jogadoresList.removeIf(jogador -> jogador.getTerritoriosString().isEmpty());
+			for(Jogador jogador: jogadoresList) {
+				boolean result = Objetivo.verificaObjetivo(jogador.objetivo, jogador, jogadoresList);
+				if(result) {
+					end = true;
+					notifyObservers();
+				}
+			}
 	    }
 	
 

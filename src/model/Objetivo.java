@@ -62,6 +62,9 @@ class Objetivo {
         }
         switch (objetivo.getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
+                System.out.println("Objetivo: Destruir todos os exércitos " + objetivo.getDescricao());
+                System.out.println(idList);
+                System.out.println(objetivo.getObjetivoId());
                 if(objetivo.getObjetivoId() == jogador.getCorId() || !idList.contains(objetivo.getObjetivoId())) {
                     mudarObjetivo(jogador,objetivo);
                 }
@@ -122,7 +125,6 @@ class Objetivo {
                     int qtd = jogador.getTerritorios().size();
                 	for(Territorio territorio : jogador.getTerritorios()){
                     	if(territorio.getQtdExercito() < 2) {
-                            System.out.println(territorio.getQtdExercito());
                     		qtd--;
                     	}
                 	}
