@@ -27,7 +27,7 @@ public class Jogo extends JPanel implements Observable{
     private Pais ultimoPaisClicado = null;
     private Pais paisClicado = null;
     Color cor;
-    boolean sp, click, save = false;
+    boolean sp, click, save, reiniciar, menu = false;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -285,6 +285,16 @@ public class Jogo extends JPanel implements Observable{
             dados[1] = x;
             dados[2] = y;
             click = false;
+        }
+
+        else if(reiniciar){
+            dados[0] = "Reiniciar";
+            reiniciar = false;
+        }
+
+        else if(menu){
+            dados[0] = "Menu";
+            menu = false;
         }
 
         else{
@@ -642,5 +652,15 @@ public class Jogo extends JPanel implements Observable{
 
     public void fimJogo(String jogador) {
         JOptionPane.showMessageDialog(null, "O jogador " + jogador + " venceu o jogo!");
+
+        // Pergunta se desejam continuar
+        int resposta = JOptionPane.showConfirmDialog(null, "Desejam continuar jogando?",
+                "Continuar", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+            reiniciar = true;
+        } else {
+            menu = true;
+        }
     }
 }

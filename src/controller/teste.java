@@ -17,11 +17,17 @@ public class teste {
         names.add("Cano");
         names.add("John");
         names.add("André");
+        names.add("Marcelo");
+        names.add("Fabio");
+        names.add("Fred");
 
         List<String> cores = new ArrayList<>();
         cores.add("Branco");
         cores.add("Vermelho");
         cores.add("Verde");
+        cores.add("Azul");
+        cores.add("Amarelo");
+        cores.add("Preto");
 
         playersInfo.setPlayersInfo(names, cores);
 

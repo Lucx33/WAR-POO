@@ -37,7 +37,7 @@ class Carta{
         }
 
         if (circuloCount == 3 || trianguloCount == 3 || quadradoCount == 3) {
-            return true;
+        	return true;
         } else return circuloCount > 0 && trianguloCount > 0 && quadradoCount > 0;
     }
 

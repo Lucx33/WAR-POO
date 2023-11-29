@@ -1,0 +1,15 @@
+Nome: André
+Cor: Verde
+Objetivo: Conquistar 18 territorios com pelo menos 2 exercitos em cada!13
+Territórios: calgary 4 2, suecia 4 2, turquia 4 2, groelandia 4 2, india 4 2, brasil 4 2, bangladesh 4 2, romenia 4 2, quebec 4 2, cazaquistao 4 2, perth 4 2, mexico 4 2, peru 4 3, estonia 4 2, argentina 4 2, nigeria 4 1
+Cartas: jordania letonia
+Nome: John
+Cor: Vermelho
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios: russia 6 1, reinounido 6 1, indonesia 6 1, ucrania 6 9, venezuela 6 1, ira 6 1, africadosul 6 7, paquistao 6 1, iraque 6 8, mongolia 6 1, alasca 6 1, coreiadosul 6 1, novayork 6 1, vancouver 6 1, novazelandia 6 1, tailandia 6 1, arabiasaudita 6 1, angola 6 1, somalia 6 1
+Cartas: australia
+Nome: Cano
+Cor: Branco
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios: jordania 3 1, letonia 3 1, australia 3 1, espanha 3 1, polonia 3 1, japao 3 1, franca 3 1, siberia 3 1, china 3 1, siria 3 1, coreiadonorte 3 1, argelia 3 8, italia 3 1, california 3 8, egito 3 1, texas 3 1
+Cartas: espanha

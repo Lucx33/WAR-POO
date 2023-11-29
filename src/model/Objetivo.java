@@ -48,18 +48,23 @@ class Objetivo {
         return objetivos;
     }
 
-    static void mudarObjetivo(Objetivo objetivo){
-        objetivo.setObjetivoId(14);
-        objetivo.setDescricao("Conquistar 24 territorios a sua escolha");
+    static void mudarObjetivo(Jogador jogador, Objetivo objetivo){
+        jogador.objetivo.setObjetivoId(14);
+        jogador.objetivo.setDescricao("Conquistar 24 territorios a sua escolha");
     }
 
-    static boolean verificaObjetivo(Objetivo objetivo, Jogador jogador){
+    static boolean verificaObjetivo(Objetivo objetivo, Jogador jogador, List<Jogador> jogadores){
         List<String> obj = new ArrayList<>();
         List<String> plyCnt = jogador.getContinentesString();
+        List<Integer> idList = new ArrayList<>();
+        for(Jogador temp : jogadores) {
+        	idList.add(temp.idJogador);
+        }
         switch (objetivo.getObjetivoId()){
             case 1: case 2: case 3: case 4: case 5: case 6:
-                if(objetivo.getObjetivoId() == jogador.getCorId(jogador))
-                    mudarObjetivo(objetivo);
+                if(objetivo.getObjetivoId() == jogador.getCorId() || !idList.contains(objetivo.getObjetivoId())) {
+                    mudarObjetivo(jogador,objetivo);
+                }
                 break;
             case 7:
                 obj = List.of("America do Norte", "Africa");
@@ -110,17 +115,22 @@ class Objetivo {
                 }
                 return jogador.getContinentes().size() >= 3;
             case 13:
-                if(jogador.getTerritorios().size() < 18)
+                if(jogador.getTerritorios().size() < 18) {
                     return false;
-                for(Territorio territorio : jogador.getTerritorios()){
-                    if(territorio.getQtdExercito() < 2)
-                        return false;
                 }
-                return true;
+                else {
+                    int qtd = jogador.getTerritorios().size();
+                	for(Territorio territorio : jogador.getTerritorios()){
+                    	if(territorio.getQtdExercito() < 2) {
+                            System.out.println(territorio.getQtdExercito());
+                    		qtd--;
+                    	}
+                	}
+                    return qtd >= 18;
+                }
             case 14:
                 return jogador.getTerritorios().size() >= 24;
         }
         return false;
     }
-
 }

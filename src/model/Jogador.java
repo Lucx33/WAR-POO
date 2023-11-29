@@ -22,7 +22,7 @@ class Jogador {
 		this.ordemjogo = -1;
 		this.exercitos = 0;
 		this.objetivo = null;
-		this.idJogador = getCorId(this);
+		this.idJogador = getCorId();
 	}
 
 	String getNome() {
@@ -94,7 +94,7 @@ class Jogador {
 		return order;
 	}
 
-	int getCorId(Jogador jogador) {
+	int getCorId() {
 		return switch (cor) {
 			case "Azul" -> 1;
 			case "Amarelo" -> 2;
@@ -122,7 +122,6 @@ class Jogador {
 	void receberExercitos() {
 		int numTerritorios = territorios.size();
 		int numExercitosRecebidos = numTerritorios / 2;
-		trocarCartas();
 		addExercitos(numExercitosRecebidos);
 	}
 
@@ -152,6 +151,15 @@ class Jogador {
 			Tabuleiro.buscaTerritorio(carta.getTerritorio()).setIdJogadorDono(this.idJogador);
 			baralho.addBaralho(carta);
 			this.cartas.remove(0);
+			Continente continenteTemp = null;
+	    	for(Continente continente : Tabuleiro.getContinentes()) {
+	    		if(continente.contemTerritorio(nome)){
+	    			continenteTemp = continente;
+	    		}
+	    	}
+	    	if( (continenteTemp != null) && (this.verificaControleContinente(continenteTemp))) {
+	        	this.addContinente(continenteTemp);
+	        }
 		}
 	}
 
@@ -172,6 +180,57 @@ class Jogador {
 			this.addExercitos(temp);
 		};
 	}
+	
+	
+	private void removeCartasPorForma(String forma, int quantidade) {
+	    Iterator<Carta> iterator = this.cartas.iterator();
+	    while (iterator.hasNext() && quantidade > 0) {
+	        if (iterator.next().getFormaGeometrica().equals(forma)) {
+	            iterator.remove();
+	            quantidade--;}
+	        }
+	}
+	
+	void removeCartasUsadasNaTroca() {
+        if (!Carta.verificaCartas(this.cartas)) {
+            return; // Não faz nada se as cartas não atendem aos critérios de troca.
+        }
+
+        int circuloCount = 0;
+        int trianguloCount = 0;
+        int quadradoCount = 0;
+
+        // Conta o número de cada tipo de carta.
+        for (Carta carta : this.cartas) {
+            switch (carta.getFormaGeometrica()) {
+                case "Círculo":
+                    circuloCount++;
+                    break;
+                case "Triângulo":
+                    trianguloCount++;
+                    break;
+                case "Quadrado":
+                    quadradoCount++;
+                    break;
+            }
+        }
+        
+        
+
+        // Remove as cartas conforme as regras de troca.
+        if (circuloCount >= 3) {
+            removeCartasPorForma("Círculo", 3);
+        } else if (trianguloCount >= 3) {
+            removeCartasPorForma("Triângulo", 3);
+        } else if (quadradoCount >= 3) {
+            removeCartasPorForma("Quadrado", 3);
+        } else {
+            removeCartasPorForma("Círculo", 1);
+            removeCartasPorForma("Triângulo", 1);
+            removeCartasPorForma("Quadrado", 1);
+        }
+    }
+
 
 	void adiconaExercitoATerritorio(String territorio) {
 		Territorio territorioAtual = Tabuleiro.buscaTerritorio(territorio);
@@ -187,8 +246,8 @@ class Jogador {
 		this.territorios.remove(territorio);
 	}
 
-	public boolean verificaControleContinente(Jogador jogador, Continente continente) {
-		List<String> territoriosJogador = jogador.getTerritoriosString();
+	boolean verificaControleContinente(Continente continente) {
+		List<String> territoriosJogador = this.getTerritoriosString();
 
 		for (Territorio territorio : continente.getTerritorios()) {
 			if (!territoriosJogador.contains(territorio.getNome())) {

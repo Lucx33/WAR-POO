@@ -115,13 +115,14 @@ class Tabuleiro implements Observable{
         fronteiras.put("china", List.of("turquia", "cazaquistao", "mongolia", "coreiadonorte", "coreiadosul", "paquistao", "india"));
         fronteiras.put("coreiadonorte", List.of("japao", "china", "coreiadosul"));
         fronteiras.put("coreiadosul", List.of("china", "coreiadonorte", "india", "bangladesh", "tailandia"));
-        fronteiras.put("india", List.of("paquistao", "china", "coreiadosul", "bangladesh"));
+        fronteiras.put("india", List.of("paquistao", "china", "coreiadosul", "bangladesh", "indonesia"));
         fronteiras.put("ira", List.of("paquistao", "siria", "iraque"));
         fronteiras.put("iraque", List.of("arabiasaudita", "jordania", "siria", "ira"));
         fronteiras.put("japao", List.of("cazaquistao", "mongolia", "coreiadonorte"));
         fronteiras.put("jordania", List.of("arabiasaudita", "siria", "iraque", "egito"));
         fronteiras.put("mongolia", List.of("china", "japao", "cazaquistao"));
         fronteiras.put("tailandia", List.of("bangladesh", "coreiadosul"));
+        
 
         // AFRICA
         fronteiras.put("argelia", List.of("espanha", "italia", "nigeria", "egito"));
@@ -179,7 +180,7 @@ class Tabuleiro implements Observable{
     void validaAtaque(String nome1, String nome2, Dado dado){
         Territorio atacante = Tabuleiro.buscaTerritorio(nome1);
         Territorio defensor = Tabuleiro.buscaTerritorio(nome2);
-        if(fazFronteira(atacante.nome, defensor.nome)){
+        if(fazFronteira(atacante.nome, defensor.nome) && atacante.getIdJogadorDono() != defensor.getIdJogadorDono()){
             this.ataque(atacante, defensor, dado);
         }
     }
@@ -206,7 +207,7 @@ class Tabuleiro implements Observable{
         territorio.setQtdExercito(territorio.getQtdExercito() + qtdExercito);
     }
 
-    List<Continente> getContinentes() {
+    static List<Continente> getContinentes() {
         return continentes;
     }
 

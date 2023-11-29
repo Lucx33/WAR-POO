@@ -238,7 +238,7 @@ public class ControladorJogo implements Observer{
      */
     public void handleMudancaDeDono(String nomeTerritorio) {
         partida.trocaDono(nomeTerritorio);
-        partida.verificaObjetivo();
+        partida.verificarObjetivo();
         partida.ganhaCarta();
         telaJogo.setExercitos(Math.min(3,partida.getExercitosAtuais()));
         telaJogo.repaint();
