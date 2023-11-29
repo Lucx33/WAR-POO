@@ -1,0 +1,30 @@
+Nome: andre
+Cor: Verde
+Objetivo: Destruir todos os exércitos Amarelos!2
+Territórios: calgary 4 5, bangladesh 4 1, espanha 4 1, mongolia 4 1, turquia 4 1, mexico 4 1, italia 4 1, paquistao 4 1, jordania 4 1
+Cartas: 
+Nome: kennedy
+Cor: Azul
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios: india 1 1, arabiasaudita 1 1, somalia 1 1, angola 1 1, vancouver 1 1, franca 1 5, australia 1 2, cazaquistao 1 1, china 1 1, africadosul 1 1, indonesia 1 1, coreiadonorte 1 1
+Cartas: coreiadosul 
+Nome: fabio
+Cor: Amarelo
+Objetivo: Conquistar 18 territorios com pelo menos 2 exercitos em cada!13
+Territórios: siria 2 1
+Cartas: 
+Nome: arias
+Cor: Branco
+Objetivo: Conquistar na totalidade a America do Norte e a Oceania!9
+Territórios: texas 3 1, novayork 3 5, peru 3 1, siberia 3 1, suecia 3 1, russia 3 3, nigeria 3 1, egito 3 1, quebec 3 1, venezuela 3 1
+Cartas: estonia 
+Nome: keno
+Cor: Preto
+Objetivo: Conquistar 24 territorios a sua escolha!14
+Territórios: ucrania 5 2, japao 5 5, brasil 5 1, romenia 5 1, california 5 1, iraque 5 2, novazelandia 5 1, reinounido 5 1, polonia 5 1, ira 5 1
+Cartas: alasca 
+Nome: cano
+Cor: Vermelho
+Objetivo: Conquistar na totalidade a Asia e a Africa!8
+Territórios: coreiadosul 6 1, estonia 6 1, alasca 6 1, argelia 6 1, tailandia 6 1, groelandia 6 5, argentina 6 1, perth 6 1, letonia 6 5
+Cartas: 
